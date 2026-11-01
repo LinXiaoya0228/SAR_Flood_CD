@@ -1,0 +1,38 @@
+{
+  "$schema_version": "1.0.0",
+  "status": "APPROVED_FROZEN",
+  "approval_date": "2026-10-15",
+  "description": "Approved, frozen all-source 27-event corpus partition for final controlled source-model training without validation tuning. Combines all 22 inner-train and 5 inner-val events into a unified 21,462-patch training corpus, strictly disjoint from all TTA-validation and sealed test events.",
+  "corpus_type": "all_source_27_events_fixed_epoch",
+  "source_all_events": [
+    118, 130, 147, 174, 267, 273, 275, 324, 417, 421, 427,
+    470, 492, 496, 497, 498, 502, 518, 554, 555, 567,
+    1111004, 1111005, 1111006, 1111009, 1111010, 1111011
+  ],
+  "source_inner_train_events": [
+    118, 130, 147, 174, 267, 273, 275, 324, 417, 421, 427,
+    470, 492, 496, 497, 498, 502, 518, 554, 555, 567,
+    1111004, 1111005, 1111006, 1111009, 1111010, 1111011
+  ],
+  "source_inner_validation_events": [],
+  "tta_validation_events": [
+    279, 437, 520, 559, 1111003, 1111008
+  ],
+  "sealed_test_events": [
+    205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013
+  ],
+  "sample_counts": {
+    "total_source_samples": 21462,
+    "train_sample_count": 21462,
+    "train_sample_percentage": 100.0,
+    "validation_sample_count": 0,
+    "validation_sample_percentage": 0.0
+  },
+  "assertions": {
+    "source_event_count_is_27": true,
+    "validation_event_count_is_0": true,
+    "tta_val_disjoint_from_source": true,
+    "sealed_test_disjoint_from_all": true,
+    "expected_sample_count_is_21462": true
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "_comment": "ChangeGuard Week 12 Matched BN No-Update Diagnostic Configuration (APPROVED FOR EXECUTION)",
+  "protocol_version": "week12_bn_diagnostic_dev6_v1",
+  "status": "APPROVED_FOR_WEEK12_BN_DIAGNOSTIC_EXECUTION",
+  "created_at_utc": "2026-10-19T10:10:00Z",
+  "approval_status": "APPROVED_FOR_EXECUTION",
+  "evidence_level": "EXPLORATORY",
+  "execution_authorizations": {
+    "real_data_execution_authorized": true,
+    "gpu_execution_authorized": true
+  },
+  "model": {
+    "architecture": "SNUNet_ECAM",
+    "in_channels": 2,
+    "num_classes": 3,
+    "base_channel": 32,
+    "input_channels": ["VV", "VH"],
+    "canonical_preevent": "pre_event_2",
+    "precision": "fp32"
+  },
+  "source_checkpoints": {
+    "training_commit": "6c63a5f8aa7ae2c608b145f0badc84b422b62ef1",
+    "seeds": {
+      "0": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f"
+      }
+    }
+  },
+  "dataset": {
+    "dataset_root": "../datasets/KuroSiwo",
+    "manifest_path": "../third_party/KuroSiwo/pickle/KuroV2_grid_dict_test_0_100.gz",
+    "sar_mean": [0.0953, 0.0264],
+    "sar_std": [0.0427, 0.0215],
+    "sar_clamp_max": 0.15,
+    "canonical_preevent": "pre_event_2",
+    "target_events": [279, 437, 520, 559, 1111003, 1111008],
+    "development_events": [279, 437, 520, 559, 1111003, 1111008],
+    "forbidden_sealed_test_events": [
+      205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013
+    ],
+    "mask_provenance": {
+      "sar_valid_mask_component": "MK0_MNA",
+      "sar_valid_mask_description": "Binary sensory raster recording physical SAR observation validity (1=valid, 0=nodata). Strictly independent of ground-truth labels.",
+      "label_component": "MK0_MLU",
+      "label_description": "Ground truth annotation raster (3=unannotated/invalid, 2=flood, 0,1=other land cover).",
+      "adaptation_mask_policy": "strictly_sar_valid_mask_only",
+      "adaptation_mask_definition": "valid = (MK0_MNA == 1). Strictly NO ground-truth labels and NO label-3 exclusion during adaptation.",
+      "offline_evaluation_mask_policy": "double_masking",
+      "offline_evaluation_mask_definition": "valid = (MK0_MNA == 1) & (MK0_MLU != 3). Strictly evaluated offline on frozen predictions."
+    }
+  },
+  "diagnostic_specification": {
+    "checkpoint_seed": 0,
+    "stream_order": "order_a",
+    "event_sequence": [279, 437, 520, 559, 1111003, 1111008],
+    "within_event_ordering": "deterministic_sorted_sample_id_ascending",
+    "reset_mode": "reset_per_event",
+    "batch_size": 16,
+    "tail_batch_handling": "process_as_is",
+    "conditions": [
+      {
+        "condition_id": "matched_bn_no_update_v1",
+        "name": "Matched BN No-Update Diagnostic",
+        "description": "Matches candidate BN prediction behavior (batch stats, track_running_stats=False, running_mean/var=None) with strictly 0 backward passes and 0 optimizer updates."
+      }
+    ]
+  },
+  "outputs": {
+    "root_dir": "outputs/week12_ablation",
+    "experiment_dir": "outputs/week12_ablation/approved_bn_diagnostic_dev6_s0_v1",
+    "manifest_json": "diagnostic_initial_manifest.json",
+    "summary_json": "diagnostic_summary.json",
+    "log_dir": "logs/week12_ablation/approved_bn_diagnostic_dev6_s0_v1"
+  }
+}

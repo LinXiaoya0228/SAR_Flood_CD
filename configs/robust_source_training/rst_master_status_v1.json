@@ -1,0 +1,244 @@
+{
+  "$schema_version": "1.0.0",
+  "created_at_utc": "2026-10-26T10:33:00Z",
+  "last_updated_at_utc": "2026-10-27T03:15:00Z",
+  "proposal": {
+    "path": "docs/ROBUST_SOURCE_TRAINING_PROPOSAL_V1.md",
+    "sha256": "fedb26a08e8ca581d35f5a6722ade1cf9813fb5eeb4db139fa4f9ea4e11fa495"
+  },
+  "route_transition": {
+    "transition_commit": "904f3559513638c97cc28ea62c32be75b8a3f300",
+    "rst0_commit": "9c73e84e853458fcb765422e24a2599c70882ec9",
+    "transition_date": "2026-10-26",
+    "note": "Exact self-referential commit hashing for the scoped RST0 freeze commit itself is mathematically circular; transition_commit records the pre-transition parent HEAD commit 904f3559513638c97cc28ea62c32be75b8a3f300, and rst0_commit records the resulting freeze commit."
+  },
+  "blocks": {
+    "RST0": {
+      "name": "Route transition and historical freeze",
+      "status": "COMPLETED",
+      "target_window": "2026-10-26",
+      "completion_evidence_paths": [
+        "docs/ROBUST_SOURCE_TRAINING_PROPOSAL_V1.md",
+        "docs/robust_source_training/rst0_route_transition_v1.md",
+        "configs/robust_source_training/rst0_historical_protection_v1.json",
+        "configs/robust_source_training/rst0_data_boundary_v1.json",
+        "docs/robust_source_training/rst0_namespace_and_run_ids_v1.md",
+        "configs/robust_source_training/rst_master_status_v1.json"
+      ]
+    },
+    "RST1": {
+      "name": "Data, input-domain and baseline audit",
+      "status": "COMPLETED",
+      "target_window": "2026-10-26 to 2026-10-27",
+      "completion_evidence_paths": [
+        "configs/robust_source_training/rst1_source_event_inventory_v1.csv",
+        "configs/robust_source_training/rst1_source_event_inventory_summary_v1.json",
+        "configs/robust_source_training/rst1_matched_r0_spec_v1.json",
+        "configs/robust_source_training/rst1_event_folds_v1.json",
+        "docs/robust_source_training/rst1_input_domain_and_preprocessing_audit_v1.md",
+        "docs/robust_source_training/rst1_sampler_loss_augmentation_audit_v1.md",
+        "docs/robust_source_training/rst1_event_fold_design_v1.md",
+        "docs/robust_source_training/rst1_compute_storage_estimate_v1.md",
+        "docs/robust_source_training/rst1_closeout_v1.md",
+        "tools/robust_source_training/generate_rst1_event_folds.py"
+      ],
+      "evidence_hashes": {
+        "rst1_source_event_inventory_v1.csv": "605c9b168ac3f646d1446a69b58aab384ea2ff8795f46c60c3114371b90551ca",
+        "rst1_source_event_inventory_summary_v1.json": "4f386fc9718b98291f020e70c31f6efe4aa98849615061d2b0dd64c002d1f1f4",
+        "rst1_matched_r0_spec_v1.json": "ea0bf12c2240e89102506a4fd31cfe8ad8d6e732b40cbdd0a104712888847bc7",
+        "rst1_event_folds_v1.json": "2e1842b1bb9505ff770c5be454e57df6fb90b7560dd296b010d5e0904c3e8893",
+        "generate_rst1_event_folds.py": "9f69ece0c12ec106428ea69972b76dd8244bb67afa4e604673d364c93d822a47"
+      }
+    },
+    "RST2": {
+      "name": "Event-disjoint training and evaluation infrastructure",
+      "status": "COMPLETED",
+      "target_window": "2026-10-26 to 2026-10-27",
+      "completion_evidence_paths": [
+        "configs/robust_source_training/rst2_r0_infrastructure_smoke_v1.json",
+        "docs/robust_source_training/rst2_event_disjoint_infrastructure_protocol_v1.md",
+        "src/robust_source_training/contracts.py",
+        "src/robust_source_training/dataset.py",
+        "src/robust_source_training/evaluation.py",
+        "src/robust_source_training/checkpoint.py",
+        "src/robust_source_training/manifest.py",
+        "src/robust_source_training/runner.py",
+        "tools/robust_source_training/run_rst2_infrastructure.py",
+        "tests/test_rst2_infrastructure.py",
+        "outputs/robust_source_training/rst2/rst2_r0_smoke_snunet_foldc_s0_v1/preflight_manifest.json",
+        "outputs/robust_source_training/rst2/rst2_r0_smoke_snunet_foldc_s0_v1/final_manifest.json",
+        "outputs/robust_source_training/rst2/rst2_r0_smoke_snunet_foldc_s0_v1/terminal_status.json",
+        "outputs/robust_source_training/rst2/rst2_r0_smoke_snunet_foldc_s0_v1/event_metrics.json",
+        "docs/robust_source_training/rst2_closeout_v1.md",
+        "docs/robust_source_training/rst2_failed_attempt_preservation_addendum_v1.md"
+      ],
+      "integrity_notes": "Attempt preservation was imperfect during RST2 development: two diagnostic smoke attempts were deleted during manual debugging before the final successful run. The technical validity of code, tests, and final successful smoke run is unaffected; strict versioned preservation is mandated for RST3 onward (docs/robust_source_training/rst2_failed_attempt_preservation_addendum_v1.md).",
+      "evidence_hashes": {
+        "rst2_r0_infrastructure_smoke_v1.json": "be603940fa5dfd6b02c9d7aa25017595e62f3b983d43eb75d78a917668b672bc",
+        "rst2_event_disjoint_infrastructure_protocol_v1.md": "f1562d49104679b5dd2aa6b2a69e6ace34b960fcbba9de16367845dbdd81392c",
+        "contracts.py": "a48376c7230b2d0b1584e331d99073956ede2fd619d570b26e71f3110387937a",
+        "dataset.py": "a44f59e45b376ee1f7f11d0eb44fc32f356565777eca0e5c124be63d4ba1242f",
+        "evaluation.py": "f0d23756888b6cca9d78e11dd71494fc9622dfaea8fd6a909aac0b7a71032fd9",
+        "checkpoint.py": "f46125e0a308f742367846626c3a8e265dc29248d1bc90158c04fe7770b7c94d",
+        "manifest.py": "768bbe8353a1e77f8b32e780d69b7fb314f321c2762e2f0c389d32925bc17d77",
+        "runner.py": "d876adbb315d9ae99304213658a0c6a47188c7f6e96c36118ab069cd2469d6cc",
+        "run_rst2_infrastructure.py": "7e04c284b5e698486eb68409cc7c9177529e4c278777ea4af5b9fd7cc0bf3884",
+        "test_rst2_infrastructure.py": "97442974ed624911afca042ef9daa7a147d4d5d9abbb02bf53f95f0694609d10",
+        "preflight_manifest.json": "707b7c9daccc0c7d6b27916b9068f9fde80aab5cd2ca706682099fab5ec85aad",
+        "final_manifest.json": "bafb42c54731592a5560d22930d147c1011f000dfab66903a03812e70c89cc1b",
+        "terminal_status.json": "a872de01dbdf1d3a33248bb37d2212efd7598064a224ca86097494c0e282b53c",
+        "event_metrics.json": "b598433a5d3589c8863fbe9fcb74b107351f13564f08962efd67a471558f2e04",
+        "rst2_closeout_v1.md": "95b16027e1cf0a518168bcf4f92314780335023f1e96ff14ba723d3ce94ab631",
+        "rst2_failed_attempt_preservation_addendum_v1.md": "526651008168d8c7fee04d26d7b6d3f15fd29b23dcacd1b0dc2b1a4ecafbb089"
+      }
+    },
+    "RST3": {
+      "name": "Implement the three method components",
+      "status": "COMPLETED",
+      "target_window": "2026-10-29 to 2026-10-31",
+      "completion_evidence_paths": [
+        "configs/robust_source_training/rst3_component_contract_v1.json",
+        "configs/robust_source_training/rst3_r1_component_smoke_v1.json",
+        "configs/robust_source_training/rst3_r2_component_smoke_v1.json",
+        "configs/robust_source_training/rst3_r3_component_smoke_v1.json",
+        "docs/robust_source_training/rst3_component_protocol_v1.md",
+        "src/robust_source_training/sampler.py",
+        "src/robust_source_training/loss.py",
+        "src/robust_source_training/augmentation.py",
+        "tests/test_rst3_components.py",
+        "outputs/robust_source_training/rst3/rst3_r1_smoke_snunet_foldc_s0_v2/terminal_status.json",
+        "outputs/robust_source_training/rst3/rst3_r2_smoke_snunet_foldc_s0_v4/terminal_status.json",
+        "outputs/robust_source_training/rst3/rst3_r3_smoke_snunet_foldc_s0_v1/terminal_status.json",
+        "docs/robust_source_training/rst3_closeout_v1.md"
+      ],
+      "integrity_notes": "All diagnostic smoke attempts were preserved on disk with strictly versioned execution folders (rst3_r1_smoke_v1, rst3_r2_smoke_v1, v2, v3, v4, rst3_r3_smoke_v1). Zero forbidden target events accessed. 19/19 RST3 tests passed, 22/22 RST2 tests passed.",
+      "evidence_hashes": {
+        "rst3_component_contract_v1.json": "dae1f33b3a4c9dc38ddd38992e7b03d8a2bb16be7f4780738fa453f979c8970f",
+        "rst3_r1_component_smoke_v1.json": "4cb6a3e16980c17c918a629bbb2808c5420de2ac784a99f3b036dd47ee96578b",
+        "rst3_r2_component_smoke_v1.json": "839ee9373f82c2cd83a8ec606b7bd8b6a05791e87647eab3a4d5afcc35cfc737",
+        "rst3_r3_component_smoke_v1.json": "5d2ded7d6709f2c3aa212991495dc2aee4e0ad59b16f51b8d958c9585b02640e",
+        "rst3_component_protocol_v1.md": "b98f5b70cca02153c84a5e7027f725efb77787bc9a18357808a37e90a0a4a271",
+        "sampler.py": "f94a3fa858fcba0275a25d23054ad74c62c9a479bf209cd01fdb991548a77207",
+        "loss.py": "6d5849f35d7c04779b238356d767cce7c2877a396d282d408b766257b144e273",
+        "augmentation.py": "f16c0404254ea1f0e5eb9ca175f967f66aa34568c2d2e483b08a8b5e22ec18f3",
+        "test_rst3_components.py": "62530e59c38b4e83a6096f834aa506d7c6abc086323af4ea524c83d26bf184f3",
+        "rst3_closeout_v1.md": "228428d4617bd6d2616226b32fa4a4f659472b9b9e93d0a81895b90517f20e61"
+      }
+    },
+    "RST4": {
+      "name": "Discovery staircase",
+      "status": "COMPLETED",
+      "target_window": "2026-10-31 to 2026-11-03",
+      "selected_recipe": "R2",
+      "decision": "RECIPE_R2_PROMOTED",
+      "completion_evidence_paths": [
+        "configs/robust_source_training/rst4_discovery_matrix_v1.json",
+        "configs/robust_source_training/rst4_promotion_rule_v1.json",
+        "configs/robust_source_training/rst4_selected_recipe_v1.json",
+        "docs/robust_source_training/rst4_discovery_protocol_v1.md",
+        "docs/robust_source_training/rst4_discovery_closeout_v1.md",
+        "docs/robust_source_training/rst3_pre_discovery_contract_reconciliation_v1.md",
+        "tools/robust_source_training/analyze_rst4_discovery.py",
+        "tests/test_rst4_discovery.py",
+        "outputs/robust_source_training/rst4/analysis_v1/discovery_recipe_summary.csv",
+        "outputs/robust_source_training/rst4/analysis_v1/discovery_event_metrics.csv",
+        "outputs/robust_source_training/rst4/analysis_v1/component_differences.csv",
+        "outputs/robust_source_training/rst4/analysis_v1/promotion_decision.json",
+        "outputs/robust_source_training/rst4/analysis_v1/analysis_manifest.json"
+      ],
+      "integrity_notes": "All 4 runs (R0-R3) completed full 16 epochs on discovery fold C. Bit-identical initial state hash (71177eb1fb...) confirmed. Zero access to 16 forbidden target events. Zero evaluation on confirmatory Groups A or B. Aborted v1 runs preserved with formal terminal status. Recipe R2 promoted under Route D2 (+0.023907 bottom-3 F1) and parsimony rule within 0.005 bandwidth of top candidate R3. 57/57 tests passed (14 RST4, 21 RST3, 22 RST2).",
+      "evidence_hashes": {
+        "rst4_discovery_matrix_v1.json": "1fcc32068b978b92f275486c3191b566204ad134e047abaf130a4c1446913496",
+        "rst4_promotion_rule_v1.json": "245e63af985665f1a30da786bb52024753fbbd018d16ced952912a177f5d438e",
+        "rst4_selected_recipe_v1.json": "71e1241a51469543a1169055ceeabcdfc3a399fc49533b433b3fdcf9bf4bd706",
+        "rst4_discovery_protocol_v1.md": "e1f8300b06a69561a28f9aa18bb13b2ada282a9ae59e3f7a5c2fedb8c40b3c49",
+        "rst4_discovery_closeout_v1.md": "a18d7f8afa7d36a0aff006d48dc10575be81037096d061fb622d714464e4ad67",
+        "rst3_pre_discovery_contract_reconciliation_v1.md": "0cafbba6763787b6b169ec7bdc40e48e943d592fb158492de24770c831505679",
+        "analyze_rst4_discovery.py": "946d35228bde46e9c7a6df534a439869307b5de4ec69f58b9d36c2c4cadf46a2",
+        "test_rst4_discovery.py": "4625cd1b2961296c8169cb14dad47832d0b570d7d1dddbcff4d88da6a3f4dbbd",
+        "discovery_recipe_summary.csv": "7b01cac800528d1130fc0f39825b4ca56b745ae7c5744ddaaccb765e2e18a39f",
+        "discovery_event_metrics.csv": "f36faf17af17f515d4535bf7dbabaae3fea0373658e83bb7a3f2d9fa5677151a",
+        "component_differences.csv": "51093b33f7725d49065578d24b54b31ee7fa2cf9d483ce859592e0ca18eaa6d6",
+        "promotion_decision.json": "f660e7296114abeb7287a70bf088d2a7c20a922c813844a0199a5d91c9aa1ebb",
+        "analysis_manifest.json": "27f40d59bd16e3875b355c16897f2c84ca31f19d5450c3bdd7e3495fda8199c8"
+      }
+    },
+    "RST5": {
+      "name": "Recipe freeze and reproducibility handoff",
+      "status": "COMPLETED",
+      "target_window": "2026-11-03 to 2026-11-05",
+      "frozen_recipe": "R2",
+      "completion_evidence_paths": [
+        "configs/robust_source_training/rst5_frozen_recipe_r2_v1.json",
+        "docs/robust_source_training/rst5_frozen_recipe_r2_v1.md",
+        "configs/robust_source_training/rst5_folda_class_weights_v1.json",
+        "configs/robust_source_training/rst5_foldb_class_weights_v1.json",
+        "configs/robust_source_training/rst5_confirmation_matrix_v1.json",
+        "configs/robust_source_training/rst5_confirmation_ledger_v1.json",
+        "configs/robust_source_training/rst5_confirmation_decision_rule_v1.json",
+        "docs/robust_source_training/rst5_confirmation_decision_rule_v1.md",
+        "docs/robust_source_training/rst5_rst4_step_accounting_audit_v1.md",
+        "docs/robust_source_training/rst5_label_semantics_audit_v1.md",
+        "docs/robust_source_training/rst5_monitoring_and_recovery_v1.md",
+        "docs/robust_source_training/rst5_reproducibility_handoff_v1.md",
+        "docs/robust_source_training/rst6_run_closeout_template_v1.md",
+        "docs/robust_source_training/rst6_final_analysis_template_v1.md",
+        "docs/robust_source_training/rst5_closeout_v1.md",
+        "outputs/robust_source_training/rst5_prelaunch_validation/readiness_report.json",
+        "tests/test_rst5_confirmation.py"
+      ],
+      "integrity_notes": "RST4 step accounting audited and boundary bleed resolved. Label semantics verified across all components. Recipe R2 and R0 frozen with 12 confirmation configs under strict launch hold (launch_authorized=false, preparation_only=true). Pre-launch static validation and dry runs verified 100% pass across all 12 configs. Full test suite passed (69/69 tests across RST2-RST5). Zero evaluation on confirmatory Groups A/B. Zero access to 16 forbidden target events.",
+      "evidence_hashes": {
+        "rst5_frozen_recipe_r2_v1.json": "c707daa669d88260b8db517adbd9e238cf5f50a725c91d6e6640e5e11b6e6fab",
+        "rst5_frozen_recipe_r2_v1.md": "a38782660e94918197d22be95c56bac6c4a1a553063216d1fd2f0301e76122e2",
+        "rst5_folda_class_weights_v1.json": "c3bbb6bae14d98710798883132aab623c2cc554c226f796c1e15ff87591640bd",
+        "rst5_foldb_class_weights_v1.json": "d84e797fd63a097124231c130a9728950d2bf3e676c937f99790fe4dcb239a83",
+        "rst5_confirmation_matrix_v1.json": "ec5f5e424e5c9ec432f866620c3268c14fa9e5550510796768011251bd7bf2a1",
+        "rst5_confirmation_ledger_v1.json": "1116c55f2aef1be71409f084f228b45720dde4c4a5bad5759a549d22f9f97db1",
+        "rst5_confirmation_decision_rule_v1.json": "b347a1f903a4e57e9ca8e7835c03fb65cef89a732c0feb6eeadfbab68a48db35",
+        "rst5_confirmation_decision_rule_v1.md": "d8073556805e4408f591076164e10f9c5ad69b07140d11d1f7cc8efe115f42e5",
+        "rst5_rst4_step_accounting_audit_v1.md": "c9c7ba529597d691d0f1d49534fc96dfb4e25387befd43d44f31fb4cc1521ed3",
+        "rst5_label_semantics_audit_v1.md": "dd8e19c61a5f524c963a3cc83cc90dccb5420693abafd6a0d01d80cf12f0d523",
+        "rst5_monitoring_and_recovery_v1.md": "c78332d2634d51d87a4443d2db73c6609e766e9a7f1f7ca6989a347a83064ce5",
+        "rst5_reproducibility_handoff_v1.md": "a96fb21338e77aa52df00b44854c9ed66ab04faba46a784f1899ff96daa0563a",
+        "rst6_run_closeout_template_v1.md": "b420011efbfe76c3f636f719fa18bb3f01869d9dca9f21c5643d25a17296b987",
+        "rst6_final_analysis_template_v1.md": "90a4dafe1b498b5f026f5bbcc8daf1aada67da3da44a04552d2eb6255b9504a3",
+        "rst5_closeout_v1.md": "81adc667a51ff90bd27928a526b10817860acdc4668fa42b88f34b60c5d5cc01",
+        "readiness_report.json": "9f76219cbb184e9c87a436c3abcb305af28474396291b431767c4042f36c53d8",
+        "test_rst5_confirmation.py": "4f05e00af819f1af86bffee12ab8b83c330948c2360d1af2629b71b2e4eccfe1"
+      }
+    },
+    "RST6": {
+      "name": "Confirmatory launch",
+      "status": "NOT_STARTED",
+      "target_window": "2026-11-05 to 2026-11-08"
+    },
+    "RST7": {
+      "name": "Confirmatory completion and analysis",
+      "status": "NOT_STARTED",
+      "target_window": "2026-11-09 to 2026-11-22"
+    },
+    "RST8": {
+      "name": "Optional second-backbone verification",
+      "status": "NOT_STARTED",
+      "condition": "CONDITIONAL",
+      "condition_description": "Proceeds only if the selected recipe satisfies promotion criteria P1, P2, or P3 on SNUNet-ECAM.",
+      "target_window": "2026-11-23 to 2026-12-06"
+    },
+    "RST9": {
+      "name": "Final deployable source model and historical-target extension",
+      "status": "NOT_STARTED",
+      "target_window": "2026-12-07 to 2026-12-20"
+    },
+    "RST10": {
+      "name": "Final analysis and figures",
+      "status": "NOT_STARTED",
+      "target_window": "2026-12-21 to 2027-01-15"
+    },
+    "RST11": {
+      "name": "FYP writing and delivery",
+      "status": "NOT_STARTED",
+      "target_window": "2027-01-16 to 2027-02-28"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+model_architecture,method_recipe,parameter_count,training_optimizer_steps,training_runtime_hours,peak_vram_mb,inference_throughput_samples_sec,target_time_adaptation_overhead,checkpoint_size_mb,operational_notes
+SNUNet_ECAM,R0 (Baseline Standard CE),12034819,10736,3.15h (avg),4913.16,~64 samples/s,0.0s (Zero target-time overhead),46.1,Standard pure source model; baseline inference
+SNUNet_ECAM,R2 (Event-Bal + Class Weights),12034819,10736,3.29h (avg),4913.16,~64 samples/s,0.0s (Zero target-time overhead),46.1,Identical inference graph and runtime cost as R0; zero test adaptation
+SiamUnet_diff,R0 (Baseline Standard CE),1335011,2688,0.58h,3124.0,~180 samples/s,0.0s (Zero target-time overhead),5.4,Lightweight Siamese backbone; 5 epochs budget
+SiamUnet_diff,R2 (Event-Bal + Class Weights),1335011,2688,0.59h,3124.0,~180 samples/s,0.0s (Zero target-time overhead),5.4,Transfer not supported; stopped at Stage A
+SNUNet_ECAM,AdaBN / BN-no-update (TTA),12034819,N/A (Uses R0 ckpt),0.0h,4913.16,~58 samples/s,Low (Online batch re-estimation forward pass),46.1,Requires test batch re-estimation; state mutations
+SNUNet_ECAM,Tent (Entropy Minimization TTA),12034819,N/A (Uses R0 ckpt),0.0h,5840.0,~22 samples/s,High (Online test backprop on BN affine parameters),46.1,Requires gradient backprop on live test data; risk of collapse
+SNUNet_ECAM,CoTTA (Continual TTA),12034819,N/A (Uses R0 ckpt),0.0h,8950.0,~11 samples/s,Very High (Teacher-student EMA + aug consistency + reset cache),92.2,Extreme test memory footprint and 6x slower inference

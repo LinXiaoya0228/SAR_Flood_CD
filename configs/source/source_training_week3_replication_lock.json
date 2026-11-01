@@ -1,0 +1,170 @@
+{
+  "$schema_version": "3.0.0",
+  "lock_version": "3.0.0-REPLICATION-LOCKED",
+  "creation_timestamp_utc": "2026-10-10T10:20:00Z",
+  "approval_status": "APPROVED_WEEK3_REPLICATION_PROTOCOL",
+  "provenance_design": "one_way_immutable_lock_acyclic",
+  "governing_protocol": {
+    "path": "docs/week3_source_replication_protocol.md",
+    "sha256": "4df416c524f2bc2d5ca38e2df80705ef4a46ac263ee9c2e52b07e61e46efa927"
+  },
+  "parent_protocol_v2": {
+    "path": "docs/source_training_protocol_v2.md",
+    "sha256": "b9790bf84185cf55ec6947cfe6cb7e16df52ab2b7776e1bedbaf795c57050144"
+  },
+  "parent_seed0_models": {
+    "model_a_seed0": {
+      "config_path": "configs/source/snunet_vvvh_v2_fp32.json",
+      "config_sha256": "528d0f2ca2a0b1e30873f0bac4cfefa5f5637714d17800c94a9a99bf5199dbc3",
+      "approved_run_id": "source_snunet_vvvh_seed0_v3_fp32",
+      "output_directory": "outputs/week2_source_seed0/source_snunet_vvvh_seed0_v3_fp32_attempt2",
+      "status": "COMPLETED",
+      "seed": 0
+    },
+    "model_b_seed0": {
+      "config_path": "configs/source/snunet_vvvh_slope_v2_fp32.json",
+      "config_sha256": "e99e980a9afc0f72b526ccff5484e4aadaabece12c5a542bd20f94be74ef6b56",
+      "approved_run_id": "source_snunet_vvvh_slope_seed0_v3_fp32",
+      "output_directory": "outputs/week2_source_seed0/source_snunet_vvvh_slope_seed0_v3_fp32_attempt2",
+      "status": "COMPLETED",
+      "seed": 0
+    }
+  },
+  "models": {
+    "model_a_radar_only_seed1_v2_fp32": {
+      "config_path": "configs/source/snunet_vvvh_seed1_v2_fp32.json",
+      "config_sha256": "fdcad256e5710588b193dadd902ab2442630c1c8f494c43bf424c4087ae8dccf",
+      "approved_run_id": "source_snunet_vvvh_seed1_v3_fp32",
+      "output_directory": "outputs/week3_source_replication/source_snunet_vvvh_seed1_v3_fp32",
+      "status": "REQUIRED",
+      "seed": 1,
+      "in_channels_per_branch": 2,
+      "channels": [
+        "vv",
+        "vh"
+      ]
+    },
+    "model_b_topographic_ablation_seed1_v2_fp32": {
+      "config_path": "configs/source/snunet_vvvh_slope_seed1_v2_fp32.json",
+      "config_sha256": "4845bcca17962aed26a4231b2a692d1d10834e8c548c5e9802759ec2e24b6f78",
+      "approved_run_id": "source_snunet_vvvh_slope_seed1_v3_fp32",
+      "output_directory": "outputs/week3_source_replication/source_snunet_vvvh_slope_seed1_v3_fp32",
+      "status": "REQUIRED",
+      "seed": 1,
+      "in_channels_per_branch": 3,
+      "channels": [
+        "vv",
+        "vh",
+        "slope"
+      ]
+    },
+    "model_a_radar_only_seed2_v2_fp32": {
+      "config_path": "configs/source/snunet_vvvh_seed2_v2_fp32.json",
+      "config_sha256": "9cd06aae01319079bb597125324cef212a2f0ffa02cab71853b57dea0c35c852",
+      "approved_run_id": "source_snunet_vvvh_seed2_v3_fp32",
+      "output_directory": "outputs/week3_source_replication/source_snunet_vvvh_seed2_v3_fp32",
+      "status": "PREREGISTERED_RECOMMENDED",
+      "seed": 2,
+      "in_channels_per_branch": 2,
+      "channels": [
+        "vv",
+        "vh"
+      ]
+    },
+    "model_b_topographic_ablation_seed2_v2_fp32": {
+      "config_path": "configs/source/snunet_vvvh_slope_seed2_v2_fp32.json",
+      "config_sha256": "663ff15f847582ade21be9a1aead13395bea37287aedf5c6e1bec0a8dffd9833",
+      "approved_run_id": "source_snunet_vvvh_slope_seed2_v3_fp32",
+      "output_directory": "outputs/week3_source_replication/source_snunet_vvvh_slope_seed2_v3_fp32",
+      "status": "PREREGISTERED_RECOMMENDED",
+      "seed": 2,
+      "in_channels_per_branch": 3,
+      "channels": [
+        "vv",
+        "vh",
+        "slope"
+      ]
+    }
+  },
+  "frozen_split": {
+    "path": "configs/splits/kuro_source_inner_split_v1.json",
+    "sha256": "7afd9768da9f37031a93a3aa813e3cd9812a110ee463e1c9442998b0f3e486d3"
+  },
+  "slope_statistics": {
+    "path": "artifacts/week1/source_train_slope_statistics.json",
+    "sha256": "bc00249a045f53e16d7e4d63001278e38e2388fbef92dd219469dff766f80c04"
+  },
+  "approved_run_ids": [
+    "source_snunet_vvvh_seed0_v3_fp32",
+    "source_snunet_vvvh_slope_seed0_v3_fp32",
+    "source_snunet_vvvh_seed1_v3_fp32",
+    "source_snunet_vvvh_slope_seed1_v3_fp32",
+    "source_snunet_vvvh_seed2_v3_fp32",
+    "source_snunet_vvvh_slope_seed2_v3_fp32"
+  ],
+  "approved_precision": "fp32",
+  "approved_seeds": [
+    0,
+    1,
+    2
+  ],
+  "source_inner_events": {
+    "train_events": [
+      118,
+      130,
+      147,
+      174,
+      273,
+      324,
+      417,
+      421,
+      427,
+      470,
+      492,
+      496,
+      498,
+      502,
+      554,
+      555,
+      567,
+      1111004,
+      1111006,
+      1111009,
+      1111010,
+      1111011
+    ],
+    "val_events": [
+      267,
+      275,
+      497,
+      518,
+      1111005
+    ]
+  },
+  "protected_events": {
+    "quarantined_tta_validation": [
+      279,
+      437,
+      520,
+      559,
+      1111003,
+      1111008
+    ],
+    "sealed_test": [
+      205,
+      277,
+      321,
+      411,
+      445,
+      561,
+      562,
+      1111002,
+      1111007,
+      1111013
+    ]
+  },
+  "protocol": {
+    "path": "docs/week3_source_replication_protocol.md",
+    "sha256": "4df416c524f2bc2d5ca38e2df80705ef4a46ac263ee9c2e52b07e61e46efa927"
+  }
+}

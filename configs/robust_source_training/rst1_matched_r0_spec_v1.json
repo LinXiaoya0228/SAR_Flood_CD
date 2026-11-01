@@ -1,0 +1,134 @@
+{
+  "$schema_version": "1.0.0",
+  "created_at_utc": "2026-10-26T10:48:00Z",
+  "description": "Specification for the matched R0 baseline training recipe reconstructed from the historical all-27 source training standard.",
+  "historical_reference": {
+    "config_path": "configs/source/snunet_vvvh_all27_seed0_v1_fp32.json",
+    "config_sha256": "1bf698541ae43518c227faca5ae47a3edbbe99ba3e648ac085bcf4c869975c54",
+    "protocol_path": "docs/source_training_final_all27_protocol.md",
+    "protocol_sha256": "2c15d3fdd1b3018ab5fe28b88b15a41dfe8b736e5b3193bf1d789049cb1429e2",
+    "source_dataset_code": "src/data/source_dataset.py",
+    "source_trainer_code": "src/training/source_trainer.py",
+    "training_runner_code": "tools/train_source_model.py"
+  },
+  "architecture": {
+    "name": "SNUNet_ECAM",
+    "class_path": "src.models.snunet_wrapper.SNUNetWrapper",
+    "constructor_arguments": {
+      "in_channels": 2,
+      "out_ch": 3,
+      "base_channel": 32
+    },
+    "parameter_count": 12053123,
+    "initialization": "PyTorch default initialization with torch.manual_seed(seed)"
+  },
+  "input_specification": {
+    "temporal_pairing": {
+      "pre_event": "pre_event_2",
+      "pre_event_prefixes": ["SL2_IVV", "SL2_IVH"],
+      "post_event": "post_event",
+      "post_event_prefixes": ["MS1_IVV", "MS1_IVH"]
+    },
+    "channels": ["vv", "vh"],
+    "channel_order": ["vv", "vh"],
+    "tensor_arrangement": "paired_tensors (xA: pre_sar of shape (B, 2, 224, 224), xB: post_sar of shape (B, 2, 224, 224))",
+    "patch_size": [224, 224],
+    "spatial_transforms": "none (no resizing, cropping, or padding)"
+  },
+  "preprocessing": {
+    "stored_representation": "Sentinel-1 GRD linear amplitude backscatter (square root of intensity)",
+    "clamping": {
+      "min": 0.0,
+      "max": 0.15
+    },
+    "nan_treatment": {
+      "nan": 0.15,
+      "posinf": 0.15,
+      "neginf": 0.0
+    },
+    "normalization": {
+      "method": "channel_wise_zscore",
+      "scope": "global_constants",
+      "mean": [0.0953, 0.0264],
+      "std": [0.0427, 0.0215],
+      "formula": "(sar - mean) / std"
+    }
+  },
+  "label_and_mask_semantics": {
+    "num_classes": 3,
+    "label_mapping": {
+      "0": "no_water (land/dry background)",
+      "1": "permanent_water",
+      "2": "flood_water (target positive class)",
+      "3": "invalid_no_data"
+    },
+    "ignore_index": 3,
+    "sensory_mask": "MK0_MNA (1 = valid satellite coverage, 0 = no coverage)",
+    "double_masking_rule": "label[valid_mask == 0] = 3",
+    "evaluation_valid_rule": "(valid_mask == 1) & (label != 3)",
+    "inputs_isolation": "Labels and valid masks are strictly excluded from model forward pass inputs."
+  },
+  "loss": {
+    "name": "ControlledSourceLoss",
+    "class_path": "src.evaluation.losses.ControlledSourceLoss",
+    "formula": "0.5 * CrossEntropyLoss(logits, target, ignore_index=3) + 0.5 * SoftDiceLoss(softmax(logits), target, classes=[0,1,2], ignore_index=3, eps=1.0)",
+    "weight_ce": 0.5,
+    "weight_dice": 0.5,
+    "classes_in_dice": [0, 1, 2],
+    "ignore_index": 3,
+    "smooth_epsilon": 1.0,
+    "class_weighting": "unweighted (1.0, 1.0, 1.0)",
+    "reduction": "batch"
+  },
+  "sampling": {
+    "type": "patch_uniform_random_shuffle",
+    "replacement": false,
+    "event_balancing": false,
+    "shuffle": true,
+    "batch_construction": "micro_batch_size=8, gradient_accumulation_steps=4, effective_batch_size=32",
+    "tail_handling": "drop_last=false",
+    "worker_init_fn": "seed_worker(worker_id): (seed + worker_id + 1) % (2**32)"
+  },
+  "augmentation": {
+    "active": false,
+    "training_augmentation": "none",
+    "validation_augmentation": "none"
+  },
+  "optimization": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "betas": [0.9, 0.999],
+    "lr_scheduler": null,
+    "precision": "fp32",
+    "mixed_precision": false,
+    "autocast": false,
+    "grad_scaler": false,
+    "fixed_epochs": 16
+  },
+  "reproducibility": {
+    "random_seeds": [0, 1, 2],
+    "checkpoint_policy": "save_every_epoch, final_checkpoint at epoch 16, no early stopping or validation selection",
+    "resume_support": "atomic model, optimizer, epoch, step restoration"
+  },
+  "unavoidable_differences_for_fold_specific_r0": [
+    {
+      "dimension": "Training Event Population",
+      "historical_all27_value": "All 27 source events (21,462 patches)",
+      "fold_specific_r0_value": "Exactly 18 training events per fold (14,967 patches for Fold C discovery; 13,302 patches for Fold A confirmation; 14,655 patches for Fold B confirmation)",
+      "justification": "Required to enforce strict event-disjoint cross-validation without label leakage to the 9 held-out evaluation events."
+    },
+    {
+      "dimension": "Optimizer Step Count per Epoch",
+      "historical_all27_value": "671 optimizer steps per epoch (21,462 patches / 32 effective batch size)",
+      "fold_specific_r0_value": "Fold C (A+B): 468 steps/epoch; Fold A (B+C): 416 steps/epoch; Fold B (A+C): 458 steps/epoch",
+      "justification": "Direct consequence of restricting the training partition to 18 events while keeping effective batch size fixed at 32."
+    },
+    {
+      "dimension": "Validation and Evaluation Execution",
+      "historical_all27_value": "No validation or evaluation during source training",
+      "fold_specific_r0_value": "Post-training evaluation strictly on the 9 held-out events of the designated fold (Group C for discovery; Group A or B for confirmation)",
+      "justification": "Enables rigorous event-macro flood F1 measurement on held-out events."
+    }
+  ]
+}

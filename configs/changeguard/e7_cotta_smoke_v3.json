@@ -1,0 +1,38 @@
+{
+  "run_id": "e7_cotta_smoke_v3",
+  "status": "AUTHORIZED_NOT_EXECUTED",
+  "purpose": "Physical label-I/O verification only; this bounded infrastructure smoke is not scientific evidence.",
+  "runner": "tools/run_e8_confirmation_matrix.py",
+  "config": "configs/changeguard/e8_confirmation_matrix_v2.json",
+  "ledger": "configs/changeguard/e8_execution_ledger_v2.json",
+  "stream_id": "cotta_reset_s0_oa",
+  "event_ids": [520],
+  "max_samples": 32,
+  "batch_size": 16,
+  "prediction_timing": "PRE_UPDATE",
+  "output_directory": "outputs/e7_cotta_smoke_v3",
+  "log_path": "logs/e7_cotta_smoke/e7_cotta_smoke_v3.log",
+  "tmux_session": "cg_e7_cotta_smoke_v3",
+  "launch_authorized": true,
+  "authorization": {
+    "authorized_at": "2026-10-22T10:19:13+08:00",
+    "authorized_by": "human_project_owner",
+    "pre_authorization_head": "6ea7c9469f11eaf2406f9125867314e25f2a3a9c",
+    "scope": {
+      "partition": "development_only",
+      "event_ids": [520],
+      "seed": 0,
+      "stream_id": "cotta_reset_s0_oa",
+      "expected_batches": 2,
+      "expected_samples": 32,
+      "sealed_test_access": 0,
+      "scientific_evidence": false
+    },
+    "no_overwrite": true,
+    "fresh_output_directory": "outputs/e7_cotta_smoke_v3",
+    "fresh_log_path": "logs/e7_cotta_smoke/e7_cotta_smoke_v3.log"
+  },
+  "scientific_settings_changed_from_v2": false,
+  "sealed_test_access": "FORBIDDEN",
+  "overwrite_allowed": false
+}

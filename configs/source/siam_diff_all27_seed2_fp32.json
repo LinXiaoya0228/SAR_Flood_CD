@@ -1,0 +1,16 @@
+{
+  "$schema_version": "1.0.0",
+  "model_name": "siam_diff_all27",
+  "configuration_id": "siam_diff_all27_seed2_fp32",
+  "seed": 2,
+  "architecture": "SiamUnet_diff",
+  "learning_rate": 0.001,
+  "weight_decay": 0.0,
+  "max_epochs": 5,
+  "effective_batch_size": 32,
+  "microbatch_size": 16,
+  "split_path": "configs/splits/kuro_source_all27_split_v1.json",
+  "output_directory": "outputs/e10_second_backbone/all27_seed2",
+  "description": "Full all-source training of SiamUnet_diff on all 27 events for 5 fixed epochs (seed 2)."
+}
+

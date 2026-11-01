@@ -1,0 +1,117 @@
+{
+  "$schema_version": "1.0.0",
+  "created_at_utc": "2026-10-27T03:00:00Z",
+  "recipe_id": "R2",
+  "recipe_name": "Robust Source-Training Recipe R2 (Event-Balanced Sampling + Flood-Aware Loss)",
+  "route": "ChangeGuard Robust Source-Training Route",
+  "discovery_selection_record": {
+    "promoted_in_phase": "RST4",
+    "decision": "RECIPE_R2_PROMOTED",
+    "promotion_rule_path": "configs/robust_source_training/rst4_promotion_rule_v1.json",
+    "promotion_decision_path": "outputs/robust_source_training/rst4/analysis_v1/promotion_decision.json",
+    "selection_rationale": "Promoted under Route D2 (Tail reliability improvement: +0.023907 bottom-3 mean F1 gain, threshold >= +0.020) and parsimony order (R1 -> R2 -> R3) within 0.005 bandwidth of top recipe R3 (macro F1 0.765146 vs 0.769657, gap 0.004511 <= 0.005). Avoids M3 paired augmentation which severely damaged Event 497 (-0.2405 F1 drop)."
+  },
+  "components": {
+    "m1_event_balance": true,
+    "m2_flood_aware_loss": true,
+    "m3_paired_augmentation": false
+  },
+  "architecture": {
+    "name": "SNUNet_ECAM",
+    "in_channels": 2,
+    "out_ch": 3,
+    "base_channel": 32,
+    "precision": "fp32",
+    "mixed_precision": false,
+    "autocast": false
+  },
+  "inputs": {
+    "polarizations": ["VV", "VH"],
+    "temporal_branches": {
+      "pre_event": "pre_event_2",
+      "post_event": "post_event"
+    },
+    "preprocessing": {
+      "sar_clamp_max": 0.15,
+      "sar_mean": [0.0953, 0.0264],
+      "sar_std": [0.0427, 0.0215],
+      "nan_handling": "nan_to_num(nan=0.15, posinf=0.15, neginf=0.0)"
+    },
+    "valid_mask_raster": "MK0_MNA",
+    "label_raster": "MK0_MLU",
+    "ignore_index": 3,
+    "double_masking_rule": "(MK0_MNA == 1) & (MK0_MLU != 3)",
+    "target_event_access": "STRICTLY_PROHIBITED",
+    "test_time_adaptation": "PERMANENTLY_DISABLED"
+  },
+  "m1_event_balance_spec": {
+    "strategy": "EventBalancedSampler",
+    "epoch_sample_budget": "matches_r0_training_patches",
+    "queue_policy": "cyclic_local_replacement_deterministic_integer_quotas",
+    "epoch_seed_formula": "base_seed + epoch - 1",
+    "resume_semantics": "exact_slice_restoration"
+  },
+  "m2_flood_aware_loss_spec": {
+    "loss_class": "ControlledSourceLoss",
+    "ce_weight": 1.0,
+    "dice_weight": 1.0,
+    "weight_scope": "cross_entropy_only",
+    "dice_loss": "unweighted_macro_soft_dice",
+    "weight_formula": "raw_w = 1 / sqrt(max(p_c, 1e-12)); norm_w = raw_w / mean(raw_w); clipped_w = clip(norm_w, 0.5, 2.0); final_w = clipped_w / mean(clipped_w)",
+    "fold_isolation": "computed_strictly_from_fold_training_events",
+    "fold_weights": {
+      "confirmation_fold_a": {
+        "training_events": [130, 147, 267, 275, 324, 417, 427, 470, 492, 497, 502, 518, 555, 1111004, 1111005, 1111006, 1111010, 1111011],
+        "training_patches": 13302,
+        "weights": [0.486491, 1.409167, 1.104342],
+        "weights_file": "configs/robust_source_training/rst5_folda_class_weights_v1.json",
+        "weights_sha256": "c3bbb6bae14d98710798883132aab623c2cc554c226f796c1e15ff87591640bd"
+      },
+      "confirmation_fold_b": {
+        "training_events": [118, 130, 147, 174, 273, 275, 421, 427, 492, 496, 497, 498, 554, 567, 1111005, 1111006, 1111009, 1111011],
+        "training_patches": 14655,
+        "weights": [0.543519, 1.499552, 0.956929],
+        "weights_file": "configs/robust_source_training/rst5_foldb_class_weights_v1.json",
+        "weights_sha256": "d84e797fd63a097124231c130a9728950d2bf3e676c937f99790fe4dcb239a83"
+      }
+    }
+  },
+  "m3_paired_augmentation_spec": {
+    "enabled": false,
+    "status": "PERMANENTLY_DISABLED_IN_CONFIRMATION"
+  },
+  "optimization": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "betas": [0.9, 0.999],
+    "weight_decay": 0.0,
+    "scheduler": null,
+    "micro_batch_size": 8,
+    "gradient_accumulation_steps": 4,
+    "effective_batch_size": 32,
+    "max_epochs": 16,
+    "early_stopping": false,
+    "checkpoint_selection": "final_epoch_checkpoint",
+    "tail_gradient_semantics": "epoch_local_reset_flushed_tail_step"
+  },
+  "evaluation_metrics": {
+    "primary": "event_macro_f1",
+    "secondary": [
+      "event_macro_iou",
+      "event_macro_precision",
+      "event_macro_recall",
+      "pooled_f1",
+      "pooled_iou",
+      "worst_event_f1",
+      "bottom_3_event_mean_f1"
+    ],
+    "across_seed_aggregations": [
+      "seed_mean",
+      "sample_standard_deviation"
+    ]
+  },
+  "confirmatory_immutability_rule": {
+    "re_tuning_allowed": false,
+    "prohibition_statement": "Strictly prohibited from re-tuning weights, architecture, hyperparameters, learning rates, or augmentation policies on Groups A, B, or any future confirmatory fold prior to or during RST6 confirmatory evaluation."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "$schema_version": "1.0.0",
+  "study_id": "e10_synthetic_shift_matrix",
+  "description": "Evaluation of multiplicative backscatter calibration shifts on SNUNet and SiamUnet_diff across seeds 0, 1, 2 for source_only, bn_no_update, and tent.",
+  "deployment_mode": "reset_per_event",
+  "prediction_timing": "PRE_UPDATE",
+  "severities": {
+    "clean": 0.0,
+    "severity_1": 0.05,
+    "severity_2": 0.10,
+    "severity_3": 0.20
+  },
+  "seeds": [0, 1, 2],
+  "methods": ["source_only", "bn_no_update", "tent"],
+  "development_events": [279, 437, 520, 559, 1111003, 1111008],
+  "architectures": {
+    "SNUNet_ECAM": {
+      "checkpoints": {
+        "seed_0": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+        "seed_1": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed1_v1_fp32/final_checkpoint.pt",
+        "seed_2": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed2_v1_fp32/final_checkpoint.pt"
+      }
+    },
+    "SiamUnet_diff": {
+      "checkpoints": {
+        "seed_0": "outputs/e10_second_backbone/all27_seed0/final_checkpoint.pt",
+        "seed_1": "outputs/e10_second_backbone/all27_seed1/final_checkpoint.pt",
+        "seed_2": "outputs/e10_second_backbone/all27_seed2/final_checkpoint.pt"
+      }
+    }
+  },
+  "output_directory": "outputs/e10_synthetic_shift"
+}
+

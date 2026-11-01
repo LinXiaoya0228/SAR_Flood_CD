@@ -1,0 +1,100 @@
+{
+  "contract_id": "e6_decision_contract_v1",
+  "work_package": "E6",
+  "title": "Gate E Decision Contract — Formalized Evaluation Rules",
+  "provenance_statement": "Retrospective machine-readable formalization of existing criteria previously committed in docs/MASTER_EXECUTION_PLAN_V3.md (Section 11.1, commit 24ffcc9). Created on 2026-10-21 following completion of E5 evidence collection and analysis. It does not introduce new thresholds and does not constitute prospective evidence.",
+  "governing_plan": "docs/MASTER_EXECUTION_PLAN_V3.md, Section 11 (commit 24ffcc9)",
+  "created_at_utc": "2026-10-21T11:00:00+00:00",
+  "git_head_at_creation": "1311bad",
+
+  "evidence_sources": {
+    "canonical_cell": {
+      "cell_id": "s0_oa",
+      "collection": "outputs/e5_temporal_evidence/formal_s0_oa_v1/",
+      "analysis": "outputs/e5_temporal_evidence/analysis_s0_oa_v2/",
+      "event_outcomes_sha256": "db100f7b2c69997f1da9a7b72cd8becfff43d5ad1ae58f9e5c9a1dd20c0dc9b7",
+      "signal_event_summary_sha256": "7c405304e7006701c78db35a2fbd1f6d56659f448489d1f179fa21ba6e25fc9d"
+    },
+    "order_repeat_cell": {
+      "cell_id": "s0_ob",
+      "collection": "outputs/e5_temporal_evidence/formal_s0_ob_v1/",
+      "analysis": "outputs/e5_temporal_evidence/analysis_s0_ob_v1/",
+      "event_outcomes_sha256": "0b16d3718b98e4b649df0c424f7804c12a6f3ce64567a07c9d951e104df64c2f",
+      "signal_event_summary_sha256": "9d8e98f93a2d75ba2768e316b57aa6c37609788ac39e649c1f6ac02f6aa25f90"
+    },
+    "seed_repeat_cell": {
+      "cell_id": "s1_oa",
+      "collection": "outputs/e5_temporal_evidence/formal_s1_oa_v1/",
+      "analysis": "outputs/e5_temporal_evidence/analysis_s1_oa_v1/",
+      "event_outcomes_sha256": "d47dd4b2887de0e5c9c438d7c7a92dee19a586103a973c252f8fb9a2040a89ac",
+      "signal_event_summary_sha256": "ca737b062f1ff29bfaa22c8e09143a20306cf39cb7355645e731f93f3280a5c0"
+    }
+  },
+
+  "formalized_decision_rules": {
+    "PASS_threshold_for_AUROC": 0.70,
+    "PASS_threshold_for_AUROC_description": "A signal AUROC must exceed 0.70 above no-skill in ALL evaluated cells (canonical + both repeats) to qualify as a reliably usable score. Falling to or below no-skill AUROC in any cell disqualifies the signal from PASS status.",
+    "stability_definition": "Risk direction is considered stable if: (a) the event-level Spearman rho sign is consistent across canonical and BOTH orthogonal repeat cells, AND (b) AUROC exceeds 0.70 in all three cells. Partial replication (order-only) does not satisfy this criterion.",
+    "criterion_3_second_seed_or_order": "Criterion 3 requires the risk direction to survive at least one full orthogonal repeat. For this study, TWO orthogonal repeats (order and seed) were executed. The stricter interpretation — that BOTH repeats must preserve direction — is adopted. Sign inversion in either repeat is sufficient for FAIL.",
+    "INCONCLUSIVE_is_not_PASS": true,
+    "gate_e_overall_rule": "Gate E PASSES only if ALL six criteria independently PASS. A single FAIL or INCONCLUSIVE produces an overall Gate E FAIL. Overall INCONCLUSIVE (all criteria uncertain) routes to Branch C. Overall FAIL routes to Branch C.",
+    "branch_a_condition": "Branch A requires Gate E overall PASS AND stable, incremental change-specific signal value demonstrated across all three cells.",
+    "branch_b_condition": "Branch B requires: (a) Gate E overall does not support Branch A; AND (b) a specific adaptation/normalization/anchor component shows positive delta vs. source-only across BOTH seeds AND both order cells consistently. BN-no-update near-zero is not a positive improvement.",
+    "branch_c_condition": "Branch C is selected when neither Branch A nor Branch B conditions are met by the canonical E2-E5 evidence.",
+    "post_hoc_threshold_invention": "FORBIDDEN. Thresholds formalize the plan criteria directly; no rule or threshold was adjusted to alter outcomes.",
+    "INCONCLUSIVE_label_rule": "An INCONCLUSIVE label indicates the evidence is insufficient to support either PASS or FAIL with confidence. It is not relabeled as PASS for any purpose."
+  },
+
+  "six_gate_e_criteria": [
+    {
+      "criterion_id": 1,
+      "name": "Harm and benefit coexist in relevant conditions",
+      "source_text": "MASTER_EXECUTION_PLAN_V3.md Section 11.1: harm and benefit coexist in relevant conditions",
+      "question": "Does TTA produce both harmful and beneficial outcomes across the development events?",
+      "pass_rule": "At least one development event must be classified Harmful and at least one classified Beneficial in the canonical cell."
+    },
+    {
+      "criterion_id": 2,
+      "name": "A usable score improves on no-skill and reasonable generic evidence",
+      "source_text": "MASTER_EXECUTION_PLAN_V3.md Section 11.1: a usable score improves on no-skill and reasonable generic evidence",
+      "question": "Does at least one signal (change-specific or generic) achieve AUROC > 0.70 above no-skill in ALL three cells without sign inversion?",
+      "pass_rule": "At least one signal must have AUROC > 0.70 in canonical, order-repeat, AND seed-repeat cells. Sign inversion in rho across cells disqualifies a signal."
+    },
+    {
+      "criterion_id": 3,
+      "name": "Risk direction survives at least one second seed/order",
+      "source_text": "MASTER_EXECUTION_PLAN_V3.md Section 11.1: direction survives at least a second seed/order",
+      "question": "Do event-level harm classifications and signal directions replicate in both orthogonal repeat cells?",
+      "pass_rule": "Event-level classifications must be consistent in direction across ALL three cells for at least 4 of 6 events. Key predictive signals must not sign-invert."
+    },
+    {
+      "criterion_id": 4,
+      "name": "Incremental change-specific value remains under comparable calibration",
+      "source_text": "MASTER_EXECUTION_PLAN_V3.md Section 11.1: incremental value remains with comparable calibration/acceptance",
+      "question": "Does any change-specific signal (s_null, s_flood_expansion) outperform its best generic comparator in ALL three cells?",
+      "pass_rule": "At least one change-specific signal must achieve AUROC strictly greater than the best generic signal AUROC in all three cells."
+    },
+    {
+      "criterion_id": 5,
+      "name": "Signal available before declared action",
+      "source_text": "MASTER_EXECUTION_PLAN_V3.md Section 11.1: the signal is available before the declared action",
+      "question": "Are all evaluated signals computed from PRE_UPDATE predictions only, before any label or ground-truth access?",
+      "pass_rule": "Collection protocol must use PRE_UPDATE timing. All signals must be derivable before labels arrive."
+    },
+    {
+      "criterion_id": 6,
+      "name": "Compute overhead and false rejection acceptable",
+      "source_text": "MASTER_EXECUTION_PLAN_V3.md Section 11.1: overhead and false rejection are acceptable for the proposed claim",
+      "question": "Would applying the best signal as a gate avoid substantial false benefit rejection and harmful false adaptation?",
+      "pass_rule": "At budget=0.20 (20% rejection), the best signal must achieve net realized F1 above source-only in all three cells. Signals that invert direction fail this criterion."
+    }
+  ],
+
+  "branch_options": {
+    "A": "Change-related evidence has incremental value. Build smallest policy using that evidence with matched generic controls.",
+    "B": "Stable adaptation/normalization/anchor component improves fair controls; change evidence does not. Develop stable-adaptation claim and remove unsupported temporal-risk contribution.",
+    "C": "No method component improves reasonable controls. Complete an empirical study with repeated normalization/seed/event evidence, strong baselines, robustness, and final reserved-event evaluation."
+  },
+
+  "status": "ACTIVE — formalized reference contract for Gate E evaluation"
+}

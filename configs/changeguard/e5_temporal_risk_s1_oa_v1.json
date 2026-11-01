@@ -1,0 +1,201 @@
+{
+  "_comment": "ChangeGuard Plan V3 Work Package E5: Temporal Risk Evidence Repeat Cell 2 - Seed Repeat (Seed 1, Stream Order A)",
+  "protocol_version": "e5_temporal_risk_v1",
+  "governing_document": "docs/MASTER_EXECUTION_PLAN_V3.md",
+  "work_package": "E5",
+  "created_at_utc": "2026-10-21T07:35:00Z",
+  "status": "LOCKED_FOR_EXECUTION",
+  "evidence_level": "RISK_EVIDENCE_EVALUATION",
+  "execution_authorizations": {
+    "cpu_verification_authorized": true,
+    "smoke_execution_authorized": true,
+    "full_screening_authorized": true
+  },
+  "model": {
+    "architecture": "SNUNet_ECAM",
+    "in_channels": 2,
+    "num_classes": 3,
+    "base_channel": 32,
+    "input_channels": ["VV", "VH"],
+    "canonical_preevent": "pre_event_2",
+    "precision": "fp32"
+  },
+  "source_checkpoints": {
+    "training_commit": "6c63a5f8aa7ae2c608b145f0badc84b422b62ef1",
+    "seeds": {
+      "0": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f"
+      },
+      "1": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed1_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "72c4be7856fe4bb06560d61d3ab8e72780e81fdff84660f8dadfe2f8bd385d7a"
+      }
+    }
+  },
+  "dataset": {
+    "dataset_root": "../datasets/KuroSiwo",
+    "manifest_path": "../third_party/KuroSiwo/pickle/KuroV2_grid_dict_test_0_100.gz",
+    "sar_mean": [0.0953, 0.0264],
+    "sar_std": [0.0427, 0.0215],
+    "sar_clamp_max": 0.15,
+    "canonical_preevent": "pre_event_2",
+    "development_events": [279, 437, 520, 559, 1111003, 1111008],
+    "forbidden_sealed_test_events": [
+      205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013
+    ],
+    "mask_provenance": {
+      "sar_valid_mask_component": "MK0_MNA",
+      "sar_valid_mask_description": "Binary sensory raster recording physical SAR observation validity (1=valid, 0=nodata). Strictly independent of ground-truth labels.",
+      "label_component": "MK0_MLU",
+      "label_description": "Ground truth annotation raster (3=unannotated/invalid, 2=flood, 0,1=other land cover).",
+      "online_probe_mask_policy": "strictly_sar_valid_mask_only",
+      "online_probe_mask_definition": "valid = (MK0_MNA == 1). Strictly NO ground-truth labels and NO label-3 exclusion during adaptation or probe evaluation.",
+      "offline_evaluation_mask_policy": "double_masking",
+      "offline_evaluation_mask_definition": "valid = (MK0_MNA == 1) & (MK0_MLU != 3). Strictly evaluated offline after predictions and actions are frozen."
+    }
+  },
+  "contexts": {
+    "source_frozen_running_stats": {
+      "context_id": "source_frozen_running_stats",
+      "role": "immutable_source_reference",
+      "description": "Source checkpoint loaded in eval() mode with frozen training running statistics. Zero updates, zero gradient backpropagation.",
+      "checkpoint_seed": 1
+    },
+    "matched_bn_no_update_bs16": {
+      "context_id": "matched_bn_no_update_bs16",
+      "role": "normalization_context_control",
+      "description": "Same initial source checkpoint evaluated under current test-batch statistics without parameter updates. Distinguishes normalization context shifts from weight adaptation drift.",
+      "checkpoint_seed": 1,
+      "batch_size": 16
+    },
+    "candidate_e2_conf90": {
+      "context_id": "candidate_e2_conf90",
+      "role": "internal_evidence_platform",
+      "description": "Internal candidate adaptation platform retained after E2-E4 negative promotion decisions. NOT a promoted or winning method. Evaluated to gather risk signal evidence.",
+      "checkpoint_seed": 1,
+      "confidence_threshold": 0.90,
+      "augmentation": "identity_weak_vs_horizontal_flip_strong",
+      "prediction_timing": "PRE_UPDATE",
+      "update_parameters": "batchnorm_affine_only",
+      "optimizer": "adam",
+      "learning_rate": 0.0001,
+      "betas": [0.9, 0.999],
+      "weight_decay": 0.0,
+      "reset_mode": "reset_per_event"
+    }
+  },
+  "screening_specification": {
+    "run_id": "e5_temporal_risk_s1_oa_v1",
+    "output_dir": "outputs/e5_temporal_evidence/formal_s1_oa_v1/",
+    "checkpoint_seed": 1,
+    "stream_order": "order_a",
+    "event_sequence": [279, 437, 520, 559, 1111003, 1111008],
+    "within_event_ordering": "deterministic_sorted_sample_id_ascending",
+    "reset_mode": "reset_per_event",
+    "batch_size": 16,
+    "tail_batch_handling": "process_as_is",
+    "produce_convenience_aggregate": false,
+    "aggregate_cache_policy": "disabled_for_bounded_memory",
+    "authoritative_shard_policy": "batch_atomic_disk_shards_primary"
+  },
+  "smoke_specification": {
+    "smoke_event": 520,
+    "sample_limit": 32,
+    "batch_size": 16,
+    "stream_order": "order_a",
+    "checkpoint_seed": 1,
+    "reset_mode": "reset_per_event",
+    "output_dir": "outputs/e5_temporal_evidence/smoke_s1_oa_v1/"
+  },
+  "risk_signals_specification": {
+    "primary_temporal_null_risk": {
+      "signal_name": "s_null",
+      "formula": "0.5 * sum_{z in {pre2/pre2, post/post}} max(0, mean_valid p_cand(flood|z) - mean_valid p_src(flood|z))",
+      "input_pairs": ["pre2/pre2", "post/post"],
+      "predeclared_risk_direction": "higher_is_greater_risk",
+      "zero_valid_handling": "unavailable_null",
+      "serialized_field": "s_null"
+    },
+    "secondary_source_referenced_flood_change": {
+      "expansion_signal": {
+        "signal_name": "s_flood_expansion",
+        "formula": "mean_valid max(0, p_cand(flood) - p_src(flood))",
+        "input_pair": "pre2/post",
+        "predeclared_risk_direction": "higher_indicates_greater_flood_surge",
+        "zero_valid_handling": "unavailable_null",
+        "serialized_field": "s_flood_expansion"
+      },
+      "disappearance_signal": {
+        "signal_name": "s_flood_disappearance",
+        "formula": "mean_valid max(0, p_src(flood) - p_cand(flood))",
+        "input_pair": "pre2/post",
+        "predeclared_risk_direction": "higher_indicates_greater_flood_erasure",
+        "zero_valid_handling": "unavailable_null",
+        "serialized_field": "s_flood_disappearance"
+      }
+    },
+    "generic_risk_evidence": [
+      {
+        "signal_name": "mean_entropy",
+        "formula": "- 1/N sum_i sum_c p_cand,c log(p_cand,c + eps)",
+        "input_pair": "pre2/post",
+        "serialized_field": "mean_entropy"
+      },
+      {
+        "signal_name": "mean_max_confidence",
+        "formula": "1/N sum_i max_c p_cand,c",
+        "input_pair": "pre2/post",
+        "serialized_field": "mean_max_confidence"
+      },
+      {
+        "signal_name": "source_to_candidate_kl",
+        "formula": "1/N sum_i sum_c p_cand,c log((p_cand,c + eps) / (p_src,c + eps))",
+        "input_pair": "pre2/post",
+        "predeclared_direction": "cand_relative_to_src",
+        "serialized_field": "source_to_candidate_kl"
+      },
+      {
+        "signal_name": "hard_disagreement_rate",
+        "formula": "mean_valid (argmax(p_cand) != argmax(p_src))",
+        "input_pair": "pre2/post",
+        "serialized_field": "hard_disagreement_rate"
+      },
+      {
+        "signal_name": "delta_flood_pixels",
+        "formula": "count(pred_cand == 2) - count(pred_src == 2)",
+        "input_pair": "pre2/post",
+        "serialized_field": "delta_flood_pixels"
+      },
+      {
+        "signal_name": "abs_delta_flood_pixels",
+        "formula": "|delta_flood_pixels|",
+        "input_pair": "pre2/post",
+        "serialized_field": "abs_delta_flood_pixels"
+      },
+      {
+        "signal_name": "aug_inconsistency",
+        "formula": "0.5 * mean_valid sum_c |p_weak,c - p_strong_aligned,c|",
+        "input_pair": "pre2/post",
+        "serialized_field": "aug_inconsistency"
+      },
+      {
+        "signal_name": "bn_weight_displacement",
+        "formula": "||w_cand - w_src||_2",
+        "serialized_field": "bn_weight_displacement"
+      },
+      {
+        "signal_name": "bn_bias_displacement",
+        "formula": "||b_cand - b_src||_2",
+        "serialized_field": "bn_bias_displacement"
+      }
+    ]
+  },
+  "evaluation_criteria": {
+    "harmful_event_threshold": -0.01,
+    "beneficial_event_threshold": 0.01,
+    "metrics": ["AUROC", "AUPRC", "F1_delta", "error_recoveries", "lost_corrections"],
+    "class_degenerate_metrics_policy": "mark_unavailable"
+  }
+}
+

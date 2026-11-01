@@ -1,0 +1,5 @@
+partition,seed,r0_f1,r2_f1,delta_f1,r0_dev_f1,r2_dev_f1,r0_test_f1,r2_test_f1,r0_bottom3_f1,r2_bottom3_f1,historical_disclaimer
+All 16 Historical Events,Seed 0,0.7009,0.7355,0.0346,0.5949,0.611,0.7645,0.8102,0.4354,0.4426,Observed historically in Weeks 3-5; retrospective extension only
+All 16 Historical Events,Seed 1,0.6616,0.7337,0.0721,0.5884,0.6218,0.7055,0.8009,0.3191,0.4629,Observed historically in Weeks 3-5; retrospective extension only
+All 16 Historical Events,Seed 2,0.6994,0.7447,0.0453,0.5885,0.6279,0.7659,0.8149,0.412,0.4767,Observed historically in Weeks 3-5; retrospective extension only
+All 16 Historical Events,Mean ± SD,0.6873 ± 0.0223,0.7380 ± 0.0059,"+0.0507 (95% CI: [+0.0234, +0.0845])",0.5906,0.6202 (+0.0296),0.7453,0.8086 (+0.0633),0.3889,0.4607 (+0.0719),Observed historically in Weeks 3-5; retrospective extension only

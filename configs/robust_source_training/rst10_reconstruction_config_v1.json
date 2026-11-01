@@ -1,0 +1,56 @@
+{
+  "$schema_version": "1.0.0",
+  "created_at_utc": "2026-10-28T11:25:00Z",
+  "work_package": "RST10",
+  "evidence_manifest_path": "configs/robust_source_training/rst10_evidence_manifest_v1.json",
+  "output_directories": {
+    "root": "outputs/robust_source_training/rst10",
+    "tables": "outputs/robust_source_training/rst10/tables",
+    "figures": "outputs/robust_source_training/rst10/figures",
+    "figure_data": "outputs/robust_source_training/rst10/figures/data",
+    "metadata": "outputs/robust_source_training/rst10/metadata"
+  },
+  "random_seed": 42,
+  "style_config": {
+    "dpi": 300,
+    "font_family": "sans-serif",
+    "font_size_title": 13,
+    "font_size_axis": 11,
+    "font_size_tick": 9,
+    "font_size_legend": 9,
+    "palette": {
+      "r0_baseline": "#4A6FA5",
+      "r2_recipe": "#E05A47",
+      "neutral": "#7F8C8D",
+      "positive_gain": "#2E7D32",
+      "negative_drop": "#C62828",
+      "fold_a": "#2B5C8F",
+      "fold_b": "#D97706",
+      "dev_partition": "#0284C7",
+      "test_partition": "#7C3AED",
+      "tta_bn": "#10B981",
+      "tta_tent": "#F59E0B",
+      "tta_cotta": "#EC4899"
+    }
+  },
+  "canonical_tables": [
+    "table1_component_staircase",
+    "table2_primary_source_confirmation",
+    "table3_architecture_transfer",
+    "table4_deployable_checkpoint_ledger",
+    "table5_historical_target_extension",
+    "table6_runtime_and_resource_cost",
+    "table7_contextual_tta_comparison"
+  ],
+  "canonical_figures": [
+    "fig1_component_staircase",
+    "fig2_primary_per_event_paired_deltas",
+    "fig3_worst_bottom_event_comparison",
+    "fig4_precision_recall_tradeoff",
+    "fig5_seed_stability",
+    "fig6_event_sampling_distribution",
+    "fig7_architecture_transfer_deltas",
+    "fig8_historical_target_extension_deltas",
+    "fig9_runtime_vram_tradeoff"
+  ]
+}

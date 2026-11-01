@@ -1,0 +1,155 @@
+{
+  "$schema_version": "1.0.0",
+  "created_at_utc": "2026-10-28T13:48:00Z",
+  "backbone": "SiamUnet_diff",
+  "stage": "STAGE_A_SEED_0",
+  "canonical_rows_count": 36,
+  "paired_events_count": 18,
+  "grand_metrics": {
+    "r0": {
+      "f1": 0.7238071111111112,
+      "precision": 0.8440865555555556,
+      "recall": 0.6756901111111111,
+      "iou": 0.5893806666666667,
+      "worst_event_f1": 0.356519,
+      "bottom3_mean_f1": 0.4350086666666666
+    },
+    "r2": {
+      "f1": 0.7139227777777778,
+      "precision": 0.813964888888889,
+      "recall": 0.6871878888888889,
+      "iou": 0.5805050555555555,
+      "worst_event_f1": 0.266007,
+      "bottom3_mean_f1": 0.39021833333333333
+    },
+    "delta": {
+      "f1": -0.009884333333333384,
+      "precision": -0.030121666666666602,
+      "recall": 0.011497777777777829,
+      "iou": -0.008875611111111126,
+      "worst_event_f1": -0.09051199999999998,
+      "bottom3_mean_f1": -0.044790333333333265
+    }
+  },
+  "fold_summaries": {
+    "fold_a": {
+      "r0": {
+        "macro_f1": 0.7354953333333333,
+        "macro_precision": 0.8776673333333334,
+        "macro_recall": 0.6671734444444444,
+        "macro_iou": 0.6015541111111111
+      },
+      "r2": {
+        "macro_f1": 0.7133668888888889,
+        "macro_precision": 0.7996213333333334,
+        "macro_recall": 0.7079441111111112,
+        "macro_iou": 0.588924
+      }
+    },
+    "fold_b": {
+      "r0": {
+        "macro_f1": 0.7121188888888887,
+        "macro_precision": 0.8105057777777778,
+        "macro_recall": 0.6842067777777777,
+        "macro_iou": 0.5772072222222222
+      },
+      "r2": {
+        "macro_f1": 0.7144786666666666,
+        "macro_precision": 0.8283084444444444,
+        "macro_recall": 0.6664316666666666,
+        "macro_iou": 0.5720861111111111
+      }
+    }
+  },
+  "single_event_driver_test": {
+    "max_delta_event_id": 470,
+    "max_delta_value": 0.07915700000000003,
+    "delta_excluding_max_event": -0.015122058823529419,
+    "gain_not_driven_by_one_event": false
+  },
+  "precision_recall_collapse_test": {
+    "macro_precision_delta": -0.030121666666666602,
+    "macro_recall_delta": 0.011497777777777829,
+    "dual_drop_events_count": 2,
+    "dual_drop_event_ids": [
+      118,
+      1111004
+    ],
+    "no_widespread_collapse": true
+  },
+  "seed_stability_test": {
+    "status": "NOT_EVALUABLE_AT_STAGE_A",
+    "reason": "Stage A runs seed 0 only. Multi-seed stability evaluated in Stage B if authorized."
+  },
+  "bootstrap": {
+    "n_resamples": 10000,
+    "seed": 42,
+    "resampling_unit": "18_unique_held_out_events",
+    "observed_mean_delta": -0.009884333333333337,
+    "ci_95": [
+      -0.04784082916666667,
+      0.022932934722222208
+    ],
+    "ci_lower": -0.04784082916666667,
+    "ci_upper": 0.022932934722222208,
+    "one_sided_p_value_h0_delta_le_0": 0.6744,
+    "percentile_distribution": {
+      "p1": -0.05657611888888888,
+      "p5": -0.04130259166666665,
+      "p10": -0.03412710555555555,
+      "p25": -0.02133781944444446,
+      "p50_median": -0.0083545,
+      "p75": 0.003778666666666661,
+      "p90": 0.01366171666666666,
+      "p95": 0.01881762777777776,
+      "p99": 0.027982950000000027
+    }
+  },
+  "decision": {
+    "criteria": {
+      "P1_average_improvement": {
+        "satisfied": false,
+        "conditions": {
+          "grand_mean_delta_ge_threshold": {
+            "satisfied": false,
+            "observed": -0.009884333333333384,
+            "threshold": 0.01
+          },
+          "not_driven_by_one_event": {
+            "satisfied": false,
+            "delta_excluding_max": -0.015122058823529419
+          },
+          "no_precision_recall_collapse": {
+            "satisfied": true,
+            "macro_precision_delta": -0.030121666666666602,
+            "macro_recall_delta": 0.011497777777777829,
+            "dual_drop_events_count": 2
+          }
+        }
+      },
+      "P2_tail_reliability_improvement": {
+        "satisfied": false,
+        "conditions": {
+          "tail_gain_ge_threshold": {
+            "satisfied": false,
+            "observed_bottom3_delta": -0.044790333333333265,
+            "observed_worst_delta": -0.09051199999999998,
+            "threshold": 0.02
+          },
+          "average_performance_not_degraded": {
+            "satisfied": false,
+            "observed_grand_delta": -0.009884333333333384,
+            "threshold": -0.005
+          }
+        }
+      },
+      "P3_seed_stability": {
+        "satisfied": false,
+        "status": "NOT_EVALUABLE_AT_STAGE_A",
+        "note": "Multi-seed stability evaluated in Stage B if authorized."
+      }
+    },
+    "terminal_verdict": "RST8 STAGE A COMPLETE \u2014 STOP AT SEED 0",
+    "decision_code": "STOP_AT_SEED_0"
+  }
+}

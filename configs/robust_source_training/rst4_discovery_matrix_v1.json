@@ -1,0 +1,71 @@
+{
+  "$schema_version": "1.0.0",
+  "name": "RST4 Discovery Matrix",
+  "description": "Specification of the four discovery runs comprising the RST4 staircase.",
+  "frozen_at_utc": "2026-10-26T12:05:00Z",
+  "fold_id": "discovery_fold_c",
+  "training_groups": ["Group_A", "Group_B"],
+  "evaluation_group": "Group_C",
+  "training_events_count": 18,
+  "training_patch_budget_per_epoch": 14967,
+  "epochs": 16,
+  "seed": 0,
+  "runs": [
+    {
+      "recipe_id": "R0",
+      "run_id": "rst4_r0_snunet_foldc_s0_v2",
+      "gpu_device": "cuda:0",
+      "components": {
+        "m1_event_balance": false,
+        "m2_flood_aware_loss": false,
+        "m3_paired_augmentation": false
+      },
+      "config_path": "configs/robust_source_training/rst4_r0_snunet_foldc_s0_v1.json",
+      "output_root": "outputs/robust_source_training/rst4/rst4_r0_snunet_foldc_s0_v2",
+      "log_file": "logs/robust_source_training/rst4/rst4_r0_snunet_foldc_s0_v2.log",
+      "tmux_session": "cg_rst4_r0_foldc_s0_v2"
+    },
+    {
+      "recipe_id": "R1",
+      "run_id": "rst4_r1_snunet_foldc_s0_v2",
+      "gpu_device": "cuda:1",
+      "components": {
+        "m1_event_balance": true,
+        "m2_flood_aware_loss": false,
+        "m3_paired_augmentation": false
+      },
+      "config_path": "configs/robust_source_training/rst4_r1_snunet_foldc_s0_v1.json",
+      "output_root": "outputs/robust_source_training/rst4/rst4_r1_snunet_foldc_s0_v2",
+      "log_file": "logs/robust_source_training/rst4/rst4_r1_snunet_foldc_s0_v2.log",
+      "tmux_session": "cg_rst4_r1_foldc_s0_v2"
+    },
+    {
+      "recipe_id": "R2",
+      "run_id": "rst4_r2_snunet_foldc_s0_v2",
+      "gpu_device": "cuda:2",
+      "components": {
+        "m1_event_balance": true,
+        "m2_flood_aware_loss": true,
+        "m3_paired_augmentation": false
+      },
+      "config_path": "configs/robust_source_training/rst4_r2_snunet_foldc_s0_v1.json",
+      "output_root": "outputs/robust_source_training/rst4/rst4_r2_snunet_foldc_s0_v2",
+      "log_file": "logs/robust_source_training/rst4/rst4_r2_snunet_foldc_s0_v2.log",
+      "tmux_session": "cg_rst4_r2_foldc_s0_v2"
+    },
+    {
+      "recipe_id": "R3",
+      "run_id": "rst4_r3_snunet_foldc_s0_v2",
+      "gpu_device": "cuda:3",
+      "components": {
+        "m1_event_balance": true,
+        "m2_flood_aware_loss": true,
+        "m3_paired_augmentation": true
+      },
+      "config_path": "configs/robust_source_training/rst4_r3_snunet_foldc_s0_v1.json",
+      "output_root": "outputs/robust_source_training/rst4/rst4_r3_snunet_foldc_s0_v2",
+      "log_file": "logs/robust_source_training/rst4/rst4_r3_snunet_foldc_s0_v2.log",
+      "tmux_session": "cg_rst4_r3_foldc_s0_v2"
+    }
+  ]
+}

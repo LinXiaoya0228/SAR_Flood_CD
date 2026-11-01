@@ -1,0 +1,327 @@
+{
+  "$schema_version": "1.0.0",
+  "created_at_utc": "2026-10-26T10:45:00Z",
+  "algorithm": {
+    "name": "Deterministic Constrained Greedy Partitioning",
+    "version": "1.0.0",
+    "objective": "Minimize total patch-count variance across 3 groups while constraining each group to exactly 9 events.",
+    "tie_breaking_order": "1. Patch count descending; 2. Event ID ascending; 3. Group alphabetical order (A, B, C).",
+    "outcome_blind_guarantee": "Zero historical model performance, F1, IoU, loss, or TTA metrics were used in fold assignment."
+  },
+  "input_inventory_hash": "605c9b168ac3f646d1446a69b58aab384ea2ff8795f46c60c3114371b90551ca",
+  "input_summary_hash": "4f386fc9718b98291f020e70c31f6efe4aa98849615061d2b0dd64c002d1f1f4",
+  "source_all_events_count": 27,
+  "total_source_patches": 21462,
+  "groups": {
+    "Group_A": {
+      "group_id": "A",
+      "role": "CONFIRMATORY_FOLD_A",
+      "event_count": 9,
+      "total_patches": 8160,
+      "patch_share": 0.380207,
+      "events": [
+        {
+          "event_id": 1111009,
+          "patches": 7556
+        },
+        {
+          "event_id": 273,
+          "patches": 112
+        },
+        {
+          "event_id": 118,
+          "patches": 108
+        },
+        {
+          "event_id": 498,
+          "patches": 102
+        },
+        {
+          "event_id": 567,
+          "patches": 96
+        },
+        {
+          "event_id": 554,
+          "patches": 71
+        },
+        {
+          "event_id": 421,
+          "patches": 68
+        },
+        {
+          "event_id": 174,
+          "patches": 26
+        },
+        {
+          "event_id": 496,
+          "patches": 21
+        }
+      ],
+      "event_ids": [
+        1111009,
+        273,
+        118,
+        498,
+        567,
+        554,
+        421,
+        174,
+        496
+      ]
+    },
+    "Group_B": {
+      "group_id": "B",
+      "role": "CONFIRMATORY_FOLD_B",
+      "event_count": 9,
+      "total_patches": 6807,
+      "patch_share": 0.317165,
+      "events": [
+        {
+          "event_id": 1111004,
+          "patches": 4086
+        },
+        {
+          "event_id": 555,
+          "patches": 684
+        },
+        {
+          "event_id": 502,
+          "patches": 445
+        },
+        {
+          "event_id": 470,
+          "patches": 376
+        },
+        {
+          "event_id": 1111010,
+          "patches": 341
+        },
+        {
+          "event_id": 518,
+          "patches": 306
+        },
+        {
+          "event_id": 267,
+          "patches": 218
+        },
+        {
+          "event_id": 324,
+          "patches": 189
+        },
+        {
+          "event_id": 417,
+          "patches": 162
+        }
+      ],
+      "event_ids": [
+        1111004,
+        555,
+        502,
+        470,
+        1111010,
+        518,
+        267,
+        324,
+        417
+      ]
+    },
+    "Group_C": {
+      "group_id": "C",
+      "role": "DISCOVERY",
+      "event_count": 9,
+      "total_patches": 6495,
+      "patch_share": 0.302628,
+      "events": [
+        {
+          "event_id": 427,
+          "patches": 1980
+        },
+        {
+          "event_id": 1111011,
+          "patches": 1619
+        },
+        {
+          "event_id": 275,
+          "patches": 742
+        },
+        {
+          "event_id": 1111005,
+          "patches": 620
+        },
+        {
+          "event_id": 497,
+          "patches": 398
+        },
+        {
+          "event_id": 147,
+          "patches": 362
+        },
+        {
+          "event_id": 1111006,
+          "patches": 313
+        },
+        {
+          "event_id": 130,
+          "patches": 248
+        },
+        {
+          "event_id": 492,
+          "patches": 213
+        }
+      ],
+      "event_ids": [
+        427,
+        1111011,
+        275,
+        1111005,
+        497,
+        147,
+        1111006,
+        130,
+        492
+      ]
+    }
+  },
+  "partition_balance_metrics": {
+    "target_mean_patches_per_group": 7154.0,
+    "group_a_patches": 8160,
+    "group_b_patches": 6807,
+    "group_c_patches": 6495,
+    "maximum_absolute_deviation": 1006.0,
+    "maximum_percentage_deviation": 14.06
+  },
+  "experimental_folds": {
+    "discovery_fold_c": {
+      "evaluation_group": "Group_C",
+      "evaluation_event_ids": [
+        427,
+        1111011,
+        275,
+        1111005,
+        497,
+        147,
+        1111006,
+        130,
+        492
+      ],
+      "evaluation_patch_count": 6495,
+      "training_groups": [
+        "Group_A",
+        "Group_B"
+      ],
+      "training_event_ids": [
+        1111009,
+        273,
+        118,
+        498,
+        567,
+        554,
+        421,
+        174,
+        496,
+        1111004,
+        555,
+        502,
+        470,
+        1111010,
+        518,
+        267,
+        324,
+        417
+      ],
+      "training_patch_count": 14967,
+      "purpose": "RST4 discovery staircase (R0, R1, R2, R3 on seed 0)."
+    },
+    "confirmation_fold_a": {
+      "evaluation_group": "Group_A",
+      "evaluation_event_ids": [
+        1111009,
+        273,
+        118,
+        498,
+        567,
+        554,
+        421,
+        174,
+        496
+      ],
+      "evaluation_patch_count": 8160,
+      "training_groups": [
+        "Group_B",
+        "Group_C"
+      ],
+      "training_event_ids": [
+        1111004,
+        555,
+        502,
+        470,
+        1111010,
+        518,
+        267,
+        324,
+        417,
+        427,
+        1111011,
+        275,
+        1111005,
+        497,
+        147,
+        1111006,
+        130,
+        492
+      ],
+      "training_patch_count": 13302,
+      "purpose": "RST6 confirmatory evaluation fold A (R0 and promoted recipe across seeds 0, 1, 2)."
+    },
+    "confirmation_fold_b": {
+      "evaluation_group": "Group_B",
+      "evaluation_event_ids": [
+        1111004,
+        555,
+        502,
+        470,
+        1111010,
+        518,
+        267,
+        324,
+        417
+      ],
+      "evaluation_patch_count": 6807,
+      "training_groups": [
+        "Group_A",
+        "Group_C"
+      ],
+      "training_event_ids": [
+        1111009,
+        273,
+        118,
+        498,
+        567,
+        554,
+        421,
+        174,
+        496,
+        427,
+        1111011,
+        275,
+        1111005,
+        497,
+        147,
+        1111006,
+        130,
+        492
+      ],
+      "training_patch_count": 14655,
+      "purpose": "RST6 confirmatory evaluation fold B (R0 and promoted recipe across seeds 0, 1, 2)."
+    }
+  },
+  "assertions": {
+    "exactly_27_source_events": true,
+    "exactly_9_events_per_group": true,
+    "groups_are_mutually_disjoint": true,
+    "union_equals_all_27_source_events": true,
+    "forbidden_events_strictly_absent": true,
+    "regrouping_prohibited": true
+  },
+  "integrity_rule": "This split is frozen. No manual regrouping, event swapping, or fold reassignment is permitted after inspecting experimental results."
+}

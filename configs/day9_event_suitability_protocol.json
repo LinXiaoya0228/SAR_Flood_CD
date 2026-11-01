@@ -1,0 +1,41 @@
+{
+  "protocol_name": "day9_event_suitability_protocol",
+  "version": "1.0",
+  "created_at_utc": "2026-10-04T13:47:00Z",
+  "description": "Exploratory offline validation feasibility of early label-free event-level adaptation suitability selection.",
+  "target_tta_method": "tent",
+  "target_learning_rate": 1e-4,
+  "validation_events": [279, 437, 520, 559, 1111003, 1111008],
+  "sealed_test_events": [205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013],
+  "primary_unit": "one event x one predeclared stream order (seed 0 primary; seeds 1 and 2 for sensitivity)",
+  "primary_early_observation_window": "batch_idx == 1 (first batch only, N=16 samples)",
+  "secondary_early_observation_window": "batch_idx in [1, 2] (first two batches, N=32 samples)",
+  "candidate_indicators": [
+    "bn_affine_drift_l2",
+    "intermediate_feature_drift_l2",
+    "stability_pre1_pre2_area_increase",
+    "null_pre2_pre2_area_increase",
+    "predeclared_signal_null_growth",
+    "source_predicted_flood_area",
+    "predeclared_change_risk_score"
+  ],
+  "evaluated_policies": [
+    "source_only",
+    "adapt_all",
+    "oracle_upper_bound",
+    "selector_bn_affine_drift",
+    "selector_best_null_probe",
+    "selector_generic_plus_null_composite"
+  ],
+  "evaluation_protocol": {
+    "cv_strategy": "leave_one_event_out (LOEO)",
+    "num_folds": 6,
+    "train_selection_criterion": "macro_f1_maximization",
+    "preserve_single_class_folds": true
+  },
+  "outcome_definitions": {
+    "primary_outcome": "full_event_delta_f1",
+    "harmful_event_threshold": -0.01,
+    "beneficial_event_threshold": 0.01
+  }
+}

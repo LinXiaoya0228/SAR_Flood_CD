@@ -1,0 +1,61 @@
+{
+  "$schema_version": "1.0.0",
+  "description": "Unified frozen configuration for RST8 SiamUnet_diff GPU smoke test and verification.",
+  "execution_class": "INFRASTRUCTURE_SMOKE",
+  "scientific_result": false,
+  "launch_authorized": true,
+  "run_id": "rst8_siamunet_diff_smoke_v1",
+  "output_root": "outputs/robust_source_training/rst8/rst8_siamunet_diff_smoke_v1",
+  "log_file": "logs/robust_source_training/rst8/rst8_siamunet_diff_smoke_v1.log",
+  "fold_id": "discovery_fold_c_subset",
+  "seed": 0,
+  "device": "cuda:0",
+  "provenance_references": {
+    "fold_config_path": "configs/robust_source_training/rst1_event_folds_v1.json",
+    "fold_config_sha256": "2e1842b1bb9505ff770c5be454e57df6fb90b7560dd296b010d5e0904c3e8893",
+    "r0_spec_path": "configs/robust_source_training/rst1_matched_r0_spec_v1.json",
+    "r0_spec_sha256": "ea0bf12c2240e89102506a4fd31cfe8ad8d6e732b40cbdd0a104712888847bc7"
+  },
+  "partition": {
+    "train_event_ids": [273, 518],
+    "evaluation_event_ids": [130],
+    "rationale": "Permitted source event subset for bounded smoke verification: events 273 and 518 for training, event 130 for evaluation.",
+    "expected_train_sample_count": 64,
+    "expected_eval_sample_count": 32
+  },
+  "smoke_bounds": {
+    "max_epochs": 1,
+    "max_train_microbatches": 8,
+    "max_eval_batches_per_event": 2,
+    "micro_batch_size": 8,
+    "gradient_accumulation_steps": 4,
+    "effective_batch_size": 32,
+    "expected_optimizer_steps": 2,
+    "num_workers": 2
+  },
+  "architecture": {
+    "name": "SiamUnet_diff",
+    "in_channels": 2,
+    "out_ch": 3,
+    "dropout_p": 0.2
+  },
+  "optimization": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "betas": [0.9, 0.999],
+    "scheduler": null,
+    "precision": "fp32"
+  },
+  "loss": {
+    "name": "ControlledSourceLoss",
+    "weight_ce": 0.5,
+    "weight_dice": 0.5,
+    "classes_in_dice": [0, 1, 2],
+    "ignore_index": 3,
+    "smooth_epsilon": 1.0
+  },
+  "augmentation": {
+    "active": false
+  }
+}

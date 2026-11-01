@@ -1,0 +1,184 @@
+{
+  "ledger_version": "e9_existing_evidence_ledger_v1",
+  "created_at_utc": "2026-10-25T16:05:00Z",
+  "branch": "Branch C — Controlled Empirical Study",
+  "governing_document": "docs/MASTER_EXECUTION_PLAN_V3.md, Block E9",
+  "evidence_matrix": [
+    {
+      "item_id": 1,
+      "name": "no_confidence_filtering",
+      "classification": "COMPLETE_EXISTING_EVIDENCE",
+      "artifact_path": "outputs/e2_confidence_grid/v1/master_confidence_grid.json",
+      "supporting_documents": [
+        "docs/e2_1_confidence_grid_closeout.md",
+        "docs/e8_confirmation_closeout.md"
+      ],
+      "factors": {
+        "seeds": [0],
+        "orders": ["order_a"],
+        "thresholds": [0.0, 0.7, 0.85, 0.9, 0.95],
+        "e8_comparisons": ["tent_unfiltered", "cotta_threshold_090"]
+      },
+      "finding": "Confidence filtering yielded deltas of only +0.01 to +0.08 pp vs unfiltered baseline (C=0.0), failing the +1.0 pp promotion threshold. Unfiltered Tent in E8 matches thresholded CoTTA.",
+      "retained_status": "CLOSED_BY_EXISTING_EVIDENCE"
+    },
+    {
+      "item_id": 2,
+      "name": "no_consistency",
+      "classification": "COMPLETE_EXISTING_EVIDENCE",
+      "artifact_path": "outputs/e2_augmentation_grid/v1/master_augmentation_grid.json",
+      "supporting_documents": [
+        "docs/e2_2_augmentation_grid_closeout.md",
+        "docs/e8_confirmation_closeout.md"
+      ],
+      "factors": {
+        "seeds": [0],
+        "orders": ["order_a"],
+        "augmentations": ["clean", "hflip", "vflip", "multiview_consistency"],
+        "e8_comparisons": ["tent_single_view", "cotta_10_views"]
+      },
+      "finding": "Multi-view consistency yielded Macro F1 deltas of -0.05 to +0.02 pp vs clean baseline. In E8, 10-view CoTTA (0.5820) showed no improvement over single-view Tent (0.5824).",
+      "retained_status": "CLOSED_BY_EXISTING_EVIDENCE"
+    },
+    {
+      "item_id": 3,
+      "name": "no_anchor",
+      "classification": "COMPLETE_EXISTING_EVIDENCE",
+      "artifact_path": "outputs/e3_source_anchor/v1",
+      "supporting_documents": [
+        "docs/e3_2_anchor_screening_closeout.md",
+        "docs/e3_3_terminal_closeout.md"
+      ],
+      "factors": {
+        "seeds": [0, 1],
+        "orders": ["order_a"],
+        "anchor_weights": [0.0, 0.01, 0.05, 0.1, 1.0],
+        "anchor_metrics": ["feature_l2", "logit_kl", "prob_l1"]
+      },
+      "finding": "Source anchor regularization achieved at best +0.05 pp vs unanchored AdaBN baseline (lambda=0.0). Formally rejected as a beneficial component in E3.3.",
+      "retained_status": "CLOSED_BY_EXISTING_EVIDENCE"
+    },
+    {
+      "item_id": 4,
+      "name": "no_temporal_null_evidence",
+      "classification": "COMPLETE_EXISTING_EVIDENCE",
+      "artifact_path": "outputs/e5_temporal_evidence",
+      "supporting_documents": [
+        "docs/e5_final_closeout.md",
+        "docs/e5_3_repeat_results.md"
+      ],
+      "factors": {
+        "seeds": [0, 1],
+        "orders": ["order_a", "order_b"],
+        "signals": ["temporal_difference", "null_pseudolabels"]
+      },
+      "finding": "Temporal risk scores inverted across seeds (AUROC 1.000 on Seed 0 to 0.000 on Seed 1). Offered zero stable benefit over generic adaptation signals.",
+      "retained_status": "CLOSED_BY_EXISTING_EVIDENCE"
+    },
+    {
+      "item_id": 5,
+      "name": "no_controller",
+      "classification": "COMPLETE_EXISTING_EVIDENCE",
+      "artifact_path": "outputs/e8_confirmation_v2",
+      "supporting_documents": [
+        "docs/e6_gate_e_decision.md",
+        "docs/e6_final_route_decision.md",
+        "docs/e8_final_route_decision.md"
+      ],
+      "factors": {
+        "seeds": [0, 1, 2],
+        "orders": ["order_a", "order_b"],
+        "evaluation_mode": "unconditional_streaming"
+      },
+      "finding": "Gate E failed Criteria 2, 3, 6. Branch C operates unconditionally with NO controller. The 69-stream E8 matrix is itself the empirical characterization of unconditional TTA.",
+      "retained_status": "CLOSED_BY_EXISTING_EVIDENCE"
+    },
+    {
+      "item_id": 6,
+      "name": "generic_protection_substituted",
+      "classification": "COMPLETE_EXISTING_EVIDENCE",
+      "artifact_path": "outputs/e8_confirmation_v2",
+      "supporting_documents": [
+        "docs/e8_confirmation_closeout.md",
+        "docs/e8_final_route_decision.md"
+      ],
+      "factors": {
+        "seeds": [0, 1, 2],
+        "orders": ["order_a", "order_b"],
+        "methods": ["adabn", "tent", "eata", "sar", "cotta"]
+      },
+      "finding": "All generic vision TTA methods fail to beat source_only (Macro F1 0.5906 vs CoTTA 0.5820, Tent 0.5824, SAR 0.5801, AdaBN 0.5793). Generic vision protection does not prevent degradation under SAR distribution shifts.",
+      "retained_status": "CLOSED_BY_EXISTING_EVIDENCE"
+    },
+    {
+      "item_id": 7,
+      "name": "normalization_control",
+      "classification": "REQUIRES_BOUNDED_CONFIRMATION",
+      "artifact_path": "outputs/e8_confirmation_v2",
+      "supporting_documents": [
+        "docs/e1_5_bn_normalization_closeout.md",
+        "docs/e8_confirmation_closeout.md"
+      ],
+      "factors": {
+        "existing_controls": ["source_only_frozen_stats", "bn_no_update_batch_stats", "adabn_streaming_m010"],
+        "new_diagnostic_momentum_settings": [0.01, 0.05]
+      },
+      "finding": "Switching from frozen source stats (0.5906) to batch stats (0.5793) accounts for the entire degradation observed in TTA baselines. Bounded diagnostic needed to test intermediate running-statistics momentum without parameter updates.",
+      "retained_status": "REQUIRES_BOUNDED_CONFIRMATION"
+    },
+    {
+      "item_id": 8,
+      "name": "reject_update_only_vs_source_fallback",
+      "classification": "NOT_APPLICABLE_UNDER_BRANCH_C",
+      "artifact_path": "N/A",
+      "supporting_documents": [
+        "docs/MASTER_EXECUTION_PLAN_V3.md, Section 14.1",
+        "docs/e8_final_route_decision.md"
+      ],
+      "factors": {},
+      "finding": "Not applicable because no adaptive controller or policy was approved or retained under Branch C. Fabricating a policy gate to compare fallback modes is prohibited.",
+      "retained_status": "NOT_APPLICABLE_UNDER_BRANCH_C"
+    },
+    {
+      "item_id": 9,
+      "name": "matched_acceptance_calibration_budget",
+      "classification": "NOT_APPLICABLE_UNDER_BRANCH_C",
+      "artifact_path": "outputs/e5_temporal_evidence",
+      "supporting_documents": [
+        "docs/e5_final_closeout.md"
+      ],
+      "factors": {},
+      "finding": "Not applicable because no policy was retained under Branch C. Raw signal comparisons are documented in E5.",
+      "retained_status": "NOT_APPLICABLE_UNDER_BRANCH_C"
+    },
+    {
+      "item_id": 10,
+      "name": "cotta_component_diagnosis",
+      "classification": "REQUIRES_BOUNDED_CONFIRMATION",
+      "artifact_path": "outputs/e8_confirmation_v2/cotta_reset_s0_oa",
+      "supporting_documents": [
+        "src/changeguard/cotta_adapter.py",
+        "docs/e8_confirmation_closeout.md"
+      ],
+      "factors": {
+        "seeds": [0, 1],
+        "orders": ["order_a", "order_b"],
+        "mode": "reset_per_event",
+        "ablations": [
+          "cotta_no_ssr (restoration_prob = 0.0)",
+          "cotta_no_ema (ema_alpha = 0.0)"
+        ]
+      },
+      "finding": "Full CoTTA yields only +0.0028 Macro F1 over unadapted BN control. Specific incremental contributions of stochastic restoration and teacher EMA remain unisolated.",
+      "retained_status": "REQUIRES_BOUNDED_CONFIRMATION"
+    }
+  ],
+  "unresolved_scope_summary": {
+    "total_unresolved_items": 2,
+    "unresolved_items": ["normalization_control", "cotta_component_diagnosis"],
+    "planned_new_physical_streams": 12,
+    "planned_reused_physical_streams": 14,
+    "sealed_test_events_accessed": 0
+  }
+}
+

@@ -1,0 +1,38 @@
+# Model weights and large binary artifacts
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.onnx
+
+# Generated experiment outputs
+outputs/
+logs/
+wandb/
+runs/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Environments and IDE
+.venv/
+venv/
+.env
+.vscode/
+.idea/
+
+# Data
+data/
+
+# Temporary files
+*.tmp
+*.swp
+.DS_Store
+
+
+# Exports and review drafts
+exports/
+

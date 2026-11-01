@@ -1,0 +1,4 @@
+partition,seed,r0_f1,r2_f1,delta_f1,r0_precision,r2_precision,r0_recall,r2_recall,r0_bottom3_f1,r2_bottom3_f1,delta_bottom3,r0_worst_f1,r2_worst_f1,delta_worst,verdict
+Fold A (9 held-out events),Seed 0,0.7355,0.7134,-0.0221,0.8777,0.7996,0.6672,0.7079,—,—,—,—,—,—,Transfer not supported (Degraded)
+Fold B (9 held-out events),Seed 0,0.7121,0.7145,0.0024,0.8105,0.8283,0.6842,0.6664,—,—,—,—,—,—,Marginal / Neutral (+0.0024)
+Combined Overall (18 events),Seed 0,0.7238,0.7139,-0.0099,0.8441,0.814,0.6757,0.6872,0.435,0.3902,-0.0448,0.3565,0.266,-0.0905,"STOP AT SEED 0 (P1 Fail, P2 Fail, CI: [-0.0478, +0.0229])"

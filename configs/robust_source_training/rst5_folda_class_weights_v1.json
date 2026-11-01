@@ -1,0 +1,163 @@
+{
+  "training_event_ids": [
+    130,
+    147,
+    267,
+    275,
+    324,
+    417,
+    427,
+    470,
+    492,
+    497,
+    502,
+    518,
+    555,
+    1111004,
+    1111005,
+    1111006,
+    1111010,
+    1111011
+  ],
+  "total_samples_counted": 13302,
+  "samples_digest": "f5a5f82ae17e42ffecb023c1e50e87cf3191612c1e9e5a6cf5cf88af4165f8b6",
+  "per_event_class_counts": {
+    "130": {
+      "class_0": 3672354,
+      "class_1": 272662,
+      "class_2": 7866722,
+      "total_valid": 11811738
+    },
+    "147": {
+      "class_0": 16054511,
+      "class_1": 1248209,
+      "class_2": 685406,
+      "total_valid": 17988126
+    },
+    "267": {
+      "class_0": 7236712,
+      "class_1": 895826,
+      "class_2": 2467643,
+      "total_valid": 10600181
+    },
+    "275": {
+      "class_0": 31182229,
+      "class_1": 1126129,
+      "class_2": 4565178,
+      "total_valid": 36873536
+    },
+    "324": {
+      "class_0": 8423742,
+      "class_1": 105001,
+      "class_2": 633549,
+      "total_valid": 9162292
+    },
+    "417": {
+      "class_0": 6245344,
+      "class_1": 240852,
+      "class_2": 1583902,
+      "total_valid": 8070098
+    },
+    "427": {
+      "class_0": 73083915,
+      "class_1": 23436979,
+      "class_2": 1234312,
+      "total_valid": 97755206
+    },
+    "470": {
+      "class_0": 14246615,
+      "class_1": 74261,
+      "class_2": 4365392,
+      "total_valid": 18686268
+    },
+    "492": {
+      "class_0": 8984838,
+      "class_1": 233985,
+      "class_2": 1031582,
+      "total_valid": 10250405
+    },
+    "497": {
+      "class_0": 15052290,
+      "class_1": 2767344,
+      "class_2": 1311301,
+      "total_valid": 19130935
+    },
+    "502": {
+      "class_0": 19266106,
+      "class_1": 1206237,
+      "class_2": 725456,
+      "total_valid": 21197799
+    },
+    "518": {
+      "class_0": 13410885,
+      "class_1": 776902,
+      "class_2": 396484,
+      "total_valid": 14584271
+    },
+    "555": {
+      "class_0": 31124571,
+      "class_1": 1082886,
+      "class_2": 1371715,
+      "total_valid": 33579172
+    },
+    "1111004": {
+      "class_0": 181132472,
+      "class_1": 4530711,
+      "class_2": 16145346,
+      "total_valid": 201808529
+    },
+    "1111005": {
+      "class_0": 18730735,
+      "class_1": 2117154,
+      "class_2": 10206364,
+      "total_valid": 31054253
+    },
+    "1111006": {
+      "class_0": 11353003,
+      "class_1": 1443005,
+      "class_2": 2688636,
+      "total_valid": 15484644
+    },
+    "1111010": {
+      "class_0": 11757013,
+      "class_1": 95749,
+      "class_2": 4731333,
+      "total_valid": 16584095
+    },
+    "1111011": {
+      "class_0": 67305407,
+      "class_1": 2903330,
+      "class_2": 10539358,
+      "total_valid": 80748095
+    }
+  },
+  "aggregate_counts": {
+    "class_0": 538262742,
+    "class_1": 44557222,
+    "class_2": 72549679,
+    "total_valid": 655369643
+  },
+  "class_proportions": {
+    "class_0": 0.821312,
+    "class_1": 0.067988,
+    "class_2": 0.1107
+  },
+  "raw_weights": {
+    "class_0": 1.103433,
+    "class_1": 3.835165,
+    "class_2": 3.00556
+  },
+  "clipped_normalized_weights": {
+    "class_0": 0.486491,
+    "class_1": 1.409167,
+    "class_2": 1.104342
+  },
+  "final_weights_list": [
+    0.486491,
+    1.409167,
+    1.104342
+  ],
+  "counting_code_hash": "6d5849f35d7c04779b238356d767cce7c2877a396d282d408b766257b144e273",
+  "source_inventory_hash": "",
+  "artifact_sha256": "5627aa7fe23bb5265cccf2334c9df5d0f9cb8b335e427308cd99dfc3b0f06b62"
+}

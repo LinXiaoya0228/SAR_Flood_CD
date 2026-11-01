@@ -1,0 +1,72 @@
+{
+  "$schema_version": "1.0.0",
+  "description": "Unified frozen configuration for RST4 Discovery Staircase Recipe R1 (Component M1: Event-Balanced Sampling).",
+  "execution_class": "SCIENTIFIC_DISCOVERY",
+  "scientific_result": true,
+  "launch_authorized": true,
+  "recipe_id": "R1",
+  "components": {
+    "m1_event_balance": true,
+    "m2_flood_aware_loss": false,
+    "m3_paired_augmentation": false
+  },
+  "run_id": "rst4_r1_snunet_foldc_s0_v2",
+  "output_root": "outputs/robust_source_training/rst4/rst4_r1_snunet_foldc_s0_v2",
+  "log_file": "logs/robust_source_training/rst4/rst4_r1_snunet_foldc_s0_v2.log",
+  "fold_id": "discovery_fold_c",
+  "seed": 0,
+  "max_epochs": 16,
+  "device": "cuda:1",
+  "provenance_references": {
+    "fold_config_path": "configs/robust_source_training/rst1_event_folds_v1.json",
+    "fold_config_sha256": "2e1842b1bb9505ff770c5be454e57df6fb90b7560dd296b010d5e0904c3e8893",
+    "r0_spec_path": "configs/robust_source_training/rst1_matched_r0_spec_v1.json",
+    "r0_spec_sha256": "ea0bf12c2240e89102506a4fd31cfe8ad8d6e732b40cbdd0a104712888847bc7",
+    "component_contract_path": "configs/robust_source_training/rst3_component_contract_v1.json",
+    "component_contract_sha256": "8992fff8cd0b4796aa89a1cbb370444143785120e1ec0bcb2487ca2b606a865d",
+    "source_inventory_hash": "4f386fc9718b98291f020e70c31f6efe4aa98849615061d2b0dd64c002d1f1f4",
+    "source_split_hash": "601b21c81f7f1e26984fe6507a1532dbfa373d72b29346103fb5f0a1ac38d5e1"
+  },
+  "partition": {
+    "train_event_ids": [
+      1111009, 273, 118, 498, 567, 554, 421, 174, 496,
+      1111004, 555, 502, 470, 1111010, 518, 267, 324, 417
+    ],
+    "evaluation_event_ids": [
+      427, 1111011, 275, 1111005, 497, 147, 1111006, 130, 492
+    ],
+    "rationale": "Frozen discovery partition: Groups A + B form the training set (18 events, 14,967 patches); Group C forms the evaluation set (9 events, 6,495 patches). Outcome-blind partition.",
+    "expected_train_sample_count": 14967,
+    "expected_eval_sample_count": 6495
+  },
+  "training": {
+    "max_epochs": 16,
+    "micro_batch_size": 8,
+    "gradient_accumulation_steps": 4,
+    "effective_batch_size": 32,
+    "num_workers": 2
+  },
+  "architecture": {
+    "name": "SNUNet_ECAM",
+    "in_channels": 2,
+    "out_ch": 3,
+    "base_channel": 32
+  },
+  "optimization": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "betas": [0.9, 0.999],
+    "weight_decay": 0.0
+  },
+  "loss": {
+    "name": "ControlledSourceLoss",
+    "weight_ce": 0.5,
+    "weight_dice": 0.5,
+    "classes_in_dice": [0, 1, 2],
+    "ignore_index": 3,
+    "smooth_epsilon": 1.0
+  },
+  "augmentation": {
+    "active": false
+  }
+}

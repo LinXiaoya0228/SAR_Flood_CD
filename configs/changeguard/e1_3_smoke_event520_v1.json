@@ -1,0 +1,126 @@
+{
+  "_comment": "ChangeGuard Plan V3 E1.3 Bounded Real-Data Smoke Configuration",
+  "protocol_version": "e1_3_smoke_event520_v1",
+  "status": "APPROVED_FOR_E1_3_REAL_DATA_SMOKE",
+  "created_at_utc": "2026-10-19T21:06:00Z",
+  "approval_status": "APPROVED_FOR_BOUNDED_SMOKE_ONLY",
+  "execution_authorizations": {
+    "real_data_execution_authorized": true,
+    "single_gpu_execution_authorized": true,
+    "event_520_only_authorized": true,
+    "baseline_matrix_execution_prohibited": true
+  },
+  "smoke_specification": {
+    "purpose": "infrastructure and measurement validation only",
+    "checkpoint_seed": 0,
+    "event_id": 520,
+    "subset": "deterministic first 50 samples",
+    "max_samples": 50,
+    "sample_selection_rule": "deterministic_sorted_sample_id_ascending_head_50",
+    "expected_batches": [16, 16, 16, 2],
+    "batch_size": 16,
+    "reset_mode": "reset_per_event",
+    "primary_prediction_timing": "PRE_UPDATE",
+    "post_update_predictions": "diagnostic_only",
+    "device": "cuda:0",
+    "environment": "/usr1/home/s126mdg22_06/miniconda3/envs/vfm_env/bin/python"
+  },
+  "model": {
+    "architecture": "SNUNet_ECAM",
+    "in_channels": 2,
+    "num_classes": 3,
+    "base_channel": 32,
+    "input_channels": ["VV", "VH"],
+    "canonical_preevent": "pre_event_2",
+    "precision": "fp32"
+  },
+  "source_checkpoints": {
+    "training_commit": "6c63a5f8aa7ae2c608b145f0badc84b422b62ef1",
+    "seeds": {
+      "0": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f"
+      }
+    }
+  },
+  "dataset": {
+    "dataset_root": "../datasets/KuroSiwo",
+    "manifest_path": "../third_party/KuroSiwo/pickle/KuroV2_grid_dict_test_0_100.gz",
+    "manifest_expected_sha256": "dfc6e9a752d05aaa0a38c3fd6c18ce12e090f95635e5e4709025cb8512f020ad",
+    "split_path": "configs/kuro_event_split.json",
+    "split_expected_sha256": "fbf30fe0bab7b90c468aaf0fbdab7960a5cf76dd49dfb3ca51f1e01668fba85f",
+    "sar_mean": [0.0953, 0.0264],
+    "sar_std": [0.0427, 0.0215],
+    "sar_clamp_max": 0.15,
+    "canonical_preevent": "pre_event_2",
+    "target_events": [520],
+    "development_events": [279, 437, 520, 559, 1111003, 1111008],
+    "forbidden_sealed_test_events": [
+      205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013
+    ],
+    "mask_provenance": {
+      "sar_valid_mask_component": "MK0_MNA",
+      "sar_valid_mask_description": "Binary sensory raster recording physical SAR observation validity (1=valid, 0=nodata). Strictly independent of ground-truth labels.",
+      "label_component": "MK0_MLU",
+      "label_description": "Ground truth annotation raster (3=unannotated/invalid, 2=flood, 0,1=other land cover).",
+      "adaptation_mask_policy": "strictly_sar_valid_mask_only",
+      "adaptation_mask_definition": "valid = (MK0_MNA == 1). Strictly NO ground-truth labels and NO label-3 exclusion during adaptation.",
+      "offline_evaluation_mask_policy": "double_masking",
+      "offline_evaluation_mask_definition": "valid = (MK0_MNA == 1) & (MK0_MLU != 3). Strictly evaluated offline on frozen predictions."
+    }
+  },
+  "trainable_scope": {
+    "target": "batchnorm_affine_only",
+    "parameters": ["weight", "bias"],
+    "non_bn_frozen": true
+  },
+  "batchnorm_policy": {
+    "source_branch": "eval_mode_frozen_running_stats",
+    "candidate_branch": {
+      "bn_module_mode": "train_mode",
+      "track_running_stats": false,
+      "running_mean": null,
+      "running_var": null,
+      "non_bn_modules_mode": "eval_mode"
+    }
+  },
+  "adaptation_hyperparameters": {
+    "optimizer": "sgd",
+    "learning_rate": 0.000125,
+    "momentum": 0.9,
+    "weight_decay": 0.0,
+    "batch_size": 16,
+    "steps_per_batch": 1
+  },
+  "consistency_views": {
+    "weak": {
+      "transform": "identity"
+    },
+    "strong": {
+      "transform": "horizontal_flip_both_temporal_inputs_and_sensory_mask",
+      "spatial_realignment": "horizontal_flip_inversion"
+    },
+    "confidence_masking": {
+      "threshold": 0.90,
+      "intersect_with_sensory_valid": true,
+      "empty_selection_policy": "skip_optimizer_update"
+    },
+    "loss": {
+      "type": "one_way_kl_divergence",
+      "weak_detached": true,
+      "reduction": "mean_over_selected_pixels"
+    }
+  },
+  "evidence_timing": {
+    "primary_batch_prediction": "PRE_UPDATE",
+    "post_update_prediction": "POST_UPDATE_diagnostic",
+    "sensory_valid_entropy": "PRE_UPDATE",
+    "max_confidence": "PRE_UPDATE",
+    "source_candidate_disagreement": "PRE_UPDATE",
+    "primary_null_score_probes": "POST_UPDATE"
+  },
+  "paths": {
+    "default_output_dir": "outputs/e1_real_smoke/approved_smoke_event520_v1",
+    "default_log_dir": "logs/e1_real_smoke/approved_smoke_event520_v1"
+  }
+}

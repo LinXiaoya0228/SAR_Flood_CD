@@ -1,0 +1,27 @@
+{
+  "$schema_version": "1.0.0",
+  "study_id": "e10_second_backbone_dev_matrix",
+  "description": "Evaluation of source-trained SiamUnet_diff on 6 TTA development events across seeds 0, 1, 2 for source_only, bn_no_update, and tent.",
+  "architecture": "SiamUnet_diff",
+  "deployment_mode": "reset_per_event",
+  "prediction_timing": "PRE_UPDATE",
+  "seeds": [0, 1, 2],
+  "methods": ["source_only", "bn_no_update", "tent"],
+  "development_events": [279, 437, 520, 559, 1111003, 1111008],
+  "expected_sample_counts": {
+    "279": 2381,
+    "437": 169,
+    "520": 92,
+    "559": 42,
+    "1111003": 19,
+    "1111008": 123
+  },
+  "total_expected_samples": 2826,
+  "checkpoints": {
+    "seed_0": "outputs/e10_second_backbone/all27_seed0/final_checkpoint.pt",
+    "seed_1": "outputs/e10_second_backbone/all27_seed1/final_checkpoint.pt",
+    "seed_2": "outputs/e10_second_backbone/all27_seed2/final_checkpoint.pt"
+  },
+  "output_directory": "outputs/e10_second_backbone/dev_eval"
+}
+

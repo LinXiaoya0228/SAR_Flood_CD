@@ -1,0 +1,198 @@
+{
+  "_comment": "ChangeGuard Plan V3 E1.4 Matched Baseline Coverage Protocol and Configuration",
+  "protocol_version": "e1_4_matched_baselines_v1",
+  "created_at_utc": "2026-10-19T21:30:00Z",
+  "status": "APPROVED_FROZEN_PROTOCOL",
+  "task": "matched_baseline_coverage_under_plan_v3_measurement_contract",
+  "governing_document": "docs/MASTER_EXECUTION_PLAN_V3.md (Section 3.4 & Section 6.4)",
+  "measurement_contract": "docs/CACHE_AND_MEASUREMENT_CONTRACT.md",
+  "execution_authorizations": {
+    "real_data_execution_authorized": true,
+    "single_gpu_execution_authorized": true,
+    "development_partition_only": true,
+    "sealed_test_strictly_quarantined": true,
+    "batch_size_16_enforced": true
+  },
+  "model": {
+    "architecture": "SNUNet_ECAM",
+    "in_channels": 2,
+    "num_classes": 3,
+    "base_channel": 32,
+    "input_channels": ["VV", "VH"],
+    "canonical_preevent": "pre_event_2",
+    "precision": "fp32"
+  },
+  "source_checkpoints": {
+    "training_commit": "6c63a5f8aa7ae2c608b145f0badc84b422b62ef1",
+    "seeds": {
+      "0": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f",
+        "epoch": 16
+      },
+      "1": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed1_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "72c4be7856fe4bb06560d61d3ab8e72780e81fdff84660f8dadfe2f8bd385d7a",
+        "epoch": 16
+      },
+      "2": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed2_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "0d403d4e8885b8b64c99fc76850be6bf324b65f2d5474e2dcb7e72f22c03fedd",
+        "epoch": 16
+      }
+    }
+  },
+  "fisher_artifacts_v2": {
+    "description": "V2 Fisher diagonal artifacts precomputed on canonical 21,462-patch source population",
+    "storage_dir": "artifacts/eata_fishers/v2",
+    "seeds": {
+      "0": {
+        "path": "artifacts/eata_fishers/v2/source_all27_seed0_fisher.pt",
+        "expected_sha256": "4ff03db152beee203bb6118cb987e5d7e5e3888b0d73aecfef6bbee7ef0dd88d"
+      },
+      "1": {
+        "path": "artifacts/eata_fishers/v2/source_all27_seed1_fisher.pt",
+        "expected_sha256": "a6e6ef10901d345cd91ffa21cc69a4d697412419b167d3d7c26be2ad092d3f89"
+      },
+      "2": {
+        "path": "artifacts/eata_fishers/v2/source_all27_seed2_fisher.pt",
+        "expected_sha256": "2f6f5c843d217003458380982cf092d2f9826dcfaad024917a4c3cd3ee4827fc"
+      }
+    }
+  },
+  "dataset": {
+    "dataset_root": "../datasets/KuroSiwo",
+    "manifest_path": "../third_party/KuroSiwo/pickle/KuroV2_grid_dict_test_0_100.gz",
+    "manifest_expected_sha256": "dfc6e9a752d05aaa0a38c3fd6c18ce12e090f95635e5e4709025cb8512f020ad",
+    "split_path": "configs/kuro_event_split.json",
+    "split_expected_sha256": "fbf30fe0bab7b90c468aaf0fbdab7960a5cf76dd49dfb3ca51f1e01668fba85f",
+    "sar_mean": [0.0953, 0.0264],
+    "sar_std": [0.0427, 0.0215],
+    "sar_clamp_max": 0.15,
+    "canonical_preevent": "pre_event_2",
+    "batch_size": 16,
+    "target_events": [279, 437, 520, 559, 1111003, 1111008],
+    "expected_event_counts": {
+      "279": 2381,
+      "437": 169,
+      "520": 92,
+      "559": 42,
+      "1111003": 19,
+      "1111008": 123
+    },
+    "expected_total_samples": 2826,
+    "forbidden_sealed_test_events": [
+      205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013
+    ],
+    "mask_provenance": {
+      "adaptation_mask": "(MK0_MNA == 1) strictly sensory radar validity",
+      "offline_evaluation_mask": "(MK0_MNA == 1) & (MK0_MLU != 3) double masking"
+    }
+  },
+  "stream_orders": {
+    "order_a": {
+      "order_id": "order_a",
+      "description": "Chronological ascending event sequence with ascending sample IDs",
+      "event_sequence": [279, 437, 520, 559, 1111003, 1111008],
+      "within_event_ordering": "deterministic_sorted_sample_id_ascending"
+    },
+    "order_b": {
+      "order_id": "order_b",
+      "description": "Reversed event sequence with descending sample IDs",
+      "event_sequence": [1111008, 1111003, 559, 520, 437, 279],
+      "within_event_ordering": "deterministic_sorted_sample_id_descending"
+    }
+  },
+  "reset_modes": {
+    "reset_per_event": {
+      "mode_id": "reset_per_event",
+      "description": "Episodic adaptation: full state restoration to source checkpoint before every event",
+      "restores": ["parameters", "running_buffers", "optimizer", "ema_trackers", "counters"]
+    },
+    "continual": {
+      "mode_id": "continual",
+      "description": "Continual adaptation: parameters, buffers, and optimizer state persist across events"
+    }
+  },
+  "method_specifications": {
+    "source_only": {
+      "method_id": "source_only_frozen_running_stats",
+      "description": "Source model with frozen training BN running statistics, zero updates. Evaluated once per seed across dev6; invariant to stream order and reset mode.",
+      "total_required_streams": 3,
+      "seeds": [0, 1, 2]
+    },
+    "adabn": {
+      "method_id": "adabn_matched_pre_update",
+      "description": "Candidate BN running statistics update via moving average, zero gradient updates.",
+      "total_required_streams": 12,
+      "seeds": [0, 1, 2],
+      "orders": ["order_a", "order_b"],
+      "reset_modes": ["reset_per_event", "continual"]
+    },
+    "tent": {
+      "method_id": "tent_matched_pre_update",
+      "description": "Reference Tent entropy minimization over BN affine parameters.",
+      "total_required_streams": 12,
+      "seeds": [0, 1, 2],
+      "orders": ["order_a", "order_b"],
+      "reset_modes": ["reset_per_event", "continual"],
+      "hyperparameters": {
+        "learning_rate": 0.0001,
+        "optimizer": "adam",
+        "betas": [0.9, 0.999],
+        "weight_decay": 0.0,
+        "adapted_parameters": "bn_affine_only",
+        "track_running_stats": false
+      }
+    },
+    "eata": {
+      "method_id": "eata_v2_fisher_matched_pre_update",
+      "description": "EATA with reliability filtering (E_0=0.40*ln(3)), redundancy filtering (d_margin=0.05), and V2 Fisher anti-forgetting regularization (alpha=2000.0).",
+      "total_required_streams": 12,
+      "seeds": [0, 1, 2],
+      "orders": ["order_a", "order_b"],
+      "reset_modes": ["reset_per_event", "continual"],
+      "hyperparameters": {
+        "learning_rate": 0.000125,
+        "optimizer": "sgd",
+        "momentum": 0.9,
+        "weight_decay": 0.0,
+        "reliability_threshold_e0": 0.4394449,
+        "redundancy_threshold_d_margin": 0.05,
+        "fisher_alpha": 2000.0,
+        "adapted_parameters": "bn_affine_only",
+        "track_running_stats": false
+      }
+    },
+    "sar": {
+      "method_id": "sar_matched_pre_update",
+      "description": "SAR with reliability filtering (E_0=0.40*ln(3)), two-stage SAM optimization (rho=0.05), and model recovery (e_m=0.2*ln(3)/ln(1000)).",
+      "total_required_streams": 12,
+      "seeds": [0, 1, 2],
+      "orders": ["order_a", "order_b"],
+      "reset_modes": ["reset_per_event", "continual"],
+      "hyperparameters": {
+        "learning_rate": 0.000125,
+        "base_optimizer": "sgd",
+        "momentum": 0.9,
+        "weight_decay": 0.0,
+        "sam_rho": 0.05,
+        "reliability_threshold_e0": 0.4394449,
+        "recovery_threshold_em": 0.03180808,
+        "adapted_parameters": "bn_affine_only",
+        "track_running_stats": false
+      }
+    }
+  },
+  "matrix_accounting_summary": {
+    "total_required_streams": 51,
+    "reused_verified_streams": 2,
+    "reused_verified_stream_ids": [
+      "source_only_frozen_running_stats_s0",
+      "tent_matched_pre_update_s0_oa_re"
+    ],
+    "execute_new_streams": 49,
+    "blocked_streams": 0
+  }
+}
+

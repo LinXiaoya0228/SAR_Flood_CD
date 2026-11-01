@@ -1,0 +1,321 @@
+{
+  "work_package": "RST9",
+  "timestamp_utc": "2026-10-28T11:04:19.775073+00:00",
+  "terminal_verdict": "RST9 COMPLETE \u2014 DEPLOYABLE MODELS AND POSITIVE HISTORICAL EXTENSION",
+  "decision_code": "POSITIVE_HISTORICAL_EXTENSION",
+  "criteria": {
+    "P1_grand_macro_improvement": {
+      "metric": "grand_event_macro_f1",
+      "r0_mean": 0.687295,
+      "r2_mean": 0.737982,
+      "delta": 0.050687,
+      "satisfied": true
+    },
+    "P2_tail_reliability_improvement": {
+      "metric": "bottom3_mean_f1",
+      "r0_mean": 0.388869,
+      "r2_mean": 0.460736,
+      "delta": 0.071867,
+      "satisfied": true
+    },
+    "P3_seed_stability": {
+      "seed_deltas": {
+        "0": 0.034622,
+        "1": 0.072107,
+        "2": 0.045332
+      },
+      "all_seeds_positive": true,
+      "satisfied": true
+    }
+  },
+  "partition_summaries": {
+    "dev_macro": {
+      "r0_mean": 0.5906,
+      "r2_mean": 0.620233,
+      "delta": 0.029634
+    },
+    "test_macro": {
+      "r0_mean": 0.745312,
+      "r2_mean": 0.808631,
+      "delta": 0.063319
+    }
+  },
+  "bootstrap_statistics": {
+    "n_resamples": 10000,
+    "ci_level": 0.95,
+    "mean_delta": 0.050528,
+    "ci_lower": 0.023367,
+    "ci_upper": 0.084482,
+    "ci_crosses_zero": false
+  },
+  "per_seed_summary": {
+    "0": {
+      "r0": {
+        "grand_macro_f1": 0.700875,
+        "dev_macro_f1": 0.594884,
+        "test_macro_f1": 0.76447,
+        "bottom3_mean_f1": 0.435444,
+        "worst_event": {
+          "event_id": 1111003,
+          "event_type": "dev",
+          "f1": 0.256853
+        }
+      },
+      "r2": {
+        "grand_macro_f1": 0.735497,
+        "dev_macro_f1": 0.611049,
+        "test_macro_f1": 0.810166,
+        "bottom3_mean_f1": 0.442555,
+        "worst_event": {
+          "event_id": 1111003,
+          "event_type": "dev",
+          "f1": 0.170983
+        }
+      },
+      "delta": {
+        "grand_macro_f1": 0.034622,
+        "dev_macro_f1": 0.016165,
+        "test_macro_f1": 0.045696,
+        "bottom3_mean_f1": 0.007111
+      }
+    },
+    "1": {
+      "r0": {
+        "grand_macro_f1": 0.661606,
+        "dev_macro_f1": 0.588382,
+        "test_macro_f1": 0.70554,
+        "bottom3_mean_f1": 0.319135,
+        "worst_event": {
+          "event_id": 1111003,
+          "event_type": "dev",
+          "f1": 0.278972
+        }
+      },
+      "r2": {
+        "grand_macro_f1": 0.733713,
+        "dev_macro_f1": 0.62179,
+        "test_macro_f1": 0.800868,
+        "bottom3_mean_f1": 0.462946,
+        "worst_event": {
+          "event_id": 1111003,
+          "event_type": "dev",
+          "f1": 0.288063
+        }
+      },
+      "delta": {
+        "grand_macro_f1": 0.072107,
+        "dev_macro_f1": 0.033408,
+        "test_macro_f1": 0.095328,
+        "bottom3_mean_f1": 0.143811
+      }
+    },
+    "2": {
+      "r0": {
+        "grand_macro_f1": 0.699403,
+        "dev_macro_f1": 0.588533,
+        "test_macro_f1": 0.765925,
+        "bottom3_mean_f1": 0.412028,
+        "worst_event": {
+          "event_id": 1111003,
+          "event_type": "dev",
+          "f1": 0.252511
+        }
+      },
+      "r2": {
+        "grand_macro_f1": 0.744735,
+        "dev_macro_f1": 0.627861,
+        "test_macro_f1": 0.814859,
+        "bottom3_mean_f1": 0.476706,
+        "worst_event": {
+          "event_id": 1111003,
+          "event_type": "dev",
+          "f1": 0.26701
+        }
+      },
+      "delta": {
+        "grand_macro_f1": 0.045332,
+        "dev_macro_f1": 0.039328,
+        "test_macro_f1": 0.048934,
+        "bottom3_mean_f1": 0.064678
+      }
+    }
+  },
+  "per_event_table": [
+    {
+      "event_id": 279,
+      "event_type": "dev",
+      "r0_f1_mean": 0.358559,
+      "r2_f1_mean": 0.448412,
+      "delta_f1": 0.089853,
+      "r0_precision_mean": 0.242231,
+      "r2_precision_mean": 0.32125,
+      "r0_recall_mean": 0.691678,
+      "r2_recall_mean": 0.745794
+    },
+    {
+      "event_id": 437,
+      "event_type": "dev",
+      "r0_f1_mean": 0.694773,
+      "r2_f1_mean": 0.723313,
+      "delta_f1": 0.02854,
+      "r0_precision_mean": 0.669146,
+      "r2_precision_mean": 0.669457,
+      "r0_recall_mean": 0.724217,
+      "r2_recall_mean": 0.788929
+    },
+    {
+      "event_id": 520,
+      "event_type": "dev",
+      "r0_f1_mean": 0.716118,
+      "r2_f1_mean": 0.745409,
+      "delta_f1": 0.029291,
+      "r0_precision_mean": 0.728627,
+      "r2_precision_mean": 0.828805,
+      "r0_recall_mean": 0.705952,
+      "r2_recall_mean": 0.677411
+    },
+    {
+      "event_id": 559,
+      "event_type": "dev",
+      "r0_f1_mean": 0.668218,
+      "r2_f1_mean": 0.700694,
+      "delta_f1": 0.032476,
+      "r0_precision_mean": 0.884978,
+      "r2_precision_mean": 0.874229,
+      "r0_recall_mean": 0.536865,
+      "r2_recall_mean": 0.586228
+    },
+    {
+      "event_id": 1111003,
+      "event_type": "dev",
+      "r0_f1_mean": 0.262779,
+      "r2_f1_mean": 0.242019,
+      "delta_f1": -0.02076,
+      "r0_precision_mean": 0.176189,
+      "r2_precision_mean": 0.218923,
+      "r0_recall_mean": 0.519561,
+      "r2_recall_mean": 0.317722
+    },
+    {
+      "event_id": 1111008,
+      "event_type": "dev",
+      "r0_f1_mean": 0.843151,
+      "r2_f1_mean": 0.861553,
+      "delta_f1": 0.018402,
+      "r0_precision_mean": 0.908015,
+      "r2_precision_mean": 0.895001,
+      "r0_recall_mean": 0.788361,
+      "r2_recall_mean": 0.83165
+    },
+    {
+      "event_id": 205,
+      "event_type": "test",
+      "r0_f1_mean": 0.674517,
+      "r2_f1_mean": 0.723445,
+      "delta_f1": 0.048928,
+      "r0_precision_mean": 0.941798,
+      "r2_precision_mean": 0.938132,
+      "r0_recall_mean": 0.528077,
+      "r2_recall_mean": 0.58907
+    },
+    {
+      "event_id": 277,
+      "event_type": "test",
+      "r0_f1_mean": 0.847632,
+      "r2_f1_mean": 0.875404,
+      "delta_f1": 0.027772,
+      "r0_precision_mean": 0.792506,
+      "r2_precision_mean": 0.828381,
+      "r0_recall_mean": 0.91106,
+      "r2_recall_mean": 0.928316
+    },
+    {
+      "event_id": 321,
+      "event_type": "test",
+      "r0_f1_mean": 0.727104,
+      "r2_f1_mean": 0.749259,
+      "delta_f1": 0.022155,
+      "r0_precision_mean": 0.73841,
+      "r2_precision_mean": 0.771657,
+      "r0_recall_mean": 0.716233,
+      "r2_recall_mean": 0.729478
+    },
+    {
+      "event_id": 411,
+      "event_type": "test",
+      "r0_f1_mean": 0.781859,
+      "r2_f1_mean": 0.841764,
+      "delta_f1": 0.059905,
+      "r0_precision_mean": 0.776122,
+      "r2_precision_mean": 0.863715,
+      "r0_recall_mean": 0.791932,
+      "r2_recall_mean": 0.822249
+    },
+    {
+      "event_id": 445,
+      "event_type": "test",
+      "r0_f1_mean": 0.813708,
+      "r2_f1_mean": 0.836876,
+      "delta_f1": 0.023167,
+      "r0_precision_mean": 0.717546,
+      "r2_precision_mean": 0.74489,
+      "r0_recall_mean": 0.93971,
+      "r2_recall_mean": 0.955515
+    },
+    {
+      "event_id": 561,
+      "event_type": "test",
+      "r0_f1_mean": 0.860953,
+      "r2_f1_mean": 0.856502,
+      "delta_f1": -0.004451,
+      "r0_precision_mean": 0.864919,
+      "r2_precision_mean": 0.845819,
+      "r0_recall_mean": 0.857509,
+      "r2_recall_mean": 0.868375
+    },
+    {
+      "event_id": 562,
+      "event_type": "test",
+      "r0_f1_mean": 0.629906,
+      "r2_f1_mean": 0.848984,
+      "delta_f1": 0.219078,
+      "r0_precision_mean": 0.85659,
+      "r2_precision_mean": 0.921772,
+      "r0_recall_mean": 0.538022,
+      "r2_recall_mean": 0.787892
+    },
+    {
+      "event_id": 1111002,
+      "event_type": "test",
+      "r0_f1_mean": 0.659343,
+      "r2_f1_mean": 0.843629,
+      "delta_f1": 0.184287,
+      "r0_precision_mean": 0.818938,
+      "r2_precision_mean": 0.884065,
+      "r0_recall_mean": 0.577157,
+      "r2_recall_mean": 0.811999
+    },
+    {
+      "event_id": 1111007,
+      "event_type": "test",
+      "r0_f1_mean": 0.74959,
+      "r2_f1_mean": 0.789566,
+      "delta_f1": 0.039976,
+      "r0_precision_mean": 0.84963,
+      "r2_precision_mean": 0.888369,
+      "r0_recall_mean": 0.671144,
+      "r2_recall_mean": 0.710593
+    },
+    {
+      "event_id": 1111013,
+      "event_type": "test",
+      "r0_f1_mean": 0.708504,
+      "r2_f1_mean": 0.720879,
+      "delta_f1": 0.012375,
+      "r0_precision_mean": 0.706193,
+      "r2_precision_mean": 0.742752,
+      "r0_recall_mean": 0.718572,
+      "r2_recall_mean": 0.704636
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "$schema_version": "3.0.0",
+  "lock_version": "3.0.0-ALL-SOURCE-LOCKED",
+  "creation_timestamp_utc": "2026-10-15T10:50:00Z",
+  "approval_status": "APPROVED_ALL_SOURCE_FINAL_PROTOCOL",
+  "provenance_design": "one_way_immutable_lock_acyclic",
+  "protocol": {
+    "path": "docs/source_training_final_all27_protocol.md",
+    "sha256": "2c15d3fdd1b3018ab5fe28b88b15a41dfe8b736e5b3193bf1d789049cb1429e2"
+  },
+  "split": {
+    "path": "configs/splits/kuro_source_all27_split_v1.json",
+    "sha256": "601b21c81f7f1e26984fe6507a1532dbfa373d72b29346103fb5f0a1ac38d5e1",
+    "total_source_events": 27,
+    "total_training_samples": 21462
+  },
+  "frozen_split": {
+    "path": "configs/splits/kuro_source_all27_split_v1.json",
+    "sha256": "601b21c81f7f1e26984fe6507a1532dbfa373d72b29346103fb5f0a1ac38d5e1"
+  },
+  "slope_statistics": {
+    "path": "artifacts/week1/source_train_slope_statistics.json",
+    "sha256": "bc00249a045f53e16d7e4d63001278e38e2388fbef92dd219469dff766f80c04"
+  },
+  "approved_run_ids": [
+    "source_snunet_vvvh_all27_seed0_v1_fp32",
+    "source_snunet_vvvh_all27_seed1_v1_fp32",
+    "source_snunet_vvvh_all27_seed2_v1_fp32"
+  ],
+  "approved_seeds": [
+    0,
+    1,
+    2
+  ],
+  "models": {
+    "model_a_radar_only_all27_seed0_v1_fp32": {
+      "config_path": "configs/source/snunet_vvvh_all27_seed0_v1_fp32.json",
+      "config_sha256": "1bf698541ae43518c227faca5ae47a3edbbe99ba3e648ac085bcf4c869975c54",
+      "approved_run_id": "source_snunet_vvvh_all27_seed0_v1_fp32",
+      "output_directory": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32",
+      "seed": 0
+    },
+    "model_a_radar_only_all27_seed1_v1_fp32": {
+      "config_path": "configs/source/snunet_vvvh_all27_seed1_v1_fp32.json",
+      "config_sha256": "d1a832a4711e4799476042da14409eac1e82cd48dc8f362cca8e3a67b05de1d4",
+      "approved_run_id": "source_snunet_vvvh_all27_seed1_v1_fp32",
+      "output_directory": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed1_v1_fp32",
+      "seed": 1
+    },
+    "model_a_radar_only_all27_seed2_v1_fp32": {
+      "config_path": "configs/source/snunet_vvvh_all27_seed2_v1_fp32.json",
+      "config_sha256": "6730145d5cfe523726124e144719121c816ed2a256450cd0fd5750dba3e0b20e",
+      "approved_run_id": "source_snunet_vvvh_all27_seed2_v1_fp32",
+      "output_directory": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed2_v1_fp32",
+      "seed": 2
+    }
+  },
+  "training_parameters": {
+    "architecture": "SNUNet_ECAM",
+    "base_channel": 32,
+    "in_channels_per_branch": 2,
+    "out_channels": 3,
+    "channels": [
+      "vv",
+      "vh"
+    ],
+    "precision": "fp32",
+    "fixed_epochs": 16,
+    "early_stopping": false,
+    "validation": false,
+    "effective_batch_size": 32,
+    "physical_microbatch_size": 8,
+    "gradient_accumulation_steps": 4,
+    "learning_rate": 0.001,
+    "optimizer": "Adam",
+    "loss": "unweighted_ce_plus_soft_dice"
+  },
+  "protected_events": {
+    "quarantined_tta_validation": [
+      279,
+      437,
+      520,
+      559,
+      1111003,
+      1111008
+    ],
+    "sealed_test": [
+      205,
+      277,
+      321,
+      411,
+      445,
+      561,
+      562,
+      1111002,
+      1111007,
+      1111013
+    ]
+  },
+  "reporting_mandate": {
+    "all_3_seeds_must_be_reported": true,
+    "best_seed_selection_prohibited": true,
+    "final_checkpoint_name": "final_checkpoint.pt"
+  }
+}

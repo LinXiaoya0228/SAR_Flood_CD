@@ -1,0 +1,107 @@
+{
+  "_comment": "ChangeGuard Plan V3 E9 Diagnostic Matrix: Normalization Dynamics & CoTTA Component Diagnosis",
+  "protocol_version": "e9_branch_c_diagnostic_v1",
+  "created_at_utc": "2026-10-25T16:06:00Z",
+  "status": "FROZEN_READY_FOR_EXECUTION",
+  "task": "E9_FOCUSED_ABLATION_DIAGNOSTICS",
+  "governing_document": "docs/MASTER_EXECUTION_PLAN_V3.md, Block E9",
+  "branch": "Branch C — Controlled Empirical Study",
+  "execution_ledger_path": "configs/changeguard/e9_execution_ledger_v1.json",
+  "evidence_ledger_path": "configs/changeguard/e9_existing_evidence_ledger.json",
+  "execution_authorizations": {
+    "zero_sealed_test_access": true,
+    "authorized_development_events_only": true,
+    "allow_overwrite": false,
+    "immutable_source_checkpoints": true,
+    "no_controller_tuning": true
+  },
+  "matrix_cell_summary": {
+    "total_physical_streams": 26,
+    "reused_canonical_streams": 14,
+    "execute_new_diagnostic_streams": 12,
+    "total_event_rows": 156,
+    "reused_event_rows": 84,
+    "new_event_rows": 72
+  },
+  "model": {
+    "architecture": "SNUNet_ECAM",
+    "wrapper": "SNUNetWrapper",
+    "in_channels": 2,
+    "num_classes": 3,
+    "base_channel": 32,
+    "precision": "FP32"
+  },
+  "source_checkpoints": {
+    "seeds": {
+      "0": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f"
+      },
+      "1": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed1_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "72c4be7856fe4bb06560d61d3ab8e72780e81fdff84660f8dadfe2f8bd385d7a"
+      }
+    }
+  },
+  "evaluated_methods": {
+    "adabn_m001": {
+      "method_name": "adabn_m001",
+      "method_family": "adabn_momentum",
+      "adapter_class": "E1AdaBNAdapter",
+      "momentum": 0.01,
+      "description": "AdaBN with conservative momentum (m=0.01) running statistics update; zero parameter updates"
+    },
+    "adabn_m005": {
+      "method_name": "adabn_m005",
+      "method_family": "adabn_momentum",
+      "adapter_class": "E1AdaBNAdapter",
+      "momentum": 0.05,
+      "description": "AdaBN with moderate momentum (m=0.05) running statistics update; zero parameter updates"
+    },
+    "cotta_no_ssr": {
+      "method_name": "cotta_no_ssr",
+      "method_family": "cotta_ablation",
+      "adapter_class": "E7CoTTAAdapter",
+      "learning_rate": 0.0001,
+      "ema_alpha": 0.999,
+      "restoration_prob": 0.0,
+      "confidence_threshold": 0.9,
+      "description": "CoTTA without Stochastic Source Restoration (p=0.0)"
+    },
+    "cotta_no_ema": {
+      "method_name": "cotta_no_ema",
+      "method_family": "cotta_ablation",
+      "adapter_class": "E7CoTTAAdapter",
+      "learning_rate": 0.0001,
+      "ema_alpha": 0.0,
+      "restoration_prob": 0.01,
+      "confidence_threshold": 0.9,
+      "description": "CoTTA without Mean Teacher EMA (alpha=0.0, direct student self-training)"
+    }
+  },
+  "stream_orders": {
+    "order_a": {
+      "event_sequence": [279, 437, 520, 559, 1111003, 1111008],
+      "within_event_ordering": "deterministic_sorted_sample_id_ascending"
+    },
+    "order_b": {
+      "event_sequence": [1111008, 1111003, 559, 520, 437, 279],
+      "within_event_ordering": "deterministic_sorted_sample_id_descending"
+    }
+  },
+  "dataset": {
+    "dataset_root": "../datasets/KuroSiwo",
+    "manifest_path": "../third_party/KuroSiwo/pickle/KuroV2_grid_dict_test_0_100.gz",
+    "manifest_expected_sha256": "dfc6e9a752d05aaa0a38c3fd6c18ce12e090f95635e5e4709025cb8512f020ad",
+    "split_path": "configs/kuro_event_split.json",
+    "split_expected_sha256": "fbf30fe0bab7b90c468aaf0fbdab7960a5cf76dd49dfb3ca51f1e01668fba85f",
+    "batch_size": 16,
+    "development_events": [279, 437, 520, 559, 1111003, 1111008],
+    "forbidden_sealed_test_events": [205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013],
+    "sar_clamp_max": 0.15,
+    "sar_mean": [0.0953, 0.0264],
+    "sar_std": [0.0427, 0.0215],
+    "canonical_preevent": "pre_event_2"
+  },
+  "output_directory": "outputs/e9_diagnostic"
+}

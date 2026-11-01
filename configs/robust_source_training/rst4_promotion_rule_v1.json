@@ -1,0 +1,52 @@
+{
+  "$schema_version": "1.0.0",
+  "name": "RST4 Discovery Promotion Rule",
+  "description": "Frozen mathematical criteria for selecting a single robust recipe from the RST4 Discovery Staircase for subsequent confirmation in RST6/RST7.",
+  "frozen_at_utc": "2026-10-26T12:05:00Z",
+  "protocol_reference": "docs/robust_source_training/rst4_discovery_protocol_v1.md",
+  "baseline_recipe": "R0",
+  "candidate_recipes": ["R1", "R2", "R3"],
+  "evaluation_fold": "discovery_fold_c",
+  "evaluation_group": "Group_C",
+  "evaluation_events_count": 9,
+  "metrics": {
+    "primary": "event_macro_f1",
+    "secondary": [
+      "event_macro_iou",
+      "worst_event_f1",
+      "bottom_3_event_mean_f1",
+      "event_macro_recall",
+      "event_macro_precision"
+    ]
+  },
+  "delta_thresholds": {
+    "improved_event_f1_threshold": 0.01,
+    "harmed_event_f1_threshold": -0.01,
+    "parsimony_equivalence_bandwidth": 0.005
+  },
+  "eligibility_routes": {
+    "route_d1_mean_improvement": {
+      "name": "Mean Performance Improvement",
+      "conditions": [
+        "delta_event_macro_f1 > 0.0",
+        "improved_events_count >= harmed_events_count"
+      ]
+    },
+    "route_d2_reliability_improvement": {
+      "name": "Tail Reliability Improvement",
+      "conditions": [
+        "delta_bottom_3_event_mean_f1 >= 0.02",
+        "delta_event_macro_f1 >= -0.005"
+      ]
+    }
+  },
+  "selection_algorithm": {
+    "step_1": "Evaluate eligibility of R1, R2, R3 under Route D1 or Route D2 relative to R0.",
+    "step_2": "If no candidate satisfies either Route D1 or Route D2, output decision 'NO_RECIPE_PROMOTED' with selected_recipe=null.",
+    "step_3": "Among eligible candidates, identify the maximum event_macro_f1 value.",
+    "step_4": "Form candidate pool of all eligible recipes whose event_macro_f1 is within parsimony_equivalence_bandwidth (0.005) of the maximum.",
+    "step_5": "Select the simplest recipe according to structural hierarchy: R1 precedes R2 precedes R3.",
+    "step_6": "Promote exactly one selected recipe and freeze parameters for RST5."
+  }
+}
+

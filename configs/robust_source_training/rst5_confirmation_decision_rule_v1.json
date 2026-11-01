@@ -1,0 +1,54 @@
+{
+  "$schema_version": "1.0.0",
+  "created_at_utc": "2026-10-27T03:00:00Z",
+  "rule_name": "ChangeGuard Confirmatory Decision Rule (P1, P2, P3)",
+  "baseline_recipe": "R0",
+  "evaluated_recipe": "R2",
+  "confirmatory_folds": ["confirmation_fold_a", "confirmation_fold_b"],
+  "confirmatory_seeds": [0, 1, 2],
+  "aggregation_definitions": {
+    "fold_event_macro_f1": "Unweighted arithmetic mean of event-level F1 scores across the 9 evaluated events within a fold for a given seed.",
+    "seed_mean_event_macro_f1": "Arithmetic mean of fold_event_macro_f1 across the 3 seeds (s=0, 1, 2) within a fold.",
+    "grand_mean_event_macro_f1": "Arithmetic mean of seed_mean_event_macro_f1 across the two confirmatory folds (Fold A and Fold B), effectively weighting each of the 18 unique confirmatory events equally.",
+    "macro_f1_delta": "grand_mean_event_macro_f1(R2) - grand_mean_event_macro_f1(R0)",
+    "across_seed_sample_sd": "Standard deviation across the 3 seed macro F1 values within a fold, using denominator (N - 1) = 2.",
+    "tail_events_pool": "The lowest 1 event (worst-event) or lowest 3 events (bottom-3 mean) evaluated within each fold or pooled across the 18 confirmatory events.",
+    "delta_bottom_3_mean_f1": "mean(bottom_3_F1(R2)) - mean(bottom_3_F1(R0))",
+    "driven_by_one_event_definition": "A gain is considered 'driven by only one event' if subtracting the single largest positive per-event delta (R2 - R0) reduces the grand mean event-macro delta to below 0.000.",
+    "precision_recall_collapse_definition": "Widespread collapse is defined as either: 1. A decrease in event-macro precision of >= 0.050 relative to R0; or 2. A decrease in event-macro recall of >= 0.050 relative to R0; or 3. More than 4 out of 18 confirmatory events suffering simultaneous precision and recall drops >= 0.030."
+  },
+  "decision_criteria": {
+    "P1_average_improvement": {
+      "name": "Criterion P1: Average Improvement",
+      "required_conditions": [
+        "grand_mean_event_macro_f1 delta (R2 - R0) >= +0.010",
+        "gain_is_not_driven_by_one_event (excluding max single-event gain keeps delta > 0.0)",
+        "no_widespread_precision_or_recall_collapse"
+      ],
+      "scientific_verdict_if_satisfied": "P1_SUPPORTED_AVERAGE_IMPROVEMENT"
+    },
+    "P2_reliability_improvement": {
+      "name": "Criterion P2: Tail Reliability Improvement",
+      "required_conditions": [
+        "delta_bottom_3_mean_f1 >= +0.020 (or worst_event_delta >= +0.020)",
+        "grand_mean_event_macro_f1 delta >= -0.005 (no unacceptable degradation of average performance)"
+      ],
+      "scientific_verdict_if_satisfied": "P2_SUPPORTED_TAIL_RELIABILITY_IMPROVEMENT"
+    },
+    "P3_seed_stability": {
+      "name": "Criterion P3: Seed Stability",
+      "required_conditions": [
+        "grand_mean_event_macro_f1 delta >= -0.005",
+        "across_seed_sd_reduction >= 0.20 (20% relative standard deviation reduction: (SD_R0 - SD_R2) / SD_R0 >= 0.20)",
+        "stability_direction_present_in_both_folds (SD_R2 < SD_R0 in Fold A AND in Fold B)"
+      ],
+      "scientific_verdict_if_satisfied": "P3_SUPPORTED_SEED_STABILITY"
+    }
+  },
+  "inconclusive_outcome": {
+    "name": "Criterion P0: Inconclusive / Unsupported",
+    "condition": "Neither P1, P2, nor P3 is satisfied by Recipe R2 on confirmatory folds A and B.",
+    "scientific_verdict": "P0_NULL_HYPOTHESIS_RETAINED"
+  },
+  "immutability_guarantee": "This decision rule is permanently frozen before inspecting any confirmatory evaluation results on Groups A or B. No threshold or definition may be altered post-evaluation."
+}

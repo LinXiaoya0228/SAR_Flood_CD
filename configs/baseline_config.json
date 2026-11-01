@@ -1,0 +1,47 @@
+{
+  "dataset_root": "/usr1/home/s126mdg22_06/FYP_SARCD/datasets/KuroSiwo",
+  "manifest_path": "/usr1/home/s126mdg22_06/FYP_SARCD/third_party/KuroSiwo/pickle/KuroV2_grid_dict_test_0_100.gz",
+  "split_json_path": "/usr1/home/s126mdg22_06/FYP_SARCD/ChangeGuard/configs/kuro_event_split.json",
+  "validation_event_ids": [279, 437, 520, 559, 1111003, 1111008],
+  "sealed_test_event_ids": [205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013],
+  "checkpoint_path": "/usr1/home/s126mdg22_06/FYP_SARCD/ChangeGuard/checkpoints/kuro_snunet_official.pt",
+  "official_repo_commit": "4347ed173c4e48f5a9d578bb5fe8453706b08e5e",
+  "channel_order": ["vv", "vh", "dem"],
+  "third_channel_status": "inferred",
+  "sar_clamping": {
+    "min": 0.0,
+    "max": 0.15
+  },
+  "sar_normalization": {
+    "mean": [0.0953, 0.0264],
+    "std": [0.0427, 0.0215]
+  },
+  "dem_normalization": {
+    "mean": 67.0293,
+    "std": 1765.0062
+  },
+  "dem_sanitization": {
+    "preprocessing_version": "kuro_dem_sanitize_v1",
+    "nodata_threshold": -1000.0,
+    "nan_and_inf_treatment": "replace_with_mean",
+    "replacement_value_normalized": 0.0,
+    "description": "Sanitize DEM values < -1000.0 and non-finite values (NaN, Inf) by replacing with training mean elevation (normalized value 0.0). Physical elevations >= -1000.0 (including below-sea-level e.g. -430m and high elevations up to 1800m+) are preserved."
+  },
+  "canonical_preevent": "pre_event_2",
+  "label_mapping": {
+    "0": "no_water",
+    "1": "permanent_water",
+    "2": "flood_water",
+    "3": "invalid_no_data"
+  },
+  "ignore_index": 3,
+  "valid_mask_rule": "valid = (valid_mask == 1) & (label != 3)",
+  "batch_size": 16,
+  "num_workers": 4,
+  "random_seed": 20260923,
+  "model_output_decoding": "argmax(dim=1)",
+  "binary_flood_target": "label == 2",
+  "binary_flood_prediction": "pred == 2",
+  "output_dir": "/usr1/home/s126mdg22_06/FYP_SARCD/ChangeGuard/outputs/day2"
+}
+

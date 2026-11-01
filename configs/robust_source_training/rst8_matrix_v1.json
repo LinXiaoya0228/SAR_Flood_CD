@@ -1,0 +1,61 @@
+{
+  "$schema_version": "1.0.0",
+  "created_at_utc": "2026-10-28T13:42:00Z",
+  "matrix_name": "ChangeGuard RST8 Stage-A Architecture Transfer Matrix (SiamUnet_diff)",
+  "backbone": "SiamUnet_diff",
+  "evaluated_recipes": ["R0", "R2"],
+  "confirmatory_folds": ["confirmation_fold_a", "confirmation_fold_b"],
+  "stage_a_seeds": [0],
+  "total_planned_physical_runs": 4,
+  "total_expected_event_rows": 36,
+  "summary": {
+    "physical_training_runs_count": 4,
+    "total_event_result_rows_expected": 36,
+    "unique_evaluated_events_count": 18,
+    "runs_per_fold": 2,
+    "optimizer_steps_fold_a": 6656,
+    "optimizer_steps_foldb": 7328
+  },
+  "cells": [
+    {
+      "cell_id": "rst8_siamdiff_folda_r0_s0",
+      "run_id": "rst8_r0_siamunet_diff_folda_s0_v1",
+      "recipe": "R0",
+      "fold": "confirmation_fold_a",
+      "seed": 0,
+      "config_path": "configs/robust_source_training/rst8_siamunet_diff/rst8_r0_siamunet_diff_folda_s0_v1.json",
+      "config_sha256": "9ec201cdc2ae08b1acb013d673a5592ac30dfbf812bf66c250c9b1faf5690ecb",
+      "assigned_gpu": 0
+    },
+    {
+      "cell_id": "rst8_siamdiff_folda_r2_s0",
+      "run_id": "rst8_r2_siamunet_diff_folda_s0_v2",
+      "recipe": "R2",
+      "fold": "confirmation_fold_a",
+      "seed": 0,
+      "config_path": "configs/robust_source_training/rst8_siamunet_diff/rst8_r2_siamunet_diff_folda_s0_v2.json",
+      "config_sha256": "ffd6ad6615795bfe924439a2c701005ef3ce2aadb00616bd4cdcaf8b22ff7bb4",
+      "assigned_gpu": 1
+    },
+    {
+      "cell_id": "rst8_siamdiff_foldb_r0_s0",
+      "run_id": "rst8_r0_siamunet_diff_foldb_s0_v2",
+      "recipe": "R0",
+      "fold": "confirmation_fold_b",
+      "seed": 0,
+      "config_path": "configs/robust_source_training/rst8_siamunet_diff/rst8_r0_siamunet_diff_foldb_s0_v2.json",
+      "config_sha256": "c364380ab204b253619bdd2ecf3868506470c4619582d3c846be8806cf69b137",
+      "assigned_gpu": 2
+    },
+    {
+      "cell_id": "rst8_siamdiff_foldb_r2_s0",
+      "run_id": "rst8_r2_siamunet_diff_foldb_s0_v2",
+      "recipe": "R2",
+      "fold": "confirmation_fold_b",
+      "seed": 0,
+      "config_path": "configs/robust_source_training/rst8_siamunet_diff/rst8_r2_siamunet_diff_foldb_s0_v2.json",
+      "config_sha256": "b4fdadc69bc117d794ba8ef2de1997d7e16d90bdda88868a421e34ccb400907c",
+      "assigned_gpu": 3
+    }
+  ]
+}

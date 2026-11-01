@@ -1,0 +1,68 @@
+{
+  "protocol_version": "week7_source_baseline_v1",
+  "task": "controlled_source_only_baseline_evaluation",
+  "model": {
+    "architecture": "SNUNet_ECAM",
+    "in_channels": 2,
+    "num_classes": 3,
+    "base_channel": 32,
+    "input_channels": ["VV", "VH"],
+    "canonical_preevent": "pre_event_2"
+  },
+  "seeds": [0, 1, 2],
+  "checkpoints": {
+    "seed0": {
+      "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+      "expected_sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f",
+      "epoch": 16,
+      "training_commit": "6c63a5f8aa7ae2c608b145f0badc84b422b62ef1"
+    },
+    "seed1": {
+      "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed1_v1_fp32/final_checkpoint.pt",
+      "expected_sha256": "72c4be7856fe4bb06560d61d3ab8e72780e81fdff84660f8dadfe2f8bd385d7a",
+      "epoch": 16,
+      "training_commit": "6c63a5f8aa7ae2c608b145f0badc84b422b62ef1"
+    },
+    "seed2": {
+      "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed2_v1_fp32/final_checkpoint.pt",
+      "expected_sha256": "0d403d4e8885b8b64c99fc76850be6bf324b65f2d5474e2dcb7e72f22c03fedd",
+      "epoch": 16,
+      "training_commit": "6c63a5f8aa7ae2c608b145f0badc84b422b62ef1"
+    }
+  },
+  "dataset": {
+    "dataset_root": "/usr1/home/s126mdg22_06/FYP_SARCD/datasets/KuroSiwo",
+    "manifest_path": "/usr1/home/s126mdg22_06/FYP_SARCD/third_party/KuroSiwo/pickle/KuroV2_grid_dict_test_0_100.gz",
+    "sar_mean": [0.0953, 0.0264],
+    "sar_std": [0.0427, 0.0215],
+    "sar_clamp_max": 0.15,
+    "target_events": [279, 437, 520, 559, 1111003, 1111008],
+    "expected_event_counts": {
+      "279": 2381,
+      "437": 169,
+      "520": 92,
+      "559": 42,
+      "1111003": 19,
+      "1111008": 123
+    },
+    "expected_total_samples": 2826,
+    "forbidden_sealed_test_events": [
+      205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013
+    ]
+  },
+  "dataloader": {
+    "batch_size": 32,
+    "num_workers": 4,
+    "shuffle": false,
+    "pin_memory": true,
+    "drop_last": false
+  },
+  "output": {
+    "output_dir": "outputs/week7_source_baseline",
+    "visualization": {
+      "enabled": true,
+      "samples_per_event": 2,
+      "deterministic_selection": "fixed_indices"
+    }
+  }
+}

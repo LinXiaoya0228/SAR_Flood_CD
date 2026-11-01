@@ -1,0 +1,192 @@
+{
+  "protocol_version": "week8_controlled_tta_v1_frozen",
+  "status": "APPROVED_BY_USER_PENDING_SMOKE_VERIFICATION",
+  "created_at_utc": "2026-10-16T12:00:00Z",
+  "approval_reference": "USER_DIRECTIVE_20261016_WEEK8B",
+  "task": "controlled_tta_evaluation_and_gate_a2_audit",
+  "model": {
+    "architecture": "SNUNet_ECAM",
+    "in_channels": 2,
+    "num_classes": 3,
+    "base_channel": 32,
+    "input_channels": ["VV", "VH"],
+    "canonical_preevent": "pre_event_2",
+    "precision": "fp32"
+  },
+  "source_checkpoints": {
+    "training_commit": "6c63a5f8aa7ae2c608b145f0badc84b422b62ef1",
+    "seeds": {
+      "0": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f",
+        "epoch": 16
+      },
+      "1": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed1_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "72c4be7856fe4bb06560d61d3ab8e72780e81fdff84660f8dadfe2f8bd385d7a",
+        "epoch": 16
+      },
+      "2": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed2_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "0d403d4e8885b8b64c99fc76850be6bf324b65f2d5474e2dcb7e72f22c03fedd",
+        "epoch": 16
+      }
+    }
+  },
+  "dataset": {
+    "dataset_root": "/usr1/home/s126mdg22_06/FYP_SARCD/datasets/KuroSiwo",
+    "manifest_path": "/usr1/home/s126mdg22_06/FYP_SARCD/third_party/KuroSiwo/pickle/KuroV2_grid_dict_test_0_100.gz",
+    "sar_mean": [0.0953, 0.0264],
+    "sar_std": [0.0427, 0.0215],
+    "sar_clamp_max": 0.15,
+    "target_events": [279, 437, 520, 559, 1111003, 1111008],
+    "expected_event_counts": {
+      "279": 2381,
+      "437": 169,
+      "520": 92,
+      "559": 42,
+      "1111003": 19,
+      "1111008": 123
+    },
+    "expected_total_samples": 2826,
+    "forbidden_sealed_test_events": [
+      205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013
+    ],
+    "mask_provenance": {
+      "sar_valid_mask_component": "MK0_MNA",
+      "sar_valid_mask_description": "Binary sensory raster recording physical SAR observation validity (1=valid swath data, 0=nodata/margin). Strictly independent of ground-truth labels.",
+      "label_component": "MK0_MLU",
+      "label_description": "Ground truth land cover and flood annotation raster. Label value 3 denotes unannotated/invalid ground-truth pixels.",
+      "adaptation_mask_policy": "strictly_sar_valid_mask_only",
+      "adaptation_mask_definition": "valid = (MK0_MNA == 1). Strictly NO ground-truth labels and NO label-3 exclusion during adaptation.",
+      "offline_evaluation_mask_policy": "double_masking",
+      "offline_evaluation_mask_definition": "valid = (MK0_MNA == 1) & (MK0_MLU != 3). Strictly confined to offline evaluation of frozen predictions."
+    }
+  },
+  "matrix_specification": {
+    "stream_accounting": {
+      "planned_physical_streams": 30,
+      "source_only_physical_streams": 6,
+      "adaptation_physical_streams": 24,
+      "logical_matrix_cells": 36,
+      "logical_event_result_rows": 216
+    },
+    "source_only_control_plan": {
+      "description": "6 matched source-only physical streams executed fresh under identical B=16 dataloader, preprocessing, checkpoints, and evaluation conventions (3 seeds x 2 orders).",
+      "reuse_across_resets": "After verifying model state immutability, these 6 physical stream results are explicitly reused across reset_per_event and continual modes, populating the 12 logical source-only matrix cells."
+    },
+    "methods": ["source_only", "adabn", "tent"],
+    "checkpoint_seeds": [0, 1, 2],
+    "stream_orders": {
+      "order_a": {
+        "order_id": "order_a",
+        "description": "Canonical chronological / ascending event ID sequence with ascending sample IDs",
+        "event_sequence": [279, 437, 520, 559, 1111003, 1111008],
+        "within_event_ordering": "deterministic_sorted_sample_id_ascending"
+      },
+      "order_b": {
+        "order_id": "order_b",
+        "description": "Reversed event sequence with descending sample IDs",
+        "event_sequence": [1111008, 1111003, 559, 520, 437, 279],
+        "within_event_ordering": "deterministic_sorted_sample_id_descending",
+        "causal_scope": "Tests combined event-sequence and within-event sample ordering sensitivity, not their separate causal effects."
+      }
+    },
+    "reset_modes": {
+      "reset_per_event": {
+        "mode_id": "reset_per_event",
+        "description": "Episodic adaptation: full state restoration to source checkpoint before every event",
+        "restores_parameters": true,
+        "restores_buffers": true,
+        "restores_optimizer": true,
+        "resets_step_counter": true
+      },
+      "continual": {
+        "mode_id": "continual",
+        "description": "Continual adaptation: parameters, running buffers, and optimizer state persist across event boundaries",
+        "restores_parameters": false,
+        "restores_buffers": false,
+        "restores_optimizer": false,
+        "resets_step_counter": false
+      }
+    }
+  },
+  "method_hyperparameters": {
+    "source_only": {
+      "method_id": "source_only",
+      "approval_status": "APPROVED",
+      "adapted_parameters": "none",
+      "bn_mode": "eval",
+      "learning_rate": 0.0,
+      "optimizer": null,
+      "adaptation_steps_per_batch": 0,
+      "prediction_timing": "standard_eval_forward",
+      "matched_control_runs": 6
+    },
+    "adabn": {
+      "method_id": "adabn",
+      "approval_status": "APPROVED",
+      "adapted_parameters": "none (affine params frozen)",
+      "bn_mode": "train (updates running stats via batch stats)",
+      "bn_momentum": 0.1,
+      "learning_rate": 0.0,
+      "optimizer": null,
+      "adaptation_steps_per_batch": 0,
+      "prediction_timing": "transductive_batch_normalized",
+      "adaptation_mask": "sar_valid_mask_only"
+    },
+    "tent": {
+      "method_id": "tent",
+      "implementation_identifier": "reference_tent_v1",
+      "implementation_class": "src.tta.tent_reference.ReferenceTentAdapter",
+      "approval_status": "APPROVED_REFERENCE_ALIGNED",
+      "reference_source": "https://github.com/DequanWang/tent/blob/master/tent.py",
+      "reference_commit": "DequanWang/tent@master (ICLR 2021)",
+      "adapted_parameters": "bn_affine_only (weight and bias)",
+      "bn_mode": "train (non-BN modules frozen, track_running_stats=False, running_mean=None, running_var=None)",
+      "loss_function": "shannon_entropy_over_sar_valid_pixels",
+      "adaptation_mask": "sar_valid_mask_only (MK0_MNA == 1; strictly no GT label info)",
+      "optimizer": "adam",
+      "learning_rate": 0.0001,
+      "betas": [0.9, 0.999],
+      "weight_decay": 0.0,
+      "adaptation_steps_per_batch": 1,
+      "forward_passes_per_batch": 1,
+      "forward_pass_mechanics": "Single forward pass computes logits and entropy loss; one Adam step updates BN affine parameters; predictions returned are those from that single forward pass without a second post-update forward.",
+      "prediction_timing": "single_forward_concurrent"
+    }
+  },
+  "stream_execution_policy": {
+    "batch_size": 16,
+    "batch_size_status": "APPROVED",
+    "final_partial_batch_handling": "process_as_is",
+    "partial_batch_policy_note": "All samples are retained with no dropped samples. Expected tail batch sizes across events are [13, 9, 12, 10, 3, 11], so no singleton (N=1) tail batch is expected. However, runtime numerical health checks remain strictly required during execution.",
+    "device": "cuda:0",
+    "pin_memory": true,
+    "label_isolation": "Strictly zero ground-truth labels and zero label-derived masks during adaptation. Offline evaluation must not influence updates, stopping, or parameter selection."
+  },
+  "decision_framework": {
+    "gate_a2_scope": "Assesses reproducible harmful adaptation under the declared conditions. Does NOT establish risk-prediction quality, controller effectiveness, or final viability of the project topic.",
+    "operational_reproducibility_rule_status": "APPROVED",
+    "thresholds": {
+      "harmful_event": "delta_f1 <= -0.01",
+      "beneficial_event": "delta_f1 >= +0.01",
+      "neutral_range": "-0.01 < delta_f1 < +0.01"
+    },
+    "reproducible_harm_criterion": "The same event is harmed (delta F1 <= -0.01) for the same method and reset mode in at least two of three checkpoint seeds under BOTH stream orders (Order A and Order B).",
+    "benefit_reporting": "Reported separately for scientific characterization; benefit is NOT required to establish the existence of harmful adaptation.",
+    "outcome_categories": {
+      "harm_observed": "Reproducible harm observed under declared operational criteria.",
+      "harm_not_established": "Reproducible harm not established under tested conditions. (Absence of observed harm does not infer universal safety.)",
+      "inconclusive": "Incomplete or inconclusive evidence due to numerical failure, interruption, or execution defect."
+    },
+    "numerical_safeguard_note": "Numerical failures (NaN/Inf) are treated as execution failures and must NOT be counted as measured performance degradation."
+  },
+  "outputs": {
+    "root_dir": "outputs/week8_controlled_tta",
+    "event_metrics_csv": "outputs/week8_controlled_tta/stream_event_metrics.csv",
+    "stream_summary_json": "outputs/week8_controlled_tta/stream_matrix_summary.json",
+    "manifest_json": "outputs/week8_controlled_tta/week8_tta_manifest.json",
+    "log_dir": "logs/week8_controlled_tta"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "$schema_version": "2.0.0",
+  "lock_version": "2.0.0-LOCKED",
+  "creation_timestamp_utc": "2026-10-08T05:40:00Z",
+  "approval_status": "APPROVED_FP32_RECOVERY_PROTOCOL_V2",
+  "provenance_design": "one_way_immutable_lock_acyclic",
+  "protocol": {
+    "path": "docs/source_training_protocol_v2.md",
+    "sha256": "b9790bf84185cf55ec6947cfe6cb7e16df52ab2b7776e1bedbaf795c57050144"
+  },
+  "model_a": {
+    "config_path": "configs/source/snunet_vvvh_v2_fp32.json",
+    "config_sha256": "528d0f2ca2a0b1e30873f0bac4cfefa5f5637714d17800c94a9a99bf5199dbc3",
+    "approved_run_id": "source_snunet_vvvh_seed0_v3_fp32"
+  },
+  "model_b": {
+    "config_path": "configs/source/snunet_vvvh_slope_v2_fp32.json",
+    "config_sha256": "e99e980a9afc0f72b526ccff5484e4aadaabece12c5a542bd20f94be74ef6b56",
+    "approved_run_id": "source_snunet_vvvh_slope_seed0_v3_fp32"
+  },
+  "frozen_split": {
+    "path": "configs/splits/kuro_source_inner_split_v1.json",
+    "sha256": "7afd9768da9f37031a93a3aa813e3cd9812a110ee463e1c9442998b0f3e486d3"
+  },
+  "slope_statistics": {
+    "path": "artifacts/week1/source_train_slope_statistics.json",
+    "sha256": "bc00249a045f53e16d7e4d63001278e38e2388fbef92dd219469dff766f80c04"
+  },
+  "approved_run_ids": [
+    "source_snunet_vvvh_seed0_v3_fp32",
+    "source_snunet_vvvh_slope_seed0_v3_fp32"
+  ],
+  "approved_precision": "fp32",
+  "approved_seeds": [
+    0
+  ],
+  "protected_events": {
+    "quarantined_tta_validation": [
+      279,
+      437,
+      520,
+      559,
+      1111003,
+      1111008
+    ],
+    "sealed_test": [
+      205,
+      277,
+      321,
+      411,
+      445,
+      561,
+      562,
+      1111002,
+      1111007,
+      1111013
+    ]
+  }
+}
+

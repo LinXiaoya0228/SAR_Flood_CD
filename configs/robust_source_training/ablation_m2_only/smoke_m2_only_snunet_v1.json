@@ -1,0 +1,83 @@
+{
+  "$schema_version": "1.0.0",
+  "description": "Component smoke test for M2_ONLY ablation.",
+  "execution_class": "COMPONENT_SMOKE",
+  "scientific_result": false,
+  "launch_authorized": true,
+  "recipe_id": "M2_ONLY",
+  "components": {
+    "m1_event_balance": false,
+    "m2_flood_aware_loss": true,
+    "m3_paired_augmentation": false
+  },
+  "run_id": "smoke_m2_only_snunet_v1",
+  "output_root": "outputs/robust_source_training/ablation_m2_only/smoke_m2_only_snunet_v1",
+  "log_file": "logs/robust_source_training/ablation_m2_only/smoke_m2_only_snunet_v1.log",
+  "fold_id": "discovery_fold_c_subset",
+  "seed": 0,
+  "device": "cuda:0",
+  "provenance_references": {
+    "fold_config_path": "configs/robust_source_training/rst1_event_folds_v1.json",
+    "fold_config_sha256": "2e1842b1bb9505ff770c5be454e57df6fb90b7560dd296b010d5e0904c3e8893",
+    "r0_spec_path": "configs/robust_source_training/rst1_matched_r0_spec_v1.json",
+    "r0_spec_sha256": "ea0bf12c2240e89102506a4fd31cfe8ad8d6e732b40cbdd0a104712888847bc7",
+    "component_contract_path": "configs/robust_source_training/rst3_component_contract_v1.json",
+    "component_contract_sha256": "dae1f33b3a4c9dc38ddd38992e7b03d8a2bb16be7f4780738fa453f979c8970f",
+    "source_inventory_hash": "4f386fc9718b98291f020e70c31f6efe4aa98849615061d2b0dd64c002d1f1f4",
+    "source_split_hash": "601b21c81f7f1e26984fe6507a1532dbfa373d72b29346103fb5f0a1ac38d5e1"
+  },
+  "partition": {
+    "train_event_ids": [
+      273,
+      518
+    ],
+    "evaluation_event_ids": [
+      130
+    ],
+    "rationale": "Event 273 represents Group A (112 eligible patches), Event 518 represents Group B (dataset median, 306 eligible patches), and Event 130 represents Group C discovery target (248 eligible patches). Events were selected purely based on fold membership and size, without consulting model performance.",
+    "expected_train_sample_count": 64,
+    "expected_eval_sample_count": 32
+  },
+  "smoke_bounds": {
+    "max_epochs": 1,
+    "max_train_microbatches": 8,
+    "max_eval_batches_per_event": 2,
+    "micro_batch_size": 8,
+    "gradient_accumulation_steps": 4,
+    "effective_batch_size": 32,
+    "expected_optimizer_steps": 2,
+    "num_workers": 2
+  },
+  "architecture": {
+    "name": "SNUNet_ECAM",
+    "in_channels": 2,
+    "out_ch": 3,
+    "base_channel": 32
+  },
+  "optimization": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "scheduler": null,
+    "precision": "fp32"
+  },
+  "loss": {
+    "name": "RobustSourceLoss",
+    "weight_ce": 0.5,
+    "weight_dice": 0.5,
+    "classes_in_dice": [
+      0,
+      1,
+      2
+    ],
+    "ignore_index": 3,
+    "smooth_epsilon": 1.0
+  },
+  "augmentation": {
+    "active": false
+  }
+}

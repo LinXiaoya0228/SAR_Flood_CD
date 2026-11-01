@@ -1,0 +1,139 @@
+{
+  "_comment": "ChangeGuard Plan V3 E7 Branch C Empirical Evaluation Protocol and Configuration",
+  "protocol_version": "e7_branch_c_empirical_v1",
+  "created_at_utc": "2026-10-21T20:15:00Z",
+  "status": "APPROVED_FROZEN_PROTOCOL",
+  "task": "controlled_empirical_study_of_test_time_adaptation_on_sar_streams",
+  "governing_document": "docs/protocols/e7_branch_c_empirical_protocol_v1.md",
+  "master_plan_sections": ["11.4", "12.4", "12.5", "13.1", "13.2", "13.3"],
+  "branch": "Branch C — Controlled Empirical Study",
+  "execution_authorizations": {
+    "real_data_execution_authorized": true,
+    "single_gpu_execution_authorized": true,
+    "development_partition_only": true,
+    "sealed_test_strictly_quarantined": true,
+    "batch_size_16_enforced": true
+  },
+  "model": {
+    "architecture": "SNUNet_ECAM",
+    "in_channels": 2,
+    "num_classes": 3,
+    "base_channel": 32,
+    "input_channels": ["VV", "VH"],
+    "canonical_preevent": "pre_event_2",
+    "precision": "fp32"
+  },
+  "source_checkpoints": {
+    "training_commit": "6c63a5f8aa7ae2c608b145f0badc84b422b62ef1",
+    "seeds": {
+      "0": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f",
+        "epoch": 16
+      },
+      "1": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed1_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "72c4be7856fe4bb06560d61d3ab8e72780e81fdff84660f8dadfe2f8bd385d7a",
+        "epoch": 16
+      },
+      "2": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed2_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "0d403d4e8885b8b64c99fc76850be6bf324b65f2d5474e2dcb7e72f22c03fedd",
+        "epoch": 16
+      }
+    }
+  },
+  "evaluated_methods": {
+    "source_only": {
+      "adapter_class": "E1SourceOnlyAdapter",
+      "description": "Source-only baseline with frozen training BN running stats",
+      "learning_rate": 0.0,
+      "state_mode": "immutable"
+    },
+    "adabn": {
+      "adapter_class": "E1AdaBNAdapter",
+      "description": "AdaBN moving average running stats with zero parameter updates",
+      "learning_rate": 0.0,
+      "state_mode": "episodic_and_continual"
+    },
+    "tent": {
+      "adapter_class": "E1TentAdapter",
+      "description": "Tent entropy minimization over BN affine parameters",
+      "learning_rate": 1e-4,
+      "optimizer": "adam",
+      "state_mode": "episodic_and_continual"
+    },
+    "eata": {
+      "adapter_class": "E1EATAAdapter",
+      "description": "EATA reliability and redundancy filtered Fisher regularized TTA",
+      "learning_rate": 1.25e-4,
+      "d_margin": 0.05,
+      "fisher_alpha": 2000.0,
+      "state_mode": "episodic_and_continual"
+    },
+    "sar": {
+      "adapter_class": "E1SARAdapter",
+      "description": "Sharpness-aware minimization with model recovery",
+      "learning_rate": 1.25e-4,
+      "rho": 0.05,
+      "e_m": 0.031808,
+      "state_mode": "episodic_and_continual"
+    },
+    "candidate_e2": {
+      "adapter_class": "E1ConsistencyAdapter",
+      "description": "Weak-strong consistency adapter with horizontal flip and tau=0.90",
+      "learning_rate": 1.25e-4,
+      "confidence_threshold": 0.90,
+      "optimizer": "sgd_momentum_0.9",
+      "state_mode": "episodic_and_continual"
+    },
+    "cotta_continual": {
+      "adapter_class": "E7CoTTAAdapter",
+      "description": "CoTTA continual adaptation with Mean Teacher EMA and SSR",
+      "learning_rate": 1e-4,
+      "ema_alpha": 0.999,
+      "restoration_prob": 0.01,
+      "confidence_threshold": 0.90,
+      "num_views": 4,
+      "mode": "continual"
+    },
+    "cotta_reset": {
+      "adapter_class": "E7CoTTAAdapter",
+      "description": "CoTTA episodic reset-per-event adaptation",
+      "learning_rate": 1e-4,
+      "ema_alpha": 0.999,
+      "restoration_prob": 0.01,
+      "confidence_threshold": 0.90,
+      "num_views": 4,
+      "mode": "reset_per_event"
+    }
+  },
+  "stream_orders": {
+    "order_a": {
+      "event_sequence": [279, 437, 520, 559, 1111003, 1111008],
+      "within_event_ordering": "deterministic_sorted_sample_id_ascending"
+    },
+    "order_b": {
+      "event_sequence": [1111008, 1111003, 559, 520, 437, 279],
+      "within_event_ordering": "deterministic_sorted_sample_id_descending"
+    }
+  },
+  "dataset": {
+    "dataset_root": "../datasets/KuroSiwo",
+    "manifest_path": "../third_party/KuroSiwo/pickle/KuroV2_grid_dict_test_0_100.gz",
+    "manifest_expected_sha256": "dfc6e9a752d05aaa0a38c3fd6c18ce12e090f95635e5e4709025cb8512f020ad",
+    "split_path": "configs/kuro_event_split.json",
+    "split_expected_sha256": "fbf30fe0bab7b90c468aaf0fbdab7960a5cf76dd49dfb3ca51f1e01668fba85f",
+    "sar_mean": [0.0953, 0.0264],
+    "sar_std": [0.0427, 0.0215],
+    "sar_clamp_max": 0.15,
+    "canonical_preevent": "pre_event_2",
+    "development_events": [279, 437, 520, 559, 1111003, 1111008],
+    "forbidden_sealed_test_events": [
+      205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013
+    ],
+    "batch_size": 16
+  },
+  "output_directory": "outputs/e7_empirical_evidence"
+}
+

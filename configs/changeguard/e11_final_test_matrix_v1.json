@@ -1,0 +1,72 @@
+{
+  "$schema_version": "1.0.0",
+  "matrix_id": "e11_final_test_matrix_v1",
+  "status": "PREPARATION_ONLY_UNAUTHORIZED_FOR_EXECUTION",
+  "authorization_notice": "CRITICAL: This matrix configuration is strictly for pre-test verification and rehearsal. Real execution on the 10 sealed test events is categorically prohibited until explicit user authorization and supervisor approval are recorded.",
+  "research_route": "Branch C (Controlled Empirical Study)",
+  "deployment_mode": "reset_per_event",
+  "prediction_timing": "PRE_UPDATE",
+  "event_order": "order_a_ascending",
+  "target_partition": "kuro_siwo_sealed_test_quarantine",
+  "sealed_test_events": [205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013],
+  "num_test_events": 10,
+  "source_checkpoints": {
+    "SNUNet_ECAM": {
+      "seed_0": {
+        "path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+        "sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f",
+        "epoch": 16
+      },
+      "seed_1": {
+        "path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed1_v1_fp32/final_checkpoint.pt",
+        "sha256": "72c4be7856fe4bb06560d61d3ab8e72780e81fdff84660f8dadfe2f8bd385d7a",
+        "epoch": 16
+      },
+      "seed_2": {
+        "path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed2_v1_fp32/final_checkpoint.pt",
+        "sha256": "0d403d4e8885b8b64c99fc76850be6bf324b65f2d5474e2dcb7e72f22c03fedd",
+        "epoch": 16
+      }
+    },
+    "SiamUnet_diff": {
+      "seed_0": {
+        "path": "outputs/e10_second_backbone/all27_seed0/final_checkpoint.pt",
+        "sha256": "8e23da9a4d5f1ad01889075d6c98a7197ce295f77ea8d377f1ef26ac814b1532",
+        "epoch": 5
+      },
+      "seed_1": {
+        "path": "outputs/e10_second_backbone/all27_seed1/final_checkpoint.pt",
+        "sha256": "a92f52153fda9e966d8f8e5ffe5d92c36783d1323d44a0c855d6464ae63e60ea",
+        "epoch": 5
+      },
+      "seed_2": {
+        "path": "outputs/e10_second_backbone/all27_seed2/final_checkpoint.pt",
+        "sha256": "d96bb4e8d74b6e7d0163129d8990769f5e1650ed9d744cafa2a291638b251aab",
+        "epoch": 5
+      }
+    }
+  },
+  "evaluated_methods": {
+    "SNUNet_ECAM": ["source_only", "bn_no_update", "tent", "cotta"],
+    "SiamUnet_diff": ["source_only", "bn_no_update", "tent"]
+  },
+  "matrix_accounting": {
+    "snunet_streams": 12,
+    "siam_diff_streams": 9,
+    "total_physical_streams": 21,
+    "events_per_stream": 10,
+    "total_expected_event_rows": 210
+  },
+  "runtime_and_hardware": {
+    "target_gpus": ["cuda:0", "cuda:1", "cuda:2"],
+    "batch_size": 16,
+    "precision": "fp32",
+    "estimated_runtime_minutes": 45,
+    "estimated_disk_gb": 35
+  },
+  "output_destinations": {
+    "output_directory": "outputs/e11_final_test",
+    "log_directory": "logs/e11_final_test"
+  }
+}
+

@@ -1,0 +1,76 @@
+{
+  "protocol_version": "day8_tta_robustness_v1",
+  "created_at_utc": "2026-10-04T05:35:00Z",
+  "description": "Exploratory TTA robustness matrix protocol assessing whether harmful adaptation persists across varying TTA strengths.",
+  "source_model": {
+    "checkpoint_path": "checkpoints/kuro_snunet_official.pt",
+    "checkpoint_sha256": "6c6bcb78d956f9d139743eb5bc44cf8e14528b643f9cbf5f4478f4e321a609ed",
+    "architecture": "SNUNet_ECAM",
+    "in_channels": 3
+  },
+  "preprocessing": {
+    "version": "kuro_dem_sanitize_v1",
+    "canonical_preevent": "pre_event_2",
+    "sar_clamping_max": 0.15,
+    "sar_mean": [0.0953, 0.0264],
+    "sar_std": [0.0427, 0.0215],
+    "dem_mean": 67.0293,
+    "dem_std": 1765.0062,
+    "dem_nodata_threshold": -1000.0,
+    "dem_replacement_value": 0.0
+  },
+  "events": {
+    "validation_event_ids": [279, 437, 520, 559, 1111003, 1111008],
+    "sealed_test_event_ids": [205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013],
+    "total_validation_samples": 2826
+  },
+  "stream_protocol": {
+    "batch_size": 16,
+    "seeds": [0, 1, 2],
+    "event_reset_policy": "reset_to_source_at_each_event_boundary",
+    "valid_mask_rule": "valid = (valid_mask == 1) & (label != 3)"
+  },
+  "matrix_configurations": [
+    {
+      "method": "source_only",
+      "lr": 0.0,
+      "seeds": [0],
+      "status": "reuse_day3_5"
+    },
+    {
+      "method": "adabn",
+      "lr": 0.0,
+      "seeds": [0, 1, 2],
+      "status": "reuse_day3_5"
+    },
+    {
+      "method": "tent",
+      "lr": 1e-5,
+      "seeds": [0, 1, 2],
+      "status": "reuse_day3_5"
+    },
+    {
+      "method": "tent",
+      "lr": 3e-5,
+      "seeds": [0, 1, 2],
+      "status": "execute_missing"
+    },
+    {
+      "method": "tent",
+      "lr": 1e-4,
+      "seeds": [0, 1, 2],
+      "status": "reuse_day3_5"
+    }
+  ],
+  "thresholds": {
+    "harmful_f1_delta": -0.01,
+    "beneficial_f1_delta": 0.01
+  },
+  "outputs": {
+    "root_dir": "outputs/day8_robustness",
+    "event_metrics_csv": "outputs/day8_robustness/robustness_event_metrics.csv",
+    "summary_csv": "outputs/day8_robustness/robustness_summary.csv",
+    "manifest_json": "outputs/day8_robustness/run_manifest.json",
+    "audit_doc": "docs/day8_robustness_audit.md"
+  }
+}

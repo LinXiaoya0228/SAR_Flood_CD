@@ -1,0 +1,170 @@
+{
+  "_comment": "ChangeGuard Plan V3 E1.5 Matched BN Normalization Confirmation & Batch-Size Sensitivity Protocol and Configuration",
+  "protocol_version": "e1_5_bn_normalization_v1",
+  "created_at_utc": "2026-10-20T06:00:00Z",
+  "status": "APPROVED_FROZEN_PROTOCOL",
+  "task": "matched_bn_normalization_confirmation_and_batch_size_sensitivity",
+  "governing_document": "docs/MASTER_EXECUTION_PLAN_V3.md (Section 3.5 & Section 6.5)",
+  "measurement_contract": "docs/CACHE_AND_MEASUREMENT_CONTRACT.md",
+  "execution_authorizations": {
+    "real_data_execution_authorized": true,
+    "single_gpu_execution_authorized": true,
+    "development_partition_only": true,
+    "sealed_test_strictly_quarantined": true,
+    "batch_sizes_authorized": [1, 4, 16]
+  },
+  "condition": {
+    "condition_id": "matched_bn_no_update_pre_update_v1",
+    "description": "Candidate initialized bit-exactly from canonical all-27 source checkpoints, BN layers use current-batch statistics without running stats tracking (track_running_stats=False, running_mean/var=None), zero backward passes, zero optimizer updates, requires_grad=False on all parameters.",
+    "prediction_timing": "PRE_UPDATE",
+    "reset_mode": "NOT_APPLICABLE_STATELESS"
+  },
+  "model": {
+    "architecture": "SNUNet_ECAM",
+    "in_channels": 2,
+    "num_classes": 3,
+    "base_channel": 32,
+    "input_channels": ["VV", "VH"],
+    "canonical_preevent": "pre_event_2",
+    "precision": "fp32"
+  },
+  "source_checkpoints": {
+    "training_commit": "6c63a5f8aa7ae2c608b145f0badc84b422b62ef1",
+    "seeds": {
+      "0": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f",
+        "epoch": 16
+      },
+      "1": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed1_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "72c4be7856fe4bb06560d61d3ab8e72780e81fdff84660f8dadfe2f8bd385d7a",
+        "epoch": 16
+      },
+      "2": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed2_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "0d403d4e8885b8b64c99fc76850be6bf324b65f2d5474e2dcb7e72f22c03fedd",
+        "epoch": 16
+      }
+    }
+  },
+  "dataset": {
+    "dataset_root": "../datasets/KuroSiwo",
+    "manifest_path": "../third_party/KuroSiwo/pickle/KuroV2_grid_dict_test_0_100.gz",
+    "manifest_expected_sha256": "dfc6e9a752d05aaa0a38c3fd6c18ce12e090f95635e5e4709025cb8512f020ad",
+    "split_path": "configs/kuro_event_split.json",
+    "split_expected_sha256": "fbf30fe0bab7b90c468aaf0fbdab7960a5cf76dd49dfb3ca51f1e01668fba85f",
+    "sar_mean": [0.0953, 0.0264],
+    "sar_std": [0.0427, 0.0215],
+    "sar_clamp_max": 0.15,
+    "canonical_preevent": "pre_event_2",
+    "target_events": [279, 437, 520, 559, 1111003, 1111008],
+    "expected_event_counts": {
+      "279": 2381,
+      "437": 169,
+      "520": 92,
+      "559": 42,
+      "1111003": 19,
+      "1111008": 123
+    },
+    "expected_total_samples": 2826,
+    "forbidden_sealed_test_events": [
+      205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013
+    ],
+    "mask_provenance": {
+      "adaptation_mask": "(MK0_MNA == 1) strictly sensory radar validity",
+      "offline_evaluation_mask": "(MK0_MNA == 1) & (MK0_MLU != 3) double masking"
+    }
+  },
+  "stream_orders": {
+    "order_a": {
+      "order_id": "order_a",
+      "description": "Chronological ascending event sequence with ascending sample IDs",
+      "event_sequence": [279, 437, 520, 559, 1111003, 1111008],
+      "within_event_ordering": "deterministic_sorted_sample_id_ascending"
+    },
+    "order_b": {
+      "order_id": "order_b",
+      "description": "Chronological reversed event sequence with descending sample IDs",
+      "event_sequence": [1111008, 1111003, 559, 520, 437, 279],
+      "within_event_ordering": "deterministic_sorted_sample_id_descending"
+    }
+  },
+  "grid": {
+    "total_streams": 8,
+    "streams": [
+      {
+        "stream_id": "bn_no_update_s0_oa_b16",
+        "method": "matched_bn_no_update_pre_update_v1",
+        "seed": 0,
+        "order": "order_a",
+        "batch_size": 16,
+        "reset_mode": "NOT_APPLICABLE_STATELESS",
+        "role": "primary_cross_seed_order_confirmation_anchor"
+      },
+      {
+        "stream_id": "bn_no_update_s0_ob_b16",
+        "method": "matched_bn_no_update_pre_update_v1",
+        "seed": 0,
+        "order": "order_b",
+        "batch_size": 16,
+        "reset_mode": "NOT_APPLICABLE_STATELESS",
+        "role": "primary_cross_seed_order_confirmation"
+      },
+      {
+        "stream_id": "bn_no_update_s1_oa_b16",
+        "method": "matched_bn_no_update_pre_update_v1",
+        "seed": 1,
+        "order": "order_a",
+        "batch_size": 16,
+        "reset_mode": "NOT_APPLICABLE_STATELESS",
+        "role": "primary_cross_seed_order_confirmation"
+      },
+      {
+        "stream_id": "bn_no_update_s1_ob_b16",
+        "method": "matched_bn_no_update_pre_update_v1",
+        "seed": 1,
+        "order": "order_b",
+        "batch_size": 16,
+        "reset_mode": "NOT_APPLICABLE_STATELESS",
+        "role": "primary_cross_seed_order_confirmation"
+      },
+      {
+        "stream_id": "bn_no_update_s2_oa_b16",
+        "method": "matched_bn_no_update_pre_update_v1",
+        "seed": 2,
+        "order": "order_a",
+        "batch_size": 16,
+        "reset_mode": "NOT_APPLICABLE_STATELESS",
+        "role": "primary_cross_seed_order_confirmation"
+      },
+      {
+        "stream_id": "bn_no_update_s2_ob_b16",
+        "method": "matched_bn_no_update_pre_update_v1",
+        "seed": 2,
+        "order": "order_b",
+        "batch_size": 16,
+        "reset_mode": "NOT_APPLICABLE_STATELESS",
+        "role": "primary_cross_seed_order_confirmation"
+      },
+      {
+        "stream_id": "bn_no_update_s0_oa_b1",
+        "method": "matched_bn_no_update_pre_update_v1",
+        "seed": 0,
+        "order": "order_a",
+        "batch_size": 1,
+        "reset_mode": "NOT_APPLICABLE_STATELESS",
+        "role": "batch_size_sensitivity_diagnostic"
+      },
+      {
+        "stream_id": "bn_no_update_s0_oa_b4",
+        "method": "matched_bn_no_update_pre_update_v1",
+        "seed": 0,
+        "order": "order_a",
+        "batch_size": 4,
+        "reset_mode": "NOT_APPLICABLE_STATELESS",
+        "role": "batch_size_sensitivity_diagnostic"
+      }
+    ]
+  }
+}

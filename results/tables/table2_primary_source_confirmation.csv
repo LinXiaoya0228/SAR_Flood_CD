@@ -1,0 +1,12 @@
+partition,seed,r0_macro_f1,r2_macro_f1,delta_f1,r0_precision,r2_precision,r0_recall,r2_recall,r0_iou,r2_iou
+Fold A (9 held-out events),Seed 0,0.733,0.7565,0.0235,0.7599,0.736,0.7495,0.8212,0.6084,0.6276
+Fold A (9 held-out events),Seed 1,0.7484,0.7636,0.0152,0.8091,0.7483,0.738,0.8101,0.6196,0.6304
+Fold A (9 held-out events),Seed 2,0.7566,0.7427,-0.0139,0.725,0.7044,0.8287,0.8306,0.6249,0.6081
+Fold A Summary,Mean ± SD,0.7460 ± 0.0120,0.7543 ± 0.0106,+0.0083,0.7647,0.7296,0.7721,0.8206,0.6176,0.6220
+Fold B (9 held-out events),Seed 0,0.6937,0.7159,0.0222,0.7584,0.7629,0.7101,0.7309,0.5613,0.5856
+Fold B (9 held-out events),Seed 1,0.6982,0.7283,0.0302,0.7816,0.7926,0.694,0.7172,0.5652,0.5975
+Fold B (9 held-out events),Seed 2,0.6912,0.6956,0.0044,0.7718,0.718,0.6899,0.7381,0.5567,0.5579
+Fold B Summary,Mean ± SD,0.6943 ± 0.0035,0.7133 ± 0.0165,+0.0189,0.7706,0.7578,0.6980,0.7287,0.5610,0.5803
+Combined Grand Matrix (18 unique events),All Seeds (Grand),0.7202,0.7338,"+0.0136 (95% CI: [-0.0045, +0.0351])",0.7676,0.7437,0.7350,0.7747,0.5893,0.6012
+Tail Reliability: Bottom-3 Mean F1,All Seeds (Tail),0.3987,0.4498,+0.0511,—,—,—,—,—,—
+Tail Reliability: Worst Event F1,All Seeds (Worst),0.2991,0.2929,-0.0062,—,—,—,—,—,—

@@ -1,0 +1,124 @@
+{
+  "_comment": "ChangeGuard Plan V3 Work Package E2.2: Augmentation Grid Configuration",
+  "protocol_version": "e2_2_augmentation_grid_v1",
+  "governing_document": "docs/MASTER_EXECUTION_PLAN_V3.md",
+  "work_package": "E2.2",
+  "created_at_utc": "2026-10-20T09:50:00Z",
+  "status": "LOCKED_FOR_EXECUTION",
+  "evidence_level": "COMPONENT_SCREENING",
+  "execution_authorizations": {
+    "real_data_execution_authorized": true,
+    "gpu_execution_authorized": true
+  },
+  "model": {
+    "architecture": "SNUNet_ECAM",
+    "in_channels": 2,
+    "num_classes": 3,
+    "base_channel": 32,
+    "input_channels": ["VV", "VH"],
+    "canonical_preevent": "pre_event_2",
+    "precision": "fp32"
+  },
+  "source_checkpoints": {
+    "training_commit": "6c63a5f8aa7ae2c608b145f0badc84b422b62ef1",
+    "seeds": {
+      "0": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f"
+      }
+    }
+  },
+  "dataset": {
+    "dataset_root": "../datasets/KuroSiwo",
+    "manifest_path": "../third_party/KuroSiwo/pickle/KuroV2_grid_dict_test_0_100.gz",
+    "sar_mean": [0.0953, 0.0264],
+    "sar_std": [0.0427, 0.0215],
+    "sar_clamp_max": 0.15,
+    "canonical_preevent": "pre_event_2",
+    "target_events": [279, 437, 520, 559, 1111003, 1111008],
+    "development_events": [279, 437, 520, 559, 1111003, 1111008],
+    "forbidden_sealed_test_events": [
+      205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013
+    ],
+    "mask_provenance": {
+      "sar_valid_mask_component": "MK0_MNA",
+      "sar_valid_mask_description": "Binary sensory raster recording physical SAR observation validity (1=valid, 0=nodata). Strictly independent of ground-truth labels.",
+      "label_component": "MK0_MLU",
+      "label_description": "Ground truth annotation raster (3=unannotated/invalid, 2=flood, 0,1=other land cover).",
+      "adaptation_mask_policy": "strictly_sar_valid_mask_only",
+      "adaptation_mask_definition": "valid = (MK0_MNA == 1). Strictly NO ground-truth labels and NO label-3 exclusion during adaptation.",
+      "offline_evaluation_mask_policy": "double_masking",
+      "offline_evaluation_mask_definition": "valid = (MK0_MNA == 1) & (MK0_MLU != 3). Strictly evaluated offline on frozen predictions."
+    }
+  },
+  "screening_specification": {
+    "checkpoint_seed": 0,
+    "stream_order": "order_a",
+    "event_sequence": [279, 437, 520, 559, 1111003, 1111008],
+    "within_event_ordering": "deterministic_sorted_sample_id_ascending",
+    "reset_mode": "reset_per_event",
+    "batch_size": 16,
+    "confidence_threshold": 0.90,
+    "augmentation_cells": [
+      {
+        "cell_id": "E2_AUG_A0",
+        "name": "Horizontal Flip Strong (Reference)",
+        "type": "horizontal_flip",
+        "status": "REUSED",
+        "reused_from": "outputs/e2_confidence_grid/v1/E2_CONF_90",
+        "description": "Predefined reference: Identity weak vs Paired Horizontal Flip strong; threshold tau=0.90."
+      },
+      {
+        "cell_id": "E2_AUG_A1",
+        "name": "Vertical Flip Strong",
+        "type": "vertical_flip",
+        "status": "EXECUTABLE",
+        "description": "Identity weak vs Paired Vertical Flip strong; exact coordinate inversion; threshold tau=0.90."
+      },
+      {
+        "cell_id": "E2_AUG_A2",
+        "name": "Small Integer Translation",
+        "type": "translation",
+        "shift": [4, 4],
+        "status": "EXECUTABLE",
+        "description": "Identity weak vs Paired Translation shift [4, 4]; overlap-only consistency mask; padding excluded; threshold tau=0.90."
+      },
+      {
+        "cell_id": "E2_AUG_A3",
+        "name": "Independent Weak Geometric Views",
+        "type": "independent_weak",
+        "weak_view_1": "horizontal_flip",
+        "weak_view_2": "vertical_flip",
+        "status": "EXECUTABLE",
+        "description": "Two distinct weak geometric views (H-flip weak 1 vs V-flip weak 2); aligned to native coordinates; threshold tau=0.90."
+      },
+      {
+        "cell_id": "E2_AUG_A4",
+        "name": "SAR Intensity/Noise Perturbation",
+        "type": "intensity_perturbation",
+        "status": "BLOCKED",
+        "blocked_reason": "Physical speckle or multiplicative noise is undefined on z-score standardized SAR tensors, and KuroSiwo lacks calibration metadata for raw-domain simulation.",
+        "description": "Formally blocked subject to input-domain certification audit."
+      }
+    ]
+  },
+  "adaptation_hyperparameters": {
+    "optimizer": "sgd",
+    "learning_rate": 0.000125,
+    "momentum": 0.9,
+    "weight_decay": 0.0,
+    "batch_size": 16,
+    "steps_per_batch": 1,
+    "trainable_scope": "batchnorm_affine_only",
+    "non_bn_frozen": true
+  },
+  "evidence_timing": {
+    "primary_batch_prediction": "untransformed_pre_update_candidate",
+    "disagreement": "pre_update"
+  },
+  "outputs": {
+    "root_dir": "outputs/e2_augmentation_grid",
+    "experiment_dir": "outputs/e2_augmentation_grid/v1"
+  }
+}
+

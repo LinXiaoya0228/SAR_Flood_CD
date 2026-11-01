@@ -1,0 +1,85 @@
+{
+  "evaluation_name": "geoid_flood_heldout_r0_vs_r2_v1",
+  "created_at": "2026-11-01T16:05:00Z",
+  "benchmark": {
+    "name": "GEOID-Flood",
+    "repo_id": "links-ads/geoid-flood",
+    "revision": "v1.1",
+    "split": "heldout",
+    "modality": "s1grd",
+    "total_tiles": 1301,
+    "total_events": 9,
+    "event_list": [
+      "EMSR857",
+      "EMSR858",
+      "EMSR861",
+      "EMSR864",
+      "EMSR865",
+      "EMSR866",
+      "EMSR868",
+      "EMSR870",
+      "EMSR871"
+    ]
+  },
+  "data_paths": {
+    "base_dir": "data/external_geoid/geoid-flood-heldout",
+    "catalog_path": "data/geoid_metadata/heldout_tile_catalog.json"
+  },
+  "preprocessing": {
+    "sar_clamp_max": 0.15,
+    "sar_mean": [0.0953, 0.0264],
+    "sar_std": [0.0427, 0.0215],
+    "chip_size": 256,
+    "chips_per_tile": 16,
+    "flood_class": 2,
+    "ignore_class": 3
+  },
+  "models": [
+    {
+      "model_id": "R0_s0",
+      "recipe": "R0",
+      "seed": 0,
+      "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+      "sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f"
+    },
+    {
+      "model_id": "R0_s1",
+      "recipe": "R0",
+      "seed": 1,
+      "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed1_v1_fp32/final_checkpoint.pt",
+      "sha256": "72c4be7856fe4bb06560d61d3ab8e72780e81fdff84660f8dadfe2f8bd385d7a"
+    },
+    {
+      "model_id": "R0_s2",
+      "recipe": "R0",
+      "seed": 2,
+      "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed2_v1_fp32/final_checkpoint.pt",
+      "sha256": "0d403d4e8885b8b64c99fc76850be6bf324b65f2d5474e2dcb7e72f22c03fedd"
+    },
+    {
+      "model_id": "R2_s0",
+      "recipe": "R2",
+      "seed": 0,
+      "checkpoint_path": "outputs/robust_source_training/rst9/rst9_r2_snunet_all27_s0_v1/final_checkpoint.pt",
+      "sha256": "9611df27a18cd1cb16e60cb74e10a06df7afe4947d948bb3c0e94ef39a10dfb7"
+    },
+    {
+      "model_id": "R2_s1",
+      "recipe": "R2",
+      "seed": 1,
+      "checkpoint_path": "outputs/robust_source_training/rst9/rst9_r2_snunet_all27_s1_v1/final_checkpoint.pt",
+      "sha256": "279dc73c8f6d0274031a33f3bd58a7af632dc2248c709db4c6a66404b21efbd2"
+    },
+    {
+      "model_id": "R2_s2",
+      "recipe": "R2",
+      "seed": 2,
+      "checkpoint_path": "outputs/robust_source_training/rst9/rst9_r2_snunet_all27_s2_v1/final_checkpoint.pt",
+      "sha256": "b057a01820fdeaa596d8340eb550a174a2b8ca8459db0ca66dc08a4aaf929893"
+    }
+  ],
+  "runtime": {
+    "batch_size_tiles": 2,
+    "num_workers": 4
+  }
+}

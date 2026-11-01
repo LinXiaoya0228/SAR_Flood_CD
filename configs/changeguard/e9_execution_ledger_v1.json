@@ -1,0 +1,532 @@
+{
+  "ledger_version": "e9_execution_ledger_v1",
+  "created_at_utc": "2026-10-25T16:06:30Z",
+  "governing_plan": "docs/MASTER_EXECUTION_PLAN_V3.md, Block E9",
+  "branch": "Branch C \u2014 Controlled Empirical Study",
+  "summary": {
+    "total_streams_planned": 26,
+    "reused_streams": 14,
+    "execute_new_streams": 12,
+    "total_event_rows_planned": 156,
+    "reused_event_rows": 84,
+    "new_event_rows": 72
+  },
+  "matrix_cell_summary": {
+    "total_physical_streams": 26,
+    "certified_reused_physical_streams": 14,
+    "execute_new_physical_streams": 12,
+    "total_event_rows": 156,
+    "reused_event_rows": 84,
+    "new_event_rows": 72
+  },
+  "reused_cells": [
+    {
+      "stream_id": "source_only_frozen_running_stats_s0",
+      "method": "source_only_frozen_running_stats",
+      "method_family": "source_only",
+      "seed": 0,
+      "order": "order_a_invariant",
+      "reset_mode": "invariant",
+      "batch_size": 16,
+      "artifact_directory": "outputs/week12_ablation/approved_dev6_s0_v1/source_only",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "REUSED"
+    },
+    {
+      "stream_id": "source_only_frozen_running_stats_s1",
+      "method": "source_only_frozen_running_stats",
+      "method_family": "source_only",
+      "seed": 1,
+      "order": "order_a_invariant",
+      "reset_mode": "invariant",
+      "batch_size": 16,
+      "artifact_directory": "outputs/e8_confirmation_v2/source_only_frozen_running_stats_s1",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "REUSED"
+    },
+    {
+      "stream_id": "bn_no_update_s0_oa_b16",
+      "method": "bn_no_update",
+      "method_family": "bn_no_update",
+      "seed": 0,
+      "order": "order_a",
+      "reset_mode": "stateless",
+      "batch_size": 16,
+      "artifact_directory": "outputs/e8_confirmation_v2/bn_no_update_s0_oa_b16",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "REUSED"
+    },
+    {
+      "stream_id": "bn_no_update_s0_ob_b16",
+      "method": "bn_no_update",
+      "method_family": "bn_no_update",
+      "seed": 0,
+      "order": "order_b",
+      "reset_mode": "stateless",
+      "batch_size": 16,
+      "artifact_directory": "outputs/e8_confirmation_v2/bn_no_update_s0_ob_b16",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "REUSED"
+    },
+    {
+      "stream_id": "bn_no_update_s1_oa_b16",
+      "method": "bn_no_update",
+      "method_family": "bn_no_update",
+      "seed": 1,
+      "order": "order_a",
+      "reset_mode": "stateless",
+      "batch_size": 16,
+      "artifact_directory": "outputs/e8_confirmation_v2/bn_no_update_s1_oa_b16",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "REUSED"
+    },
+    {
+      "stream_id": "bn_no_update_s1_ob_b16",
+      "method": "bn_no_update",
+      "method_family": "bn_no_update",
+      "seed": 1,
+      "order": "order_b",
+      "reset_mode": "stateless",
+      "batch_size": 16,
+      "artifact_directory": "outputs/e8_confirmation_v2/bn_no_update_s1_ob_b16",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "REUSED"
+    },
+    {
+      "stream_id": "adabn_matched_pre_update_s0_oa_re",
+      "method": "adabn_matched_pre_update",
+      "method_family": "adabn",
+      "seed": 0,
+      "order": "order_a",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "artifact_directory": "outputs/e8_confirmation_v2/adabn_matched_pre_update_s0_oa_re",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "REUSED"
+    },
+    {
+      "stream_id": "adabn_matched_pre_update_s0_ob_re",
+      "method": "adabn_matched_pre_update",
+      "method_family": "adabn",
+      "seed": 0,
+      "order": "order_b",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "artifact_directory": "outputs/e8_confirmation_v2/adabn_matched_pre_update_s0_ob_re",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "REUSED"
+    },
+    {
+      "stream_id": "adabn_matched_pre_update_s1_oa_re",
+      "method": "adabn_matched_pre_update",
+      "method_family": "adabn",
+      "seed": 1,
+      "order": "order_a",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "artifact_directory": "outputs/e8_confirmation_v2/adabn_matched_pre_update_s1_oa_re",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "REUSED"
+    },
+    {
+      "stream_id": "adabn_matched_pre_update_s1_ob_re",
+      "method": "adabn_matched_pre_update",
+      "method_family": "adabn",
+      "seed": 1,
+      "order": "order_b",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "artifact_directory": "outputs/e8_confirmation_v2/adabn_matched_pre_update_s1_ob_re",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "REUSED"
+    },
+    {
+      "stream_id": "cotta_reset_s0_oa",
+      "method": "cotta_reset",
+      "method_family": "cotta",
+      "seed": 0,
+      "order": "order_a",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "artifact_directory": "outputs/e8_confirmation_v2/cotta_reset_s0_oa",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "REUSED"
+    },
+    {
+      "stream_id": "cotta_reset_s0_ob",
+      "method": "cotta_reset",
+      "method_family": "cotta",
+      "seed": 0,
+      "order": "order_b",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "artifact_directory": "outputs/e8_confirmation_v2/cotta_reset_s0_ob",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "REUSED"
+    },
+    {
+      "stream_id": "cotta_reset_s1_oa",
+      "method": "cotta_reset",
+      "method_family": "cotta",
+      "seed": 1,
+      "order": "order_a",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "artifact_directory": "outputs/e8_confirmation_v2/cotta_reset_s1_oa",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "REUSED"
+    },
+    {
+      "stream_id": "cotta_reset_s1_ob",
+      "method": "cotta_reset",
+      "method_family": "cotta",
+      "seed": 1,
+      "order": "order_b",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "artifact_directory": "outputs/e8_confirmation_v2/cotta_reset_s1_ob",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "REUSED"
+    }
+  ],
+  "execute_new_cells": [
+    {
+      "stream_id": "adabn_m001_s0_oa",
+      "method": "adabn_m001",
+      "method_family": "adabn_momentum",
+      "seed": 0,
+      "order": "order_a",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "target_output_directory": "outputs/e9_diagnostic/adabn_m001_s0_oa",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "EXECUTE_NEW",
+      "completion_status": "COMPLETED"
+    },
+    {
+      "stream_id": "adabn_m001_s1_oa",
+      "method": "adabn_m001",
+      "method_family": "adabn_momentum",
+      "seed": 1,
+      "order": "order_a",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "target_output_directory": "outputs/e9_diagnostic/adabn_m001_s1_oa",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "EXECUTE_NEW",
+      "completion_status": "COMPLETED"
+    },
+    {
+      "stream_id": "adabn_m005_s0_oa",
+      "method": "adabn_m005",
+      "method_family": "adabn_momentum",
+      "seed": 0,
+      "order": "order_a",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "target_output_directory": "outputs/e9_diagnostic/adabn_m005_s0_oa",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "EXECUTE_NEW",
+      "completion_status": "COMPLETED"
+    },
+    {
+      "stream_id": "adabn_m005_s1_oa",
+      "method": "adabn_m005",
+      "method_family": "adabn_momentum",
+      "seed": 1,
+      "order": "order_a",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "target_output_directory": "outputs/e9_diagnostic/adabn_m005_s1_oa",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "EXECUTE_NEW",
+      "completion_status": "COMPLETED"
+    },
+    {
+      "stream_id": "cotta_no_ssr_s0_oa",
+      "method": "cotta_no_ssr",
+      "method_family": "cotta_ablation",
+      "seed": 0,
+      "order": "order_a",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "target_output_directory": "outputs/e9_diagnostic/cotta_no_ssr_s0_oa",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "EXECUTE_NEW",
+      "completion_status": "COMPLETED"
+    },
+    {
+      "stream_id": "cotta_no_ssr_s0_ob",
+      "method": "cotta_no_ssr",
+      "method_family": "cotta_ablation",
+      "seed": 0,
+      "order": "order_b",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "target_output_directory": "outputs/e9_diagnostic/cotta_no_ssr_s0_ob",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "EXECUTE_NEW",
+      "completion_status": "COMPLETED"
+    },
+    {
+      "stream_id": "cotta_no_ssr_s1_oa",
+      "method": "cotta_no_ssr",
+      "method_family": "cotta_ablation",
+      "seed": 1,
+      "order": "order_a",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "target_output_directory": "outputs/e9_diagnostic/cotta_no_ssr_s1_oa",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "EXECUTE_NEW",
+      "completion_status": "COMPLETED"
+    },
+    {
+      "stream_id": "cotta_no_ssr_s1_ob",
+      "method": "cotta_no_ssr",
+      "method_family": "cotta_ablation",
+      "seed": 1,
+      "order": "order_b",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "target_output_directory": "outputs/e9_diagnostic/cotta_no_ssr_s1_ob",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "EXECUTE_NEW",
+      "completion_status": "COMPLETED"
+    },
+    {
+      "stream_id": "cotta_no_ema_s0_oa",
+      "method": "cotta_no_ema",
+      "method_family": "cotta_ablation",
+      "seed": 0,
+      "order": "order_a",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "target_output_directory": "outputs/e9_diagnostic/cotta_no_ema_s0_oa",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "EXECUTE_NEW",
+      "completion_status": "COMPLETED"
+    },
+    {
+      "stream_id": "cotta_no_ema_s0_ob",
+      "method": "cotta_no_ema",
+      "method_family": "cotta_ablation",
+      "seed": 0,
+      "order": "order_b",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "target_output_directory": "outputs/e9_diagnostic/cotta_no_ema_s0_ob",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "EXECUTE_NEW",
+      "completion_status": "COMPLETED"
+    },
+    {
+      "stream_id": "cotta_no_ema_s1_oa",
+      "method": "cotta_no_ema",
+      "method_family": "cotta_ablation",
+      "seed": 1,
+      "order": "order_a",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "target_output_directory": "outputs/e9_diagnostic/cotta_no_ema_s1_oa",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "EXECUTE_NEW",
+      "completion_status": "COMPLETED"
+    },
+    {
+      "stream_id": "cotta_no_ema_s1_ob",
+      "method": "cotta_no_ema",
+      "method_family": "cotta_ablation",
+      "seed": 1,
+      "order": "order_b",
+      "reset_mode": "reset_per_event",
+      "batch_size": 16,
+      "target_output_directory": "outputs/e9_diagnostic/cotta_no_ema_s1_ob",
+      "events": [
+        279,
+        437,
+        520,
+        559,
+        1111003,
+        1111008
+      ],
+      "status": "EXECUTE_NEW",
+      "completion_status": "COMPLETED"
+    }
+  ]
+}

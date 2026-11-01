@@ -1,0 +1,149 @@
+{
+  "_comment": "ChangeGuard Plan V3 E8 Cross-Event Evaluation and Full Confirmation Configuration",
+  "protocol_version": "e8_cross_event_confirmation_v1",
+  "created_at_utc": "2026-10-21T21:00:00Z",
+  "status": "APPROVED_FROZEN_PROTOCOL",
+  "task": "cross_event_evaluation_and_full_confirmation",
+  "governing_document": "docs/protocols/e8_cross_event_confirmation_protocol_v1.md",
+  "master_plan_sections": ["13.1", "13.2", "13.3", "13.4"],
+  "branch": "Branch C — Controlled Empirical Study",
+  "execution_ledger_path": "configs/changeguard/e8_execution_ledger_v1.json",
+  "closest_transfer_audit_path": "docs/e8_closest_method_transfer_audit.md",
+  "execution_authorizations": {
+    "real_data_execution_authorized": true,
+    "single_gpu_execution_authorized": true,
+    "development_partition_only": true,
+    "sealed_test_strictly_quarantined": true,
+    "batch_size_16_enforced": true,
+    "reuse_compatible_historical_cells": true
+  },
+  "matrix_cell_summary": {
+    "total_physical_streams": 69,
+    "reused_physical_streams": 57,
+    "execute_new_physical_streams": 12,
+    "total_event_rows": 414,
+    "reused_event_rows": 342,
+    "new_event_rows": 72
+  },
+  "model": {
+    "architecture": "SNUNet_ECAM",
+    "in_channels": 2,
+    "num_classes": 3,
+    "base_channel": 32,
+    "input_channels": ["VV", "VH"],
+    "canonical_preevent": "pre_event_2",
+    "precision": "fp32"
+  },
+  "source_checkpoints": {
+    "training_commit": "6c63a5f8aa7ae2c608b145f0badc84b422b62ef1",
+    "seeds": {
+      "0": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f",
+        "epoch": 16
+      },
+      "1": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed1_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "72c4be7856fe4bb06560d61d3ab8e72780e81fdff84660f8dadfe2f8bd385d7a",
+        "epoch": 16
+      },
+      "2": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed2_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "0d403d4e8885b8b64c99fc76850be6bf324b65f2d5474e2dcb7e72f22c03fedd",
+        "epoch": 16
+      }
+    }
+  },
+  "evaluated_methods": {
+    "source_only": {
+      "adapter_class": "E1SourceOnlyAdapter",
+      "status": "REUSED",
+      "source_dir": "outputs/e1_matched_baselines/v1",
+      "streams_count": 3
+    },
+    "bn_no_update": {
+      "adapter_class": "E1MatchedBNNoUpdateAdapter",
+      "status": "REUSED",
+      "source_dir": "outputs/e1_bn_normalization/v1",
+      "streams_count": 6
+    },
+    "adabn": {
+      "adapter_class": "E1AdaBNAdapter",
+      "status": "REUSED",
+      "source_dir": "outputs/e1_matched_baselines/v1",
+      "streams_count": 12
+    },
+    "tent": {
+      "adapter_class": "E1TentAdapter",
+      "status": "REUSED",
+      "source_dir": "outputs/e1_matched_baselines/v1",
+      "streams_count": 12
+    },
+    "eata": {
+      "adapter_class": "E1EATAAdapter",
+      "status": "REUSED",
+      "source_dir": "outputs/e1_matched_baselines/v1",
+      "streams_count": 12
+    },
+    "sar": {
+      "adapter_class": "E1SARAdapter",
+      "status": "REUSED",
+      "source_dir": "outputs/e1_matched_baselines/v1",
+      "streams_count": 12
+    },
+    "cotta_continual": {
+      "adapter_class": "E7CoTTAAdapter",
+      "status": "EXECUTE_NEW",
+      "description": "CoTTA continual adaptation with Mean Teacher EMA and SSR",
+      "learning_rate": 1e-4,
+      "optimizer": "adam",
+      "ema_alpha": 0.999,
+      "restoration_prob": 0.01,
+      "confidence_threshold": 0.90,
+      "num_views": 4,
+      "mode": "continual",
+      "streams_count": 6
+    },
+    "cotta_reset": {
+      "adapter_class": "E7CoTTAAdapter",
+      "status": "EXECUTE_NEW",
+      "description": "CoTTA episodic reset-per-event adaptation with Mean Teacher EMA and SSR",
+      "learning_rate": 1e-4,
+      "optimizer": "adam",
+      "ema_alpha": 0.999,
+      "restoration_prob": 0.01,
+      "confidence_threshold": 0.90,
+      "num_views": 4,
+      "mode": "reset_per_event",
+      "streams_count": 6
+    }
+  },
+  "stream_orders": {
+    "order_a": {
+      "event_sequence": [279, 437, 520, 559, 1111003, 1111008],
+      "within_event_ordering": "deterministic_sorted_sample_id_ascending"
+    },
+    "order_b": {
+      "event_sequence": [1111008, 1111003, 559, 520, 437, 279],
+      "within_event_ordering": "deterministic_sorted_sample_id_descending"
+    }
+  },
+  "dataset": {
+    "dataset_root": "../datasets/KuroSiwo",
+    "manifest_path": "../third_party/KuroSiwo/pickle/KuroV2_grid_dict_test_0_100.gz",
+    "manifest_expected_sha256": "dfc6e9a752d05aaa0a38c3fd6c18ce12e090f95635e5e4709025cb8512f020ad",
+    "split_path": "configs/kuro_event_split.json",
+    "split_expected_sha256": "fbf30fe0bab7b90c468aaf0fbdab7960a5cf76dd49dfb3ca51f1e01668fba85f",
+    "sar_mean": [0.0953, 0.0264],
+    "sar_std": [0.0427, 0.0215],
+    "sar_clamp_max": 0.15,
+    "canonical_preevent": "pre_event_2",
+    "development_events": [279, 437, 520, 559, 1111003, 1111008],
+    "forbidden_sealed_test_events": [
+      205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013
+    ],
+    "batch_size": 16
+  },
+  "output_directory": "outputs/e8_confirmation"
+}
+

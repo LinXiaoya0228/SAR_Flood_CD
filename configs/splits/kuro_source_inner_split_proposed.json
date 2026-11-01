@@ -1,0 +1,88 @@
+{
+  "$schema_version": "1.0.0",
+  "status": "AWAITING_USER_APPROVAL",
+  "creation_timestamp": "2026-10-06T19:42:00+08:00",
+  "description": "Proposed deterministic 22/5 source-inner split partitioning the 27 source-training events into 22 inner-train and 5 inner-validation events for controlled model selection. Excludes all TTA-validation and sealed test events.",
+  "selection_algorithm": {
+    "name": "stratified_flood_quintile_with_size_constraint_v1",
+    "description": "Excludes mega-events (>1500 samples) to preserve mass in training, partitions remaining 23 candidate events into 5 quintile strata by valid flood pixel proportion, and selects the event closest to stratum median flood prevalence, breaking ties deterministically by event ID.",
+    "fixed_seed": 20261006,
+    "tie_breaker": "event_id_ascending",
+    "mega_events_reserved_for_train": [427, 1111004, 1111009, 1111011],
+    "source_statistics_csv_sha256": "bdf6deec1c48b6a05b01bf520f5e0af6e492894c9d7c347d85fc64de2396bf80"
+  },
+  "proposed_primary_split": {
+    "source_inner_train_events": [
+      118, 130, 147, 174, 273, 275, 324, 417, 421, 427,
+      470, 492, 498, 502, 554, 555, 567,
+      1111004, 1111006, 1111009, 1111010, 1111011
+    ],
+    "source_inner_validation_events": [
+      267, 496, 497, 518, 1111005
+    ],
+    "source_inner_train_event_count": 22,
+    "source_inner_validation_event_count": 5,
+    "source_inner_train_sample_count": 19899,
+    "source_inner_validation_sample_count": 1563,
+    "source_inner_train_sample_percentage": 92.72,
+    "source_inner_validation_sample_percentage": 7.28,
+    "validation_strata_representation": {
+      "stratum_1_low_flood": {
+        "event_id": 518,
+        "flood_proportion": 0.0271857,
+        "sample_count": 306,
+        "perm_water_proportion": 0.0532698
+      },
+      "stratum_2_low_mid_flood": {
+        "event_id": 497,
+        "flood_proportion": 0.0685435,
+        "sample_count": 398,
+        "perm_water_proportion": 0.1446528
+      },
+      "stratum_3_mid_flood": {
+        "event_id": 496,
+        "flood_proportion": 0.1162950,
+        "sample_count": 21,
+        "perm_water_proportion": 0.0254477
+      },
+      "stratum_4_mid_high_flood": {
+        "event_id": 267,
+        "flood_proportion": 0.2327925,
+        "sample_count": 218,
+        "perm_water_proportion": 0.0845104
+      },
+      "stratum_5_high_flood": {
+        "event_id": 1111005,
+        "flood_proportion": 0.3286624,
+        "sample_count": 620,
+        "perm_water_proportion": 0.0681760
+      }
+    }
+  },
+  "sensitivity_alternative_split_not_selected": {
+    "source_inner_train_events": [
+      118, 130, 147, 174, 273, 275, 324, 417, 421, 427,
+      496, 498, 502, 554, 555, 567,
+      1111004, 1111005, 1111006, 1111009, 1111010, 1111011
+    ],
+    "source_inner_validation_events": [
+      267, 470, 492, 497, 518
+    ],
+    "source_inner_train_event_count": 22,
+    "source_inner_validation_event_count": 5,
+    "source_inner_validation_sample_count": 1618,
+    "note": "Alternative sensitivity candidate substituting Event 492 and Event 470; preserved for documentation, not selected as primary."
+  },
+  "tta_validation_events": [
+    279, 437, 520, 559, 1111003, 1111008
+  ],
+  "sealed_test_events": [
+    205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013
+  ],
+  "assertions": {
+    "train_val_disjoint": true,
+    "train_val_union_equals_27_source_events": true,
+    "tta_val_disjoint_from_source": true,
+    "sealed_test_disjoint_from_all": true
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "$schema_version": "1.0.0",
+  "description": "Final all-source deployment training config for Recipe R2 on all 27 source events (Seed 0).",
+  "execution_class": "ALL_SOURCE_TRAINING",
+  "scientific_result": true,
+  "launch_authorized": true,
+  "preparation_only": false,
+  "recipe_id": "R2",
+  "components": {
+    "m1_event_balance": true,
+    "m2_flood_aware_loss": true,
+    "m3_paired_augmentation": false
+  },
+  "run_id": "rst9_r2_snunet_all27_s0_v1",
+  "output_root": "outputs/robust_source_training/rst9/rst9_r2_snunet_all27_s0_v1",
+  "log_file": "logs/robust_source_training/rst9/rst9_r2_snunet_all27_s0_v1.log",
+  "fold_id": "all27",
+  "seed": 0,
+  "max_epochs": 16,
+  "device": "cuda:0",
+  "provenance_references": {
+    "fold_config_path": "configs/robust_source_training/rst1_event_folds_v1.json",
+    "fold_config_sha256": "2e1842b1bb9505ff770c5be454e57df6fb90b7560dd296b010d5e0904c3e8893",
+    "r0_spec_path": "configs/robust_source_training/rst1_matched_r0_spec_v1.json",
+    "r0_spec_sha256": "ea0bf12c2240e89102506a4fd31cfe8ad8d6e732b40cbdd0a104712888847bc7",
+    "frozen_recipe_path": "configs/robust_source_training/rst5_frozen_recipe_r2_v1.json",
+    "class_weights_path": "configs/robust_source_training/rst9_all27_class_weights_v1.json",
+    "class_weights_sha256": "0a1f38bb285c40b91ce15d8fe2c024523ce9b640fd2351ef79da514a184bda85"
+  },
+  "partition": {
+    "train_event_ids": [
+      118,
+      130,
+      147,
+      174,
+      267,
+      273,
+      275,
+      324,
+      417,
+      421,
+      427,
+      470,
+      492,
+      496,
+      497,
+      498,
+      502,
+      518,
+      554,
+      555,
+      567,
+      1111004,
+      1111005,
+      1111006,
+      1111009,
+      1111010,
+      1111011
+    ],
+    "evaluation_event_ids": [],
+    "rationale": "Final all-source deployment training: all 27 source events (21,462 patches); no evaluation events during training. Historical targets evaluated post-training only in Part B.",
+    "expected_train_sample_count": 21462,
+    "expected_eval_sample_count": 0
+  },
+  "training": {
+    "max_epochs": 16,
+    "micro_batch_size": 8,
+    "gradient_accumulation_steps": 4,
+    "effective_batch_size": 32,
+    "num_workers": 2
+  },
+  "architecture": {
+    "name": "SNUNet_ECAM",
+    "in_channels": 2,
+    "out_ch": 3,
+    "base_channel": 32
+  },
+  "optimization": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "weight_decay": 0.0
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "$schema_version": "1.0.0",
+  "created_at_utc": "2026-11-01T13:40:00Z",
+  "matrix_name": "ChangeGuard RST8 Full Three-Seed Architecture Replication Matrix (SiamUnet_diff Seeds 0, 1, 2)",
+  "backbone": "SiamUnet_diff",
+  "evaluated_recipes": [
+    "R0",
+    "R2"
+  ],
+  "confirmatory_folds": [
+    "confirmation_fold_a",
+    "confirmation_fold_b"
+  ],
+  "all_seeds": [
+    0,
+    1,
+    2
+  ],
+  "total_planned_physical_runs": 12,
+  "total_expected_event_rows": 108,
+  "summary": {
+    "physical_training_runs_count": 12,
+    "existing_completed_runs_count": 4,
+    "new_planned_runs_count": 8,
+    "total_event_result_rows_expected": 108,
+    "unique_evaluated_events_count": 18,
+    "runs_per_fold": 6,
+    "optimizer_steps_fold_a": 6656,
+    "optimizer_steps_fold_b": 7328
+  },
+  "cells": [
+    {
+      "cell_id": "rst8_siamdiff_folda_r0_s0",
+      "run_id": "rst8_r0_siamunet_diff_folda_s0_v1",
+      "recipe": "R0",
+      "fold": "confirmation_fold_a",
+      "seed": 0,
+      "config_path": "configs/robust_source_training/rst8_siamunet_diff/rst8_r0_siamunet_diff_folda_s0_v1.json",
+      "config_sha256": "9ec201cdc2ae08b1acb013d673a5592ac30dfbf812bf66c250c9b1faf5690ecb",
+      "assigned_gpu": 0,
+      "status": "EXISTING_COMPLETED_SCIENTIFIC_RUN"
+    },
+    {
+      "cell_id": "rst8_siamdiff_folda_r2_s0",
+      "run_id": "rst8_r2_siamunet_diff_folda_s0_v2",
+      "recipe": "R2",
+      "fold": "confirmation_fold_a",
+      "seed": 0,
+      "config_path": "configs/robust_source_training/rst8_siamunet_diff/rst8_r2_siamunet_diff_folda_s0_v2.json",
+      "config_sha256": "ffd6ad6615795bfe924439a2c701005ef3ce2aadb00616bd4cdcaf8b22ff7bb4",
+      "assigned_gpu": 1,
+      "status": "EXISTING_COMPLETED_SCIENTIFIC_RUN"
+    },
+    {
+      "cell_id": "rst8_siamdiff_foldb_r0_s0",
+      "run_id": "rst8_r0_siamunet_diff_foldb_s0_v2",
+      "recipe": "R0",
+      "fold": "confirmation_fold_b",
+      "seed": 0,
+      "config_path": "configs/robust_source_training/rst8_siamunet_diff/rst8_r0_siamunet_diff_foldb_s0_v2.json",
+      "config_sha256": "c364380ab204b253619bdd2ecf3868506470c4619582d3c846be8806cf69b137",
+      "assigned_gpu": 2,
+      "status": "EXISTING_COMPLETED_SCIENTIFIC_RUN"
+    },
+    {
+      "cell_id": "rst8_siamdiff_foldb_r2_s0",
+      "run_id": "rst8_r2_siamunet_diff_foldb_s0_v2",
+      "recipe": "R2",
+      "fold": "confirmation_fold_b",
+      "seed": 0,
+      "config_path": "configs/robust_source_training/rst8_siamunet_diff/rst8_r2_siamunet_diff_foldb_s0_v2.json",
+      "config_sha256": "b4fdadc69bc117d794ba8ef2de1997d7e16d90bdda88868a421e34ccb400907c",
+      "assigned_gpu": 3,
+      "status": "EXISTING_COMPLETED_SCIENTIFIC_RUN"
+    },
+    {
+      "cell_id": "rst8_siamdiff_folda_r0_s1",
+      "run_id": "rst8_r0_siamunet_diff_folda_s1_v1",
+      "recipe": "R0",
+      "fold": "confirmation_fold_a",
+      "seed": 1,
+      "config_path": "configs/robust_source_training/rst8_siamunet_diff/rst8_r0_siamunet_diff_folda_s1_v1.json",
+      "config_sha256": "e40b005152079c16b20f32fa48d382b81cf69cea7637cc938fdbf68d30bd6924",
+      "assigned_gpu": 0,
+      "queue_position": 1,
+      "status": "NEW_PLANNED"
+    },
+    {
+      "cell_id": "rst8_siamdiff_folda_r0_s2",
+      "run_id": "rst8_r0_siamunet_diff_folda_s2_v1",
+      "recipe": "R0",
+      "fold": "confirmation_fold_a",
+      "seed": 2,
+      "config_path": "configs/robust_source_training/rst8_siamunet_diff/rst8_r0_siamunet_diff_folda_s2_v1.json",
+      "config_sha256": "48db09c876dd9a7433c780551090d70089d44c8862966798455d8b73b32bde33",
+      "assigned_gpu": 0,
+      "queue_position": 2,
+      "status": "NEW_PLANNED"
+    },
+    {
+      "cell_id": "rst8_siamdiff_folda_r2_s1",
+      "run_id": "rst8_r2_siamunet_diff_folda_s1_v1",
+      "recipe": "R2",
+      "fold": "confirmation_fold_a",
+      "seed": 1,
+      "config_path": "configs/robust_source_training/rst8_siamunet_diff/rst8_r2_siamunet_diff_folda_s1_v1.json",
+      "config_sha256": "a6a2c689dc1b09d8866e5fcd479b517280251ff0a76bdf1012078879a89ade26",
+      "assigned_gpu": 1,
+      "queue_position": 1,
+      "status": "NEW_PLANNED"
+    },
+    {
+      "cell_id": "rst8_siamdiff_folda_r2_s2",
+      "run_id": "rst8_r2_siamunet_diff_folda_s2_v1",
+      "recipe": "R2",
+      "fold": "confirmation_fold_a",
+      "seed": 2,
+      "config_path": "configs/robust_source_training/rst8_siamunet_diff/rst8_r2_siamunet_diff_folda_s2_v1.json",
+      "config_sha256": "13057341ecd09b2f63351d32d02ae899778075abb28030591799d6649efe3c4b",
+      "assigned_gpu": 1,
+      "queue_position": 2,
+      "status": "NEW_PLANNED"
+    },
+    {
+      "cell_id": "rst8_siamdiff_foldb_r0_s1",
+      "run_id": "rst8_r0_siamunet_diff_foldb_s1_v1",
+      "recipe": "R0",
+      "fold": "confirmation_fold_b",
+      "seed": 1,
+      "config_path": "configs/robust_source_training/rst8_siamunet_diff/rst8_r0_siamunet_diff_foldb_s1_v1.json",
+      "config_sha256": "e0a9921b2762b16318a50dd77afde03155a900f1c106ac25e6509c0b787761b3",
+      "assigned_gpu": 2,
+      "queue_position": 1,
+      "status": "NEW_PLANNED"
+    },
+    {
+      "cell_id": "rst8_siamdiff_foldb_r0_s2",
+      "run_id": "rst8_r0_siamunet_diff_foldb_s2_v1",
+      "recipe": "R0",
+      "fold": "confirmation_fold_b",
+      "seed": 2,
+      "config_path": "configs/robust_source_training/rst8_siamunet_diff/rst8_r0_siamunet_diff_foldb_s2_v1.json",
+      "config_sha256": "122df40f82df2f0201a2b55489ae97c4d1ba7532ee383abcfecc74ba5b257634",
+      "assigned_gpu": 2,
+      "queue_position": 2,
+      "status": "NEW_PLANNED"
+    },
+    {
+      "cell_id": "rst8_siamdiff_foldb_r2_s1",
+      "run_id": "rst8_r2_siamunet_diff_foldb_s1_v1",
+      "recipe": "R2",
+      "fold": "confirmation_fold_b",
+      "seed": 1,
+      "config_path": "configs/robust_source_training/rst8_siamunet_diff/rst8_r2_siamunet_diff_foldb_s1_v1.json",
+      "config_sha256": "95627907f43f7a209c4bac28c69a74a756b2a5226ec9aacdd3a3bbcb62497c52",
+      "assigned_gpu": 3,
+      "queue_position": 1,
+      "status": "NEW_PLANNED"
+    },
+    {
+      "cell_id": "rst8_siamdiff_foldb_r2_s2",
+      "run_id": "rst8_r2_siamunet_diff_foldb_s2_v1",
+      "recipe": "R2",
+      "fold": "confirmation_fold_b",
+      "seed": 2,
+      "config_path": "configs/robust_source_training/rst8_siamunet_diff/rst8_r2_siamunet_diff_foldb_s2_v1.json",
+      "config_sha256": "b1a35c154423a0f2681f843de06e41522bb36e1aa243bcb8144fcd870517218b",
+      "assigned_gpu": 3,
+      "queue_position": 2,
+      "status": "NEW_PLANNED"
+    }
+  ]
+}

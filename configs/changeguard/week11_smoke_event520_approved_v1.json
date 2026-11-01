@@ -1,0 +1,154 @@
+{
+  "_comment": "ChangeGuard Week 11 Real-Data Smoke Configuration (APPROVED FOR EXECUTION)",
+  "protocol_version": "week11_real_smoke_event520_approved_v1",
+  "status": "APPROVED_FOR_REAL_DATA_SMOKE",
+  "created_at_utc": "2026-10-18T23:55:00Z",
+  "approval_status": "APPROVED_FOR_EXECUTION",
+  "execution_authorizations": {
+    "real_data_execution_authorized": true,
+    "gpu_execution_authorized": true
+  },
+  "model": {
+    "architecture": "SNUNet_ECAM",
+    "in_channels": 2,
+    "num_classes": 3,
+    "base_channel": 32,
+    "input_channels": ["VV", "VH"],
+    "canonical_preevent": "pre_event_2",
+    "precision": "fp32"
+  },
+  "source_checkpoints": {
+    "training_commit": "6c63a5f8aa7ae2c608b145f0badc84b422b62ef1",
+    "seeds": {
+      "0": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f"
+      }
+    }
+  },
+  "dataset": {
+    "dataset_root": "../datasets/KuroSiwo",
+    "manifest_path": "../third_party/KuroSiwo/pickle/KuroV2_grid_dict_test_0_100.gz",
+    "sar_mean": [0.0953, 0.0264],
+    "sar_std": [0.0427, 0.0215],
+    "sar_clamp_max": 0.15,
+    "canonical_preevent": "pre_event_2",
+    "target_events": [520],
+    "development_events": [279, 437, 520, 559, 1111003, 1111008],
+    "forbidden_sealed_test_events": [
+      205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013
+    ],
+    "mask_provenance": {
+      "sar_valid_mask_component": "MK0_MNA",
+      "sar_valid_mask_description": "Binary sensory raster recording physical SAR observation validity (1=valid, 0=nodata). Strictly independent of ground-truth labels.",
+      "label_component": "MK0_MLU",
+      "label_description": "Ground truth annotation raster (3=unannotated/invalid, 2=flood, 0,1=other land cover).",
+      "adaptation_mask_policy": "strictly_sar_valid_mask_only",
+      "adaptation_mask_definition": "valid = (MK0_MNA == 1). Strictly NO ground-truth labels and NO label-3 exclusion during adaptation.",
+      "offline_evaluation_mask_policy": "double_masking",
+      "offline_evaluation_mask_definition": "valid = (MK0_MNA == 1) & (MK0_MLU != 3). Strictly evaluated offline on frozen predictions."
+    }
+  },
+  "smoke_specification": {
+    "purpose": "Bounded real-data execution smoke check prior to formal evaluation",
+    "checkpoint_seed": 0,
+    "stream_order": "order_a",
+    "event_id": 520,
+    "reset_mode": "reset_per_event",
+    "max_samples": 50,
+    "sample_selection_rule": "deterministic_sorted_sample_id_ascending_head_50",
+    "expected_batches": [16, 16, 16, 2],
+    "tail_batch_handling": "process_as_is"
+  },
+  "trainable_scope": {
+    "target": "batchnorm_affine_only",
+    "parameters": ["weight", "bias"],
+    "non_bn_frozen": true
+  },
+  "batchnorm_policy": {
+    "source_branch": "eval_mode_frozen_running_stats",
+    "candidate_branch": {
+      "bn_module_mode": "train_mode",
+      "track_running_stats": false,
+      "running_mean": null,
+      "running_var": null,
+      "non_bn_modules_mode": "eval_mode"
+    }
+  },
+  "adaptation_hyperparameters": {
+    "optimizer": "sgd",
+    "learning_rate": 0.000125,
+    "momentum": 0.9,
+    "weight_decay": 0.0,
+    "batch_size": 16,
+    "steps_per_batch": 1,
+    "source_anchor_loss": false,
+    "ema_teacher": false,
+    "sam": false,
+    "controller": false
+  },
+  "consistency_views": {
+    "weak": {
+      "transform": "identity"
+    },
+    "strong": {
+      "transform": "horizontal_flip_both_temporal_inputs_and_sensory_mask",
+      "spatial_realignment": "horizontal_flip_inversion"
+    },
+    "confidence_masking": {
+      "threshold": 0.90,
+      "intersect_with_sensory_valid": true,
+      "empty_selection_policy": "skip_optimizer_update"
+    },
+    "loss": {
+      "type": "one_way_kl_divergence",
+      "weak_detached": true,
+      "reduction": "mean_over_selected_pixels"
+    }
+  },
+  "evidence_timing": {
+    "primary_batch_prediction": "untransformed_pre_update_candidate",
+    "sensory_valid_entropy": "pre_update",
+    "max_confidence": "pre_update",
+    "source_candidate_disagreement": "pre_update",
+    "primary_null_score_probes": "post_update"
+  },
+  "risk_evidence_recording": {
+    "gating_active": false,
+    "indicators": {
+      "sensory_valid_normalized_entropy": {
+        "formula": "-sum(p * ln(p + 1e-12)) / (valid_pixels * ln(3))",
+        "timing": "pre_update"
+      },
+      "max_confidence": {
+        "formula": "mean(max_c(p))_on_valid_pixels",
+        "timing": "pre_update"
+      },
+      "source_candidate_disagreement": {
+        "formula": "fraction_of_differing_argmax_classes_on_valid_pixels_between_source_and_pre_update_candidate",
+        "timing": "pre_update"
+      },
+      "primary_null_score": {
+        "probe_pairs": ["(pre2, pre2)", "(post, post)"],
+        "formula": "0.5 * (max(0, cand_pre2 - src_pre2) + max(0, cand_post - src_post))",
+        "timing": "post_update",
+        "bn_context_recorded": true,
+        "isolation": "strict_state_and_rng_preservation"
+      },
+      "erasure_expansion_family": {
+        "status": "DEFERRED"
+      }
+    }
+  },
+  "outputs": {
+    "root_dir": "outputs/week11_real_smoke",
+    "smoke_dir": "outputs/week11_real_smoke/approved_smoke_event520_v1",
+    "manifest_json": "smoke_manifest.json",
+    "event_metrics_csv": "smoke_event_metrics.csv",
+    "event_metrics_json": "smoke_event_metrics.json",
+    "step_records_csv": "smoke_step_records.csv",
+    "step_records_json": "smoke_step_records.json",
+    "summary_json": "smoke_summary.json",
+    "log_dir": "logs/week11_real_smoke/approved_smoke_event520_v1"
+  }
+}

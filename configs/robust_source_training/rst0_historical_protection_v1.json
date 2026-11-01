@@ -1,0 +1,177 @@
+{
+  "$schema_version": "1.0.0",
+  "created_at_utc": "2026-10-26T10:32:00Z",
+  "repository": {
+    "name": "ChangeGuard",
+    "root": "/usr1/home/s126mdg22_06/FYP_SARCD/ChangeGuard",
+    "branch": "main",
+    "transition_git_head": "904f3559513638c97cc28ea62c32be75b8a3f300"
+  },
+  "authoritative_e0_e11_documents": [
+    "docs/e11_final_test_closeout.md",
+    "docs/e11_final_scientific_conclusions.md",
+    "docs/e11_paper_manuscript_draft.md",
+    "docs/e11_gate_t_authorization_amendment_v1.md",
+    "docs/e11_gate_t_checklist_v2_authorized.md",
+    "docs/e10_robustness_closeout.md",
+    "docs/research_integrity_protocol.md",
+    "docs/MASTER_EXECUTION_PLAN_V3.md",
+    "PROJECT_PROPOSAL.md"
+  ],
+  "authoritative_e0_e11_output_roots": [
+    "outputs/e11_final_test_v1",
+    "outputs/week5_source_all27",
+    "outputs/e10_second_backbone",
+    "outputs/e10_synthetic_shift",
+    "outputs/e8_cross_event",
+    "outputs/e7_branch_c_empirical",
+    "outputs/e6_cotta_compat",
+    "outputs/e4_class_interventions",
+    "outputs/e3_source_anchor",
+    "outputs/e2_confidence_augmentation",
+    "outputs/e1_matched_baselines",
+    "outputs/e0_contracts"
+  ],
+  "protected_historical_roots": {
+    "config_roots": [
+      "configs/changeguard",
+      "configs/evaluation",
+      "configs/reference",
+      "configs/source",
+      "configs/splits"
+    ],
+    "log_roots": [
+      "logs/e0_contracts",
+      "logs/e1_matched_baselines",
+      "logs/e2_confidence_augmentation",
+      "logs/e3_source_anchor",
+      "logs/e4_class_interventions",
+      "logs/e6_cotta_compat",
+      "logs/e7_branch_c_empirical",
+      "logs/e8_cross_event",
+      "logs/e10_second_backbone",
+      "logs/e10_synthetic_shift",
+      "logs/e11_final_test_v1",
+      "logs/week5_source_all27"
+    ],
+    "output_roots": [
+      "outputs/e0_contracts",
+      "outputs/e1_matched_baselines",
+      "outputs/e2_confidence_augmentation",
+      "outputs/e3_source_anchor",
+      "outputs/e4_class_interventions",
+      "outputs/e6_cotta_compat",
+      "outputs/e7_branch_c_empirical",
+      "outputs/e8_cross_event",
+      "outputs/e10_second_backbone",
+      "outputs/e10_synthetic_shift",
+      "outputs/e11_final_test_v1",
+      "outputs/week5_source_all27"
+    ]
+  },
+  "historical_source_checkpoints": [
+    {
+      "architecture": "SNUNet_ECAM",
+      "seed": 0,
+      "epoch": 16,
+      "path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+      "sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f",
+      "provenance_status": "VERIFIED_AUTHORITATIVE"
+    },
+    {
+      "architecture": "SNUNet_ECAM",
+      "seed": 1,
+      "epoch": 16,
+      "path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed1_v1_fp32/final_checkpoint.pt",
+      "sha256": "72c4be7856fe4bb06560d61d3ab8e72780e81fdff84660f8dadfe2f8bd385d7a",
+      "provenance_status": "VERIFIED_AUTHORITATIVE"
+    },
+    {
+      "architecture": "SNUNet_ECAM",
+      "seed": 2,
+      "epoch": 16,
+      "path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed2_v1_fp32/final_checkpoint.pt",
+      "sha256": "0d403d4e8885b8b64c99fc76850be6bf324b65f2d5474e2dcb7e72f22c03fedd",
+      "provenance_status": "VERIFIED_AUTHORITATIVE"
+    },
+    {
+      "architecture": "SiamUnet_diff",
+      "seed": 0,
+      "epoch": 5,
+      "path": "outputs/e10_second_backbone/all27_seed0/final_checkpoint.pt",
+      "sha256": "8e23da9a4d5f1ad01889075d6c98a7197ce295f77ea8d377f1ef26ac814b1532",
+      "provenance_status": "VERIFIED_AUTHORITATIVE"
+    },
+    {
+      "architecture": "SiamUnet_diff",
+      "seed": 1,
+      "epoch": 5,
+      "path": "outputs/e10_second_backbone/all27_seed1/final_checkpoint.pt",
+      "sha256": "a92f52153fda9e966d8f8e5ffe5d92c36783d1323d44a0c855d6464ae63e60ea",
+      "provenance_status": "VERIFIED_AUTHORITATIVE"
+    },
+    {
+      "architecture": "SiamUnet_diff",
+      "seed": 2,
+      "epoch": 5,
+      "path": "outputs/e10_second_backbone/all27_seed2/final_checkpoint.pt",
+      "sha256": "d96bb4e8d74b6e7d0163129d8990769f5e1650ed9d744cafa2a291638b251aab",
+      "provenance_status": "VERIFIED_AUTHORITATIVE"
+    }
+  ],
+  "authoritative_split_and_config_hashes": [
+    {
+      "path": "configs/splits/kuro_source_all27_split_v1.json",
+      "sha256": "601b21c81f7f1e26984fe6507a1532dbfa373d72b29346103fb5f0a1ac38d5e1",
+      "status": "FROZEN_AUTHORITATIVE"
+    },
+    {
+      "path": "configs/kuro_event_split.json",
+      "sha256": "fbf30fe0bab7b90c468aaf0fbdab7960a5cf76dd49dfb3ca51f1e01668fba85f",
+      "status": "FROZEN_AUTHORITATIVE"
+    },
+    {
+      "path": "configs/changeguard/e11_final_test_matrix_v2_authorized.json",
+      "sha256": "1848fa1d6f9172abae5457cad2469f0cecc53166627342672d39b006e952df39",
+      "status": "FROZEN_AUTHORITATIVE"
+    },
+    {
+      "path": "configs/changeguard/e11_final_test_ledger_v2_authorized.json",
+      "sha256": "7a046b829c6fc88fd4184306a7f68ee9c8d44e1bd1be1a0e20d3a8dcd247dfe8",
+      "status": "FROZEN_AUTHORITATIVE"
+    }
+  ],
+  "previously_observed_events": {
+    "historical_development_events": [
+      279,
+      437,
+      520,
+      559,
+      1111003,
+      1111008
+    ],
+    "historical_former_test_events": [
+      205,
+      277,
+      321,
+      411,
+      445,
+      561,
+      562,
+      1111002,
+      1111007,
+      1111013
+    ],
+    "status": "PREVIOUSLY_OBSERVED",
+    "prohibition_boundary": "Prohibited from method development, component selection, loss selection, augmentation selection, epoch selection, checkpoint selection, promotion decisions, and hyperparameter tuning during RST0 through RST8.",
+    "rst9_permission_boundary": "Authorized solely under the separately frozen RST9 historical-target extension, where all 16 events must be explicitly reported as previously observed and non-pristine."
+  },
+  "rst0_integrity_statement": {
+    "raster_access_performed": false,
+    "label_access_performed": false,
+    "training_runs_launched": 0,
+    "evaluation_runs_launched": 0,
+    "smoke_runs_launched": 0,
+    "statement": "RST0 performed strictly administrative route transition, historical protection recording, data boundary freezing, and namespace specification. Zero SAR rasters or ground-truth labels were loaded, inspected, or queried, and zero compute runs were launched."
+  }
+}

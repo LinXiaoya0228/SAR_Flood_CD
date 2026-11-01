@@ -1,0 +1,5 @@
+recipe_id,components,macro_f1,precision,recall,iou,worst_event_f1,bottom3_mean_f1,delta_f1_vs_r0,delta_bottom3_vs_r0,evidence_status
+R0,None (Matched Baseline),0.763134,0.771665,0.779724,0.644164,0.419705,0.562984,0.0,0.0,"Discovery (Seed 0, Group C, 9 events)"
+R1,M1 (Event Balance),0.756085,0.820078,0.730677,0.639089,0.325309,0.542608,-0.007049,-0.020375,"Discovery (Seed 0, Group C, 9 events)"
+R2,M1 (Event Balance) + M2 (Class Weights),0.765146,0.830619,0.731456,0.643778,0.413698,0.586891,0.002012,0.023907,"Discovery (Seed 0, Group C, 9 events)"
+R3,M1 (Event Balance) + M2 (Class Weights) + M3 (SAR Aug),0.769657,0.81913,0.739951,0.647546,0.481716,0.58243,0.006523,0.019446,"Discovery (Seed 0, Group C, 9 events)"

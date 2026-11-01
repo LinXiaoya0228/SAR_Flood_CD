@@ -1,0 +1,16 @@
+{
+  "$schema_version": "1.0.0",
+  "recipe_id": "siam_diff_screen_recipe_a",
+  "architecture": "SiamUnet_diff",
+  "mode": "source_inner_screen",
+  "seed": 0,
+  "learning_rate": 0.001,
+  "weight_decay": 0.0,
+  "max_epochs": 10,
+  "effective_batch_size": 32,
+  "microbatch_size": 16,
+  "split_path": "configs/splits/kuro_source_inner_split_v1.json",
+  "output_directory": "outputs/e10_second_backbone/screen_recipe_a",
+  "description": "Recipe A screening: lr=1e-3, 10 epochs, effective batch 32 (microbatch 16, accum 2)."
+}
+

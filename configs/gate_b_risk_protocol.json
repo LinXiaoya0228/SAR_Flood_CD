@@ -1,0 +1,57 @@
+{
+  "protocol_version": "gate_b_risk_v1",
+  "created_at": "2026-10-02T21:18:00+08:00",
+  "method": "tent",
+  "learning_rate": 0.0001,
+  "seeds": [0, 1, 2],
+  "validation_event_ids": [279, 437, 520, 559, 1111003, 1111008],
+  "sealed_test_event_ids": [205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013],
+  "checkpoint_path": "/usr1/home/s126mdg22_06/FYP_SARCD/ChangeGuard/checkpoints/kuro_snunet_official.pt",
+  "checkpoint_sha256": "6c6bcb78d956f9d139743eb5bc44cf8e14528b643f9cbf5f4478f4e321a609ed",
+  "dataset_root": "/usr1/home/s126mdg22_06/FYP_SARCD/datasets/KuroSiwo",
+  "manifest_path": "/usr1/home/s126mdg22_06/FYP_SARCD/third_party/KuroSiwo/pickle/KuroV2_grid_dict_test_0_100.gz",
+  "canonical_preevent": "pre_event_2",
+  "preprocessing_version": "kuro_dem_sanitize_v1",
+  "batch_size": 16,
+  "optimizer": {
+    "type": "Adam",
+    "lr": 0.0001,
+    "betas": [0.9, 0.999],
+    "weight_decay": 0.0
+  },
+  "adaptation_scope": "BatchNorm affine parameters (weight, bias) only; all other parameters frozen",
+  "reset_policy": "Episodic exact restore to source state_dict and reinitialized optimizer before each event",
+  "prediction_timing": "Transductive online: adapt on current batch, predict on adapted state, accept candidate unconditionally",
+  "probing_isolation": "Probes execute in strict eval() mode under torch.no_grad(); pre- and post-probing bitwise equality verified",
+  "intermediate_feature_layer": {
+    "named_layer": "model.conv_final",
+    "input_channels": 128,
+    "rationale": "Fused multi-scale bi-temporal change representation immediately preceding class logit projection"
+  },
+  "spatial_augmentation": {
+    "type": "horizontal_flip",
+    "rationale": "Label-free exact invertible spatial transform without unvalidated SAR radiometric distortion"
+  },
+  "null_probes": {
+    "primary_counterfactual": ["pre2", "pre2"],
+    "secondary_identical": [["pre1", "pre1"], ["post", "post"]],
+    "auxiliary_stability": ["pre1", "pre2"]
+  },
+  "predeclared_composite_score": {
+    "name": "predeclared_change_risk_score",
+    "formula": "0.5 * clip(max(0, null_pre2_pre2_area_increase) / (total_valid_pixels + 1.0), 0, 1) + 0.5 * clip(disappear_fraction_source_erased, 0, 1)",
+    "direction": "Higher indicates greater operational change-detection failure risk",
+    "range": [0.0, 1.0]
+  },
+  "offline_evaluation_outcomes": {
+    "primary_harm_delta_f1": -0.01,
+    "primary_beneficial_delta_f1": 0.01,
+    "sensitivity_thresholds_delta_f1": [0.0, -0.02, -0.10],
+    "sensitivity_descriptions": {
+      "any_negative_delta": "delta_f1 <= 0.0",
+      "severe_harm": "delta_f1 <= -0.02",
+      "extreme_collapse": "delta_f1 <= -0.10"
+    }
+  }
+}
+

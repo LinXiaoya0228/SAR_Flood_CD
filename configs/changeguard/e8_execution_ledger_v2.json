@@ -1,0 +1,68 @@
+{
+  "ledger_version": "e8_execution_ledger_v2_label_io_repair",
+  "status": "AUTHORIZED_PENDING_SMOKE_V3",
+  "created_at_utc": "2026-10-22T02:00:00Z",
+  "source_ledger_path": "configs/changeguard/e8_execution_ledger_v1.json",
+  "source_v1_artifact_status": "COMPUTATION COMPLETED, NOT CERTIFIED AS FORMAL EVIDENCE — EARLY GT DISK READ",
+  "scientific_settings_policy": "Inherit every method, checkpoint, seed, order, reset mode, event, batch-size and prediction-timing field from v1. Change only provenance and physical label-I/O mechanics.",
+  "matrix_cell_summary": {
+    "total_physical_streams": 69,
+    "certified_reused_physical_streams": 2,
+    "execute_new_physical_streams": 67,
+    "historical_uncertified_reruns": 55,
+    "cotta_v1_uncertified_reruns": 12,
+    "total_event_rows": 414,
+    "certified_reused_event_rows": 12,
+    "new_event_rows": 402
+  },
+  "certification_counts_for_57_v1_reuse_candidates": {
+    "CERTIFIED_POST_PERSISTENCE_GT_READ": 2,
+    "GT_PRELOADED_BUT_GUARDED — NOT CERTIFIED": 55,
+    "INSUFFICIENT EVIDENCE": 0,
+    "INCOMPATIBLE FOR E8": 0
+  },
+  "certification_by_family": [
+    {"method_family": "source_only", "total": 3, "certified": 1, "gt_preloaded_not_certified": 2},
+    {"method_family": "bn_no_update", "total": 6, "certified": 0, "gt_preloaded_not_certified": 6},
+    {"method_family": "adabn", "total": 12, "certified": 0, "gt_preloaded_not_certified": 12},
+    {"method_family": "tent", "total": 12, "certified": 1, "gt_preloaded_not_certified": 11},
+    {"method_family": "eata", "total": 12, "certified": 0, "gt_preloaded_not_certified": 12},
+    {"method_family": "sar", "total": 12, "certified": 0, "gt_preloaded_not_certified": 12}
+  ],
+  "certification_plan": {
+    "certified_reuse_status": "REUSE_CERTIFIED",
+    "certified_reuse_stream_ids": [
+      "source_only_frozen_running_stats_s0",
+      "tent_matched_pre_update_s0_oa_re"
+    ],
+    "default_historical_classification": "GT_PRELOADED_BUT_GUARDED — NOT CERTIFIED",
+    "stream_classifications": {
+      "source_only_frozen_running_stats_s0": "CERTIFIED_POST_PERSISTENCE_GT_READ",
+      "tent_matched_pre_update_s0_oa_re": "CERTIFIED_POST_PERSISTENCE_GT_READ"
+    }
+  },
+  "v2_execution": {
+    "output_root": "outputs/e8_confirmation_v2",
+    "log_path": "logs/e8_confirmation/e8_confirmation_v2.log",
+    "tmux_session": "cg_e8_confirmation_v2",
+    "required_prior_smoke": "e7_cotta_smoke_v3",
+    "launch_authorized": true,
+    "authorization_is_not_sufficient_without_smoke": true,
+    "zero_sealed_test_access": true,
+    "overwrite_allowed": false
+  },
+  "mandatory_launch_dependency": {
+    "smoke_config_path": "configs/changeguard/e7_cotta_smoke_v3.json",
+    "completion_artifact": "outputs/e7_cotta_smoke_v3/cotta_reset_s0_oa/completion_status.json",
+    "initial_manifest_artifact": "outputs/e7_cotta_smoke_v3/cotta_reset_s0_oa/initial_manifest.json",
+    "final_manifest_artifact": "outputs/e7_cotta_smoke_v3/cotta_reset_s0_oa/manifest.json",
+    "required_status": "COMPLETED",
+    "required_samples": 32,
+    "required_batches": 2,
+    "required_event_ids": [520],
+    "require_current_config_ledger_runner_adapter_checkpoint_hashes": true,
+    "require_post_persistence_label_audits": true,
+    "require_no_gt_adapter_inputs": true,
+    "require_zero_sealed_test_access": true
+  }
+}

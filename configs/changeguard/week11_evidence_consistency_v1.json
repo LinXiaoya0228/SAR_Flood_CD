@@ -1,0 +1,127 @@
+{
+  "_comment": "ChangeGuard Week 11 Evidence Consistency Configuration (APPROVED_FOR_CPU_IMPLEMENTATION)",
+  "protocol_version": "week11_evidence_consistency_v1",
+  "status": "APPROVED_FOR_CPU_IMPLEMENTATION",
+  "created_at_utc": "2026-10-18T21:35:00Z",
+  "execution_authorizations": {
+    "real_data_execution_authorized": false,
+    "gpu_execution_authorized": false
+  },
+  "calibration_mode": "U",
+  "model": {
+    "architecture": "SNUNet_ECAM",
+    "in_channels": 2,
+    "num_classes": 3,
+    "base_channel": 32,
+    "input_channels": ["VV", "VH"],
+    "canonical_preevent": "pre_event_2",
+    "precision": "fp32"
+  },
+  "source_checkpoints": {
+    "training_commit": "6c63a5f8aa7ae2c608b145f0badc84b422b62ef1",
+    "seeds": {
+      "0": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f"
+      },
+      "1": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed1_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "72c4be7856fe4bb06560d61d3ab8e72780e81fdff84660f8dadfe2f8bd385d7a"
+      },
+      "2": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed2_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "0d403d4e8885b8b64c99fc76850be6bf324b65f2d5474e2dcb7e72f22c03fedd"
+      }
+    }
+  },
+  "initial_exploratory_seed": 0,
+  "events": {
+    "development": [279, 437, 520, 559, 1111003, 1111008],
+    "quarantined_sealed_test": [205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013]
+  },
+  "trainable_scope": {
+    "target": "batchnorm_affine_only",
+    "parameters": ["weight", "bias"],
+    "non_bn_frozen": true
+  },
+  "batchnorm_policy": {
+    "source_branch": "eval_mode_frozen_running_stats",
+    "candidate_branch": {
+      "bn_module_mode": "train_mode",
+      "track_running_stats": false,
+      "running_mean": null,
+      "running_var": null,
+      "non_bn_modules_mode": "eval_mode"
+    }
+  },
+  "adaptation_hyperparameters": {
+    "optimizer": "sgd",
+    "learning_rate": 0.000125,
+    "momentum": 0.9,
+    "weight_decay": 0.0,
+    "batch_size": 16,
+    "steps_per_batch": 1,
+    "source_anchor_loss": false,
+    "ema_teacher": false,
+    "sam": false,
+    "controller": false
+  },
+  "consistency_views": {
+    "weak": {
+      "transform": "identity"
+    },
+    "strong": {
+      "transform": "horizontal_flip_both_temporal_inputs_and_sensory_mask",
+      "spatial_realignment": "horizontal_flip_inversion"
+    },
+    "confidence_masking": {
+      "threshold": 0.90,
+      "intersect_with_sensory_valid": true,
+      "empty_selection_policy": "skip_optimizer_update"
+    },
+    "loss": {
+      "type": "one_way_kl_divergence",
+      "weak_detached": true,
+      "reduction": "mean_over_selected_pixels"
+    }
+  },
+  "evidence_timing": {
+    "primary_batch_prediction": "untransformed_pre_update_candidate",
+    "sensory_valid_entropy": "pre_update",
+    "max_confidence": "pre_update",
+    "source_candidate_disagreement": "pre_update",
+    "primary_null_score_probes": "post_update"
+  },
+  "risk_evidence_recording": {
+    "gating_active": false,
+    "indicators": {
+      "sensory_valid_normalized_entropy": {
+        "formula": "-sum(p * ln(p + 1e-12)) / (valid_pixels * ln(3))",
+        "timing": "pre_update",
+        "direction_hypothesis": "higher_is_more_uncertain"
+      },
+      "max_confidence": {
+        "formula": "mean(max_c(p))_on_valid_pixels",
+        "timing": "pre_update"
+      },
+      "source_candidate_disagreement": {
+        "formula": "fraction_of_differing_argmax_classes_on_valid_pixels_between_source_and_pre_update_candidate",
+        "timing": "pre_update"
+      },
+      "primary_null_score": {
+        "probe_pairs": ["(pre2, pre2)", "(post, post)"],
+        "formula": "0.5 * (max(0, cand_pre2 - src_pre2) + max(0, cand_post - src_post))",
+        "timing": "post_update",
+        "bn_context_recorded": true,
+        "isolation": "strict_state_and_rng_preservation"
+      },
+      "erasure_expansion_family": {
+        "status": "DEFERRED"
+      }
+    }
+  },
+  "execution_guards": {
+    "fail_closed_if_real_data_unauthorized": true,
+    "cpu_budget_minutes": 15
+  }
+}

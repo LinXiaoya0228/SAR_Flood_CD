@@ -1,0 +1,17 @@
+name: sar_cd
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - numpy>=1.24.0,<2.0.0
+  - scipy>=1.10.0
+  - matplotlib>=3.8.0
+  - tqdm>=4.65.0
+  - pip:
+      - torch==2.4.1
+      - torchvision==0.19.1
+

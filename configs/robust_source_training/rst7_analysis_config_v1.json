@@ -1,0 +1,53 @@
+{
+  "$schema_version": "1.0.0",
+  "created_at_utc": "2026-10-28T09:15:00Z",
+  "analysis_name": "ChangeGuard RST7 Confirmatory Offline Analysis",
+  "decision_rule_reference": "configs/robust_source_training/rst5_confirmation_decision_rule_v1.json",
+  "runs": {
+    "fold_a": {
+      "r0": [
+        "outputs/robust_source_training/rst6/rst6_r0_snunet_folda_s0_v1",
+        "outputs/robust_source_training/rst6/rst6_r0_snunet_folda_s1_v1",
+        "outputs/robust_source_training/rst6/rst6_r0_snunet_folda_s2_v1"
+      ],
+      "r2": [
+        "outputs/robust_source_training/rst6/rst6_r2_snunet_folda_s0_v2",
+        "outputs/robust_source_training/rst6/rst6_r2_snunet_folda_s1_v2",
+        "outputs/robust_source_training/rst6/rst6_r2_snunet_folda_s2_v2"
+      ],
+      "evaluation_events": [118, 174, 273, 421, 496, 498, 554, 567, 1111009]
+    },
+    "fold_b": {
+      "r0": [
+        "outputs/robust_source_training/rst6/rst6_r0_snunet_foldb_s0_v1",
+        "outputs/robust_source_training/rst6/rst6_r0_snunet_foldb_s1_v1",
+        "outputs/robust_source_training/rst6/rst6_r0_snunet_foldb_s2_v1"
+      ],
+      "r2": [
+        "outputs/robust_source_training/rst6/rst6_r2_snunet_foldb_s0_v2",
+        "outputs/robust_source_training/rst6/rst6_r2_snunet_foldb_s1_v2",
+        "outputs/robust_source_training/rst6/rst6_r2_snunet_foldb_s2_v2"
+      ],
+      "evaluation_events": [267, 324, 417, 470, 502, 518, 555, 1111004, 1111010]
+    }
+  },
+  "forbidden_target_events": [205, 277, 279, 321, 411, 437, 445, 520, 559, 561, 562, 1111002, 1111003, 1111007, 1111008, 1111013],
+  "statistical_parameters": {
+    "bootstrap_resamples": 10000,
+    "bootstrap_seed": 42,
+    "confidence_interval_percentile": 95.0,
+    "resampling_unit": "unique_held_out_events"
+  },
+  "criteria_thresholds": {
+    "p1_min_grand_mean_delta": 0.010,
+    "p1_max_precision_drop": 0.050,
+    "p1_max_recall_drop": 0.050,
+    "p1_max_dual_drop_events": 4,
+    "p1_dual_drop_threshold": 0.030,
+    "p2_min_tail_delta": 0.020,
+    "p2_min_grand_mean_delta": -0.005,
+    "p3_min_sd_reduction_ratio": 0.20,
+    "p3_min_grand_mean_delta": -0.005
+  },
+  "output_directory": "outputs/robust_source_training/rst7"
+}

@@ -1,0 +1,30 @@
+{
+  "$schema_version": "1.0.0",
+  "status": "APPROVED_SECOND_BACKBONE_RECIPE_LOCK",
+  "approval_date": "2026-10-25",
+  "architecture": "SiamUnet_diff",
+  "selected_recipe": {
+    "recipe_id": "siam_diff_screen_recipe_a",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "effective_batch_size": 32,
+    "microbatch_size": 16,
+    "selected_epochs": 5,
+    "inner_validation_macro_f1": 0.7887757449027379,
+    "inner_validation_worst_f1": 0.7284423352050994,
+    "inner_validation_macro_iou": 0.6545776787112916,
+    "inner_validation_pooled_f1": 0.7944041902031088
+  },
+  "source_inner_screen_summary_path": "outputs/e10_second_backbone/screen_recipe_a/screen_summary.json",
+  "all_source_training_plan": {
+    "all_source_split_path": "configs/splits/kuro_source_all27_split_v1.json",
+    "seeds": [0, 1, 2],
+    "epochs_per_seed": 5,
+    "target_checkpoints": {
+      "seed_0": "outputs/e10_second_backbone/all27_seed0/final_checkpoint.pt",
+      "seed_1": "outputs/e10_second_backbone/all27_seed1/final_checkpoint.pt",
+      "seed_2": "outputs/e10_second_backbone/all27_seed2/final_checkpoint.pt"
+    }
+  }
+}
+

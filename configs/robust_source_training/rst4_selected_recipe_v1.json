@@ -1,0 +1,87 @@
+{
+  "$schema_version": "1.0.0",
+  "created_at_utc": "2026-10-26T14:55:00.000000+00:00",
+  "selected_recipe_id": "R2",
+  "decision_status": "RECIPE_R2_PROMOTED",
+  "provenance": {
+    "promotion_rule_path": "configs/robust_source_training/rst4_promotion_rule_v1.json",
+    "promotion_rule_sha256": "245e63af985665f1a30da786bb52024753fbbd018d16ced952912a177f5d438e",
+    "promotion_decision_path": "outputs/robust_source_training/rst4/analysis_v1/promotion_decision.json",
+    "promotion_decision_sha256": "f660e7296114abeb7287a70bf088d2a7c20a922c813844a0199a5d91c9aa1ebb",
+    "discovery_summary_csv": "outputs/robust_source_training/rst4/analysis_v1/discovery_recipe_summary.csv",
+    "discovery_summary_sha256": "7b01cac800528d1130fc0f39825b4ca56b745ae7c5744ddaaccb765e2e18a39f"
+  },
+  "components": {
+    "m1_event_balance": true,
+    "m2_flood_aware_loss": true,
+    "m3_paired_augmentation": false
+  },
+  "specification": {
+    "m1_event_balance": {
+      "strategy": "uniform_event_draw_with_local_replacement",
+      "samples_per_epoch": 14967,
+      "optimizer_steps_per_epoch": 468,
+      "micro_batch_size": 8,
+      "gradient_accumulation_steps": 4,
+      "effective_batch_size": 32,
+      "total_epochs": 16,
+      "total_optimizer_steps": 7488
+    },
+    "m2_flood_aware_loss": {
+      "loss_function": "ControlledSourceLoss",
+      "weight_scope": "cross_entropy_only",
+      "dice_weight": 1.0,
+      "ce_weight": 1.0,
+      "dice_is_unweighted": true,
+      "normalization_protocol": "raw = 1 / sqrt(max(p_c, 1e-12)); norm = raw / mean(raw); clipped = clip(norm, 0.5, 2.0); final = clipped / mean(clipped)",
+      "training_source_partition": "Groups A + B (18 events, 14967 patches)",
+      "total_valid_pixels": 737344057,
+      "pixel_counts": {
+        "class_0_background": 541515648,
+        "class_1_non_flooded": 114849271,
+        "class_2_flooded": 80979138
+      },
+      "class_proportions": {
+        "class_0_background": 0.7344138194488397,
+        "class_1_non_flooded": 0.15576077382245366,
+        "class_2_flooded": 0.10982540672870666
+      },
+      "final_class_weights": [
+        0.492271,
+        1.666056,
+        0.841673
+      ],
+      "weights_sha256": "1619bfdf0f717b738d4bf5cae51cbf074ff2f63b2a531c697dc2929305b0f62f"
+    },
+    "m3_paired_augmentation": {
+      "enabled": false,
+      "status": "EXCLUDED_BY_PARSIMONY_AND_PER_EVENT_RISK"
+    }
+  },
+  "promotion_rationale": {
+    "primary_eligibility_route": "Route D2 (Tail reliability improvement)",
+    "route_d2_delta_bottom_3_event_mean_f1": 0.023907,
+    "route_d2_threshold": 0.020,
+    "route_d2_delta_event_macro_f1": 0.002012,
+    "route_d2_macro_f1_floor": -0.005,
+    "parsimony_comparison": {
+      "top_candidate_recipe": "R3",
+      "top_candidate_macro_f1": 0.769657,
+      "selected_recipe": "R2",
+      "selected_recipe_macro_f1": 0.765146,
+      "macro_f1_difference": 0.004511,
+      "bandwidth_tolerance": 0.005,
+      "parsimony_order": ["R1", "R2", "R3"],
+      "justification": "R2 is within the 0.005 margin of R3 and satisfies Route D2 (+0.023907 tail gain). R2 avoids paired augmentation M3, which caused severe degradation on event 497 (-0.240461 F1 reduction from 0.832082 to 0.591621 in R3). R2 provides cleaner, lower-risk domain generalization with improved precision (+0.058954 over R0)."
+    }
+  },
+  "confirmatory_freeze_constraints": {
+    "re_tuning_permitted": false,
+    "forbidden_actions": [
+      "No re-tuning of weights, learning rate, schedule, or architecture on Groups A or B",
+      "No hyperparameter search during confirmatory training or evaluation",
+      "No access to 16 forbidden target events"
+    ],
+    "target_confirmatory_stage": "RST5"
+  }
+}

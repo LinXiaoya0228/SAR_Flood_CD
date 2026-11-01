@@ -1,0 +1,84 @@
+{
+  "$schema_version": "1.0.0",
+  "name": "RST3 Component Contract",
+  "description": "Frozen specification and staircasing contract for robust source training components M1, M2, and M3.",
+  "frozen_at_utc": "2026-10-26T11:25:00Z",
+  "proposal_reference": {
+    "path": "docs/ROBUST_SOURCE_TRAINING_PROPOSAL_V1.md",
+    "sha256": "fedb26a08e8ca581d35f5a6722ade1cf9813fb5eeb4db139fa4f9ea4e11fa495"
+  },
+  "staircase_recipes": {
+    "R0": {
+      "recipe_id": "R0",
+      "description": "Matched source baseline (identical to RST2)",
+      "m1_event_balance": false,
+      "m2_flood_aware_loss": false,
+      "m3_paired_augmentation": false
+    },
+    "R1": {
+      "recipe_id": "R1",
+      "description": "Event-balanced sampling enabled",
+      "m1_event_balance": true,
+      "m2_flood_aware_loss": false,
+      "m3_paired_augmentation": false
+    },
+    "R2": {
+      "recipe_id": "R2",
+      "description": "Event-balanced sampling and flood-aware loss enabled",
+      "m1_event_balance": true,
+      "m2_flood_aware_loss": true,
+      "m3_paired_augmentation": false
+    },
+    "R3": {
+      "recipe_id": "R3",
+      "description": "Full composite: event-balanced sampling, flood-aware loss, and paired SAR augmentation enabled",
+      "m1_event_balance": true,
+      "m2_flood_aware_loss": true,
+      "m3_paired_augmentation": true
+    }
+  },
+  "component_specs": {
+    "M1": {
+      "name": "event_balanced_sampling",
+      "semantics": "Epoch length equals N total eligible training samples; event identities sampled approximately uniformly across E training events; deterministic sample queue with recycling without replacement until exhausted.",
+      "epoch_draw_budget": "N_training_patches",
+      "min_draws_per_event": "floor(N / E)",
+      "max_draws_per_event": "ceil(N / E)"
+    },
+    "M2": {
+      "name": "training_only_flood_aware_loss",
+      "semantics": "Class weights computed solely from training-event valid pixels, applied to cross-entropy term only; macro soft-dice unchanged.",
+      "formula": "p_c = N_c / N_total; raw_w_c = 1 / sqrt(max(p_c, epsilon)); w_c = raw_w_c / mean(raw_w); w_c = clip(w_c, 0.5, 2.0); final_w_c = w_c / mean(w_c)",
+      "epsilon": 1e-12,
+      "clip_min": 0.5,
+      "clip_max": 2.0,
+      "loss_weights": {
+        "weight_ce": 0.5,
+        "weight_dice": 0.5
+      }
+    },
+    "M3": {
+      "name": "synchronized_paired_sar_augmentation",
+      "semantics": "Transforms operate on linear amplitude backscatter prior to clipping [0.0, 0.15] and standardization; synchronized across temporal pairs and polarizations.",
+      "geometric_transforms": {
+        "hflip_prob": 0.5,
+        "vflip_prob": 0.5,
+        "rotations_deg": [0, 90, 180, 270]
+      },
+      "radiometric_gain": {
+        "distribution": "uniform",
+        "min_gain": 0.95,
+        "max_gain": 1.05
+      },
+      "application_stage": "before_clipping_and_standardization",
+      "clipping_interval": [0.0, 0.15]
+    }
+  },
+  "invariants": {
+    "disjoint_switches": true,
+    "r0_parity_mandate": true,
+    "scientific_configs_staircase_only": ["R0", "R1", "R2", "R3"],
+    "zero_evaluation_event_leakage": true,
+    "zero_forbidden_event_access": true
+  }
+}

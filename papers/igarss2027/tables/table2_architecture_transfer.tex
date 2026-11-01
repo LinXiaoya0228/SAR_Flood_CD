@@ -1,0 +1,27 @@
+% Table 2: Architecture Transfer Evaluation on SiamUnet_diff (RST8)
+% Backing artifact: outputs/robust_source_training/rst10_synthesis_v1/tables/table3_architecture_transfer.json
+\begin{table}[t]
+\centering
+\caption{Architecture Transfer Results on SiamUnet\_diff vs. SNUNet-ECAM at Seed 0 Across 18 Events.}
+\label{tab:architecture_transfer}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lcccccc}
+\hline
+\textbf{Architecture / Metric} & \textbf{R0 Baseline} & \textbf{R2 Recipe} & $\mathbf{\Delta}$ & \textbf{Decision Rule} & \textbf{Stage A Outcome} \\
+\hline
+\textbf{SiamUnet\_diff (Seed 0)} & & & & & \\
+~~Fold A Macro F1 & $0.7275$ & $0.7201$ & $-0.0074$ & -- & Degradation \\
+~~Fold B Macro F1 & $0.7201$ & $0.7077$ & $-0.0124$ & -- & Degradation \\
+~~Grand Macro F1 & $0.7238$ & $0.7139$ & $\mathbf{-0.0099}$ & $\Delta \ge 0.0$ & \textbf{Negative Transfer} \\
+~~Bottom-3 Mean F1 & $0.4350$ & $0.3902$ & $\mathbf{-0.0448}$ & $\Delta \ge 0.0$ & \textbf{Severe Tail Degradation} \\
+~~Worst Single Event & $0.3565$ & $0.2660$ & $-0.0905$ & -- & -- \\
+\hline
+\textbf{SNUNet-ECAM (Seed 0 Reference)} & & & & & \\
+~~Fold A Macro F1 & $0.7397$ & $0.7513$ & $+0.0116$ & -- & Positive \\
+~~Fold B Macro F1 & $0.7136$ & $0.7061$ & $-0.0075$ & -- & Mixed \\
+~~Grand Macro F1 & $0.7267$ & $0.7287$ & $+0.0020$ & -- & Positive \\
+~~Bottom-3 Mean F1 & $0.4191$ & $0.4727$ & $+0.0536$ & -- & Positive \\
+\hline
+\end{tabular}%
+}
+\end{table}

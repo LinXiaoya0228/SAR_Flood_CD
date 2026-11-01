@@ -1,0 +1,108 @@
+{
+  "_comment": "ChangeGuard Plan V3 Work Package E2.1: Confidence Filter Grid Configuration",
+  "protocol_version": "e2_1_confidence_grid_v1",
+  "governing_document": "docs/MASTER_EXECUTION_PLAN_V3.md",
+  "work_package": "E2.1",
+  "created_at_utc": "2026-10-20T07:30:00Z",
+  "status": "LOCKED_FOR_EXECUTION",
+  "evidence_level": "COMPONENT_SCREENING",
+  "execution_authorizations": {
+    "real_data_execution_authorized": true,
+    "gpu_execution_authorized": true
+  },
+  "model": {
+    "architecture": "SNUNet_ECAM",
+    "in_channels": 2,
+    "num_classes": 3,
+    "base_channel": 32,
+    "input_channels": ["VV", "VH"],
+    "canonical_preevent": "pre_event_2",
+    "precision": "fp32"
+  },
+  "source_checkpoints": {
+    "training_commit": "6c63a5f8aa7ae2c608b145f0badc84b422b62ef1",
+    "seeds": {
+      "0": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f"
+      }
+    }
+  },
+  "dataset": {
+    "dataset_root": "../datasets/KuroSiwo",
+    "manifest_path": "../third_party/KuroSiwo/pickle/KuroV2_grid_dict_test_0_100.gz",
+    "sar_mean": [0.0953, 0.0264],
+    "sar_std": [0.0427, 0.0215],
+    "sar_clamp_max": 0.15,
+    "canonical_preevent": "pre_event_2",
+    "target_events": [279, 437, 520, 559, 1111003, 1111008],
+    "development_events": [279, 437, 520, 559, 1111003, 1111008],
+    "forbidden_sealed_test_events": [
+      205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013
+    ],
+    "mask_provenance": {
+      "sar_valid_mask_component": "MK0_MNA",
+      "sar_valid_mask_description": "Binary sensory raster recording physical SAR observation validity (1=valid, 0=nodata). Strictly independent of ground-truth labels.",
+      "label_component": "MK0_MLU",
+      "label_description": "Ground truth annotation raster (3=unannotated/invalid, 2=flood, 0,1=other land cover).",
+      "adaptation_mask_policy": "strictly_sar_valid_mask_only",
+      "adaptation_mask_definition": "valid = (MK0_MNA == 1). Strictly NO ground-truth labels and NO label-3 exclusion during adaptation.",
+      "offline_evaluation_mask_policy": "double_masking",
+      "offline_evaluation_mask_definition": "valid = (MK0_MNA == 1) & (MK0_MLU != 3). Strictly evaluated offline on frozen predictions."
+    }
+  },
+  "screening_specification": {
+    "checkpoint_seed": 0,
+    "stream_order": "order_a",
+    "event_sequence": [279, 437, 520, 559, 1111003, 1111008],
+    "within_event_ordering": "deterministic_sorted_sample_id_ascending",
+    "reset_mode": "reset_per_event",
+    "batch_size": 16,
+    "tail_batch_handling": "process_as_is",
+    "confidence_grid_cells": [
+      {
+        "cell_id": "E2_CONF_NONE",
+        "name": "Weak-Strong Consistency (No Confidence Filter)",
+        "threshold": 0.0,
+        "description": "All sensory-valid pixels included in one-way KL consistency loss; no confidence filtering."
+      },
+      {
+        "cell_id": "E2_CONF_70",
+        "name": "Weak-Strong Consistency (Confidence >= 0.70)",
+        "threshold": 0.70,
+        "description": "Confidence threshold tau=0.70 on max weak probability over sensory-valid pixels."
+      },
+      {
+        "cell_id": "E2_CONF_90",
+        "name": "Weak-Strong Consistency (Confidence >= 0.90, Primary Reference)",
+        "threshold": 0.90,
+        "description": "Predefined primary reference: confidence threshold tau=0.90 on max weak probability."
+      },
+      {
+        "cell_id": "E2_CONF_95",
+        "name": "Weak-Strong Consistency (Confidence >= 0.95)",
+        "threshold": 0.95,
+        "description": "Confidence threshold tau=0.95 on max weak probability over sensory-valid pixels."
+      }
+    ]
+  },
+  "adaptation_hyperparameters": {
+    "optimizer": "sgd",
+    "learning_rate": 0.000125,
+    "momentum": 0.9,
+    "weight_decay": 0.0,
+    "batch_size": 16,
+    "steps_per_batch": 1,
+    "trainable_scope": "batchnorm_affine_only",
+    "non_bn_frozen": true
+  },
+  "evidence_timing": {
+    "primary_batch_prediction": "untransformed_pre_update_candidate",
+    "disagreement": "pre_update"
+  },
+  "outputs": {
+    "root_dir": "outputs/e2_confidence_grid",
+    "experiment_dir": "outputs/e2_confidence_grid/v1"
+  }
+}
+

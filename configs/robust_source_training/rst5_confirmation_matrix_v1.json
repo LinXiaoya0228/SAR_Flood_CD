@@ -1,0 +1,183 @@
+{
+  "$schema_version": "1.0.0",
+  "created_at_utc": "2026-10-27T03:00:00Z",
+  "summary": {
+    "methods_count": 2,
+    "methods": [
+      "R0",
+      "R2"
+    ],
+    "folds_count": 2,
+    "folds": [
+      "confirmation_fold_a",
+      "confirmation_fold_b"
+    ],
+    "seeds_count": 3,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "physical_training_runs_count": 12,
+    "unique_confirmatory_evaluation_events_count": 18,
+    "total_event_result_rows_expected": 108
+  },
+  "runs": [
+    {
+      "run_id": "rst6_r0_snunet_folda_s0_v1",
+      "recipe_id": "R0",
+      "fold_id": "confirmation_fold_a",
+      "seed": 0,
+      "planned_gpu": "cuda:0",
+      "config_path": "configs/robust_source_training/rst5_confirmation/rst6_r0_snunet_folda_s0_v1.json",
+      "config_sha256": "8f764d71c3bf8f34155d8db464d051c59cb3a0b9b8ef62aeb73bb9ae507ec8c7",
+      "expected_train_patches": 13302,
+      "expected_eval_patches": 8160,
+      "expected_eval_events_count": 9,
+      "expected_optimizer_steps": 6656
+    },
+    {
+      "run_id": "rst6_r0_snunet_folda_s1_v1",
+      "recipe_id": "R0",
+      "fold_id": "confirmation_fold_a",
+      "seed": 1,
+      "planned_gpu": "cuda:1",
+      "config_path": "configs/robust_source_training/rst5_confirmation/rst6_r0_snunet_folda_s1_v1.json",
+      "config_sha256": "5fd56d02ffeef3bc5ac3d531dbdfd2f82da4a56467848808f5f239e443c55441",
+      "expected_train_patches": 13302,
+      "expected_eval_patches": 8160,
+      "expected_eval_events_count": 9,
+      "expected_optimizer_steps": 6656
+    },
+    {
+      "run_id": "rst6_r0_snunet_folda_s2_v1",
+      "recipe_id": "R0",
+      "fold_id": "confirmation_fold_a",
+      "seed": 2,
+      "planned_gpu": "cuda:2",
+      "config_path": "configs/robust_source_training/rst5_confirmation/rst6_r0_snunet_folda_s2_v1.json",
+      "config_sha256": "171c66eca11ea03a7cc9817a6242a2d35855e2525ce8532ea3786aad24ebedc7",
+      "expected_train_patches": 13302,
+      "expected_eval_patches": 8160,
+      "expected_eval_events_count": 9,
+      "expected_optimizer_steps": 6656
+    },
+    {
+      "run_id": "rst6_r2_snunet_folda_s0_v1",
+      "recipe_id": "R2",
+      "fold_id": "confirmation_fold_a",
+      "seed": 0,
+      "planned_gpu": "cuda:3",
+      "config_path": "configs/robust_source_training/rst5_confirmation/rst6_r2_snunet_folda_s0_v1.json",
+      "config_sha256": "25fe60dea00e3c3c0c9730ab9e1e77f812edf0df82501abc756b85abf0ef4378",
+      "expected_train_patches": 13302,
+      "expected_eval_patches": 8160,
+      "expected_eval_events_count": 9,
+      "expected_optimizer_steps": 6656
+    },
+    {
+      "run_id": "rst6_r2_snunet_folda_s1_v1",
+      "recipe_id": "R2",
+      "fold_id": "confirmation_fold_a",
+      "seed": 1,
+      "planned_gpu": "cuda:0",
+      "config_path": "configs/robust_source_training/rst5_confirmation/rst6_r2_snunet_folda_s1_v1.json",
+      "config_sha256": "b35b461234ea88c1a9c9e1ba5106eaa1b4a774dff6867c80d1954390d98e2fe2",
+      "expected_train_patches": 13302,
+      "expected_eval_patches": 8160,
+      "expected_eval_events_count": 9,
+      "expected_optimizer_steps": 6656
+    },
+    {
+      "run_id": "rst6_r2_snunet_folda_s2_v1",
+      "recipe_id": "R2",
+      "fold_id": "confirmation_fold_a",
+      "seed": 2,
+      "planned_gpu": "cuda:1",
+      "config_path": "configs/robust_source_training/rst5_confirmation/rst6_r2_snunet_folda_s2_v1.json",
+      "config_sha256": "d5a3a481810ebbc61b76bacfbe3380cb6d9cc022482bf336f290ddbd40a10f4d",
+      "expected_train_patches": 13302,
+      "expected_eval_patches": 8160,
+      "expected_eval_events_count": 9,
+      "expected_optimizer_steps": 6656
+    },
+    {
+      "run_id": "rst6_r0_snunet_foldb_s0_v1",
+      "recipe_id": "R0",
+      "fold_id": "confirmation_fold_b",
+      "seed": 0,
+      "planned_gpu": "cuda:2",
+      "config_path": "configs/robust_source_training/rst5_confirmation/rst6_r0_snunet_foldb_s0_v1.json",
+      "config_sha256": "ee92b7458db26f5b2839a5aae15cf369e0cea4eeabeefc55978ab02aeccde476",
+      "expected_train_patches": 14655,
+      "expected_eval_patches": 6807,
+      "expected_eval_events_count": 9,
+      "expected_optimizer_steps": 7328
+    },
+    {
+      "run_id": "rst6_r0_snunet_foldb_s1_v1",
+      "recipe_id": "R0",
+      "fold_id": "confirmation_fold_b",
+      "seed": 1,
+      "planned_gpu": "cuda:3",
+      "config_path": "configs/robust_source_training/rst5_confirmation/rst6_r0_snunet_foldb_s1_v1.json",
+      "config_sha256": "03aaf22438117396009379917a89f5635ffd50a206c3ded7f309b1625566c049",
+      "expected_train_patches": 14655,
+      "expected_eval_patches": 6807,
+      "expected_eval_events_count": 9,
+      "expected_optimizer_steps": 7328
+    },
+    {
+      "run_id": "rst6_r0_snunet_foldb_s2_v1",
+      "recipe_id": "R0",
+      "fold_id": "confirmation_fold_b",
+      "seed": 2,
+      "planned_gpu": "cuda:0",
+      "config_path": "configs/robust_source_training/rst5_confirmation/rst6_r0_snunet_foldb_s2_v1.json",
+      "config_sha256": "0b0efba8498701c3e1293dde731806f8718d645f7c453720de400adb85e722ee",
+      "expected_train_patches": 14655,
+      "expected_eval_patches": 6807,
+      "expected_eval_events_count": 9,
+      "expected_optimizer_steps": 7328
+    },
+    {
+      "run_id": "rst6_r2_snunet_foldb_s0_v1",
+      "recipe_id": "R2",
+      "fold_id": "confirmation_fold_b",
+      "seed": 0,
+      "planned_gpu": "cuda:1",
+      "config_path": "configs/robust_source_training/rst5_confirmation/rst6_r2_snunet_foldb_s0_v1.json",
+      "config_sha256": "58264ea7f68fe6d0ffba81c300b27756f546904b96beacc68893ad7841f4d996",
+      "expected_train_patches": 14655,
+      "expected_eval_patches": 6807,
+      "expected_eval_events_count": 9,
+      "expected_optimizer_steps": 7328
+    },
+    {
+      "run_id": "rst6_r2_snunet_foldb_s1_v1",
+      "recipe_id": "R2",
+      "fold_id": "confirmation_fold_b",
+      "seed": 1,
+      "planned_gpu": "cuda:2",
+      "config_path": "configs/robust_source_training/rst5_confirmation/rst6_r2_snunet_foldb_s1_v1.json",
+      "config_sha256": "f08e61468b578d605d64ed5155967123477111b9584aa4c111be7368a40bc539",
+      "expected_train_patches": 14655,
+      "expected_eval_patches": 6807,
+      "expected_eval_events_count": 9,
+      "expected_optimizer_steps": 7328
+    },
+    {
+      "run_id": "rst6_r2_snunet_foldb_s2_v1",
+      "recipe_id": "R2",
+      "fold_id": "confirmation_fold_b",
+      "seed": 2,
+      "planned_gpu": "cuda:3",
+      "config_path": "configs/robust_source_training/rst5_confirmation/rst6_r2_snunet_foldb_s2_v1.json",
+      "config_sha256": "e1b810cb87e4c1505b1ae89ea0924429fc190bdea0baab97c07fb6c0a18c8289",
+      "expected_train_patches": 14655,
+      "expected_eval_patches": 6807,
+      "expected_eval_events_count": 9,
+      "expected_optimizer_steps": 7328
+    }
+  ]
+}

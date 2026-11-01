@@ -1,0 +1,30 @@
+% Table 1: Primary Confirmatory Evaluation on SNUNet-ECAM (RST7)
+% Backing artifact: outputs/robust_source_training/rst10_synthesis_v1/tables/table2_primary_confirmation.json
+\begin{table}[t]
+\centering
+\caption{Primary Confirmatory Results on SNUNet-ECAM Across 18 Source Events (Seeds 0, 1, 2). $\Delta$ denotes (R2 $-$ R0).}
+\label{tab:primary_confirmation}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lcccccc}
+\hline
+\textbf{Split / Metric} & \textbf{R0 (Baseline)} & \textbf{R2 (Frozen)} & $\mathbf{\Delta}$ & \textbf{95\% CI} & \textbf{Criterion} & \textbf{Status} \\
+\hline
+\textbf{Fold A (9 Events)} & & & & & & \\
+~~Macro F1 & $0.7291 \pm 0.0120$ & $0.7431 \pm 0.0106$ & $+0.0140$ & $[-0.0075, +0.0380]$ & -- & -- \\
+~~Bottom-3 F1 & $0.4632 \pm 0.0465$ & $0.5134 \pm 0.0210$ & $+0.0502$ & -- & -- & -- \\
+~~Seed Std. Dev. & $0.0120$ & $0.0106$ & $-0.0014$ & -- & P3 (Fold A) & Passed \\
+\hline
+\textbf{Fold B (9 Events)} & & & & & & \\
+~~Macro F1 & $0.7114 \pm 0.0035$ & $0.7246 \pm 0.0165$ & $+0.0132$ & $[-0.0183, +0.0468]$ & -- & -- \\
+~~Bottom-3 F1 & $0.3343 \pm 0.0270$ & $0.3862 \pm 0.0345$ & $+0.0520$ & -- & -- & -- \\
+~~Seed Std. Dev. & $0.0035$ & $0.0165$ & $+0.0130$ & -- & P3 (Fold B) & Failed \\
+\hline
+\textbf{Grand Evaluation (18 Events)} & & & & & & \\
+~~Grand Macro F1 & $0.7202 \pm 0.0044$ & $0.7338 \pm 0.0132$ & $\mathbf{+0.0136}$ & $[-0.0045, +0.0351]$ & P1 ($\Delta \ge +0.010$) & \textbf{Passed} \\
+~~Bottom-3 Mean F1 & $0.3987 \pm 0.0298$ & $0.4498 \pm 0.0248$ & $\mathbf{+0.0511}$ & -- & P2 ($\Delta \ge +0.020$) & \textbf{Passed} \\
+~~Worst Single Event & $0.2991 \pm 0.0315$ & $0.2929 \pm 0.0305$ & $-0.0062$ & -- & -- & -- \\
+~~Seed Variance Ratio & -- & -- & $+75.1\%$ & -- & P3 ($\Delta \text{Var} \le 0$) & \textbf{Failed} \\
+\hline
+\end{tabular}%
+}
+\end{table}

@@ -1,0 +1,108 @@
+{
+  "$schema_version": "1.0.0",
+  "status": "APPROVED_FROZEN",
+  "approval_date": "2026-10-06",
+  "description": "Approved, frozen 22/5 source-inner split (Alternative A1) partitioning the 27 source-training events into 22 inner-train and 5 inner-validation events for controlled source-model training and selection. Disjoint from all TTA-validation and sealed test events.",
+  "selection_algorithm": {
+    "name": "Alternative_A1_size_inclusive_stratification_v1",
+    "description": "Size-inclusive flood-prevalence stratification replacing tiny Event 496 (21 samples) with medium Event 275 (742 samples, mid-flood tertile), covering the full flood prevalence spectrum while providing a robust 10.64% validation set and minimizing maximum multi-dimensional discrepancy (3.30%). Evaluated strictly on source-label statistics without model-performance information.",
+    "source_statistics_csv_sha256": "bdf6deec1c48b6a05b01bf520f5e0af6e492894c9d7c347d85fc64de2396bf80"
+  },
+  "source_inner_train_events": [
+    118, 130, 147, 174, 273, 324, 417, 421, 427,
+    470, 492, 496, 498, 502, 554, 555, 567,
+    1111004, 1111006, 1111009, 1111010, 1111011
+  ],
+  "source_inner_validation_events": [
+    267, 275, 497, 518, 1111005
+  ],
+  "tta_validation_events": [
+    279, 437, 520, 559, 1111003, 1111008
+  ],
+  "sealed_test_events": [
+    205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013
+  ],
+  "sample_counts": {
+    "total_source_samples": 21462,
+    "source_inner_train_sample_count": 19178,
+    "source_inner_train_sample_percentage": 89.3579,
+    "source_inner_validation_sample_count": 2284,
+    "source_inner_validation_sample_percentage": 10.6421
+  },
+  "class_distribution_summary": {
+    "train": {
+      "event_count": 22,
+      "sample_count": 19178,
+      "valid_pixel_count": 950602654,
+      "class0_no_water_pixels": 708320137,
+      "class0_proportion": 0.745127,
+      "class1_perm_water_pixels": 67154836,
+      "class1_proportion": 0.070644,
+      "class2_flood_pixels": 175127681,
+      "class2_flood_proportion": 0.184228,
+      "class3_invalid_pixels": 11672674,
+      "class3_proportion": 0.012130,
+      "samples_with_flood_count": 16260,
+      "samples_with_flood_proportion": 0.847846,
+      "event_macro_mean_flood_proportion": 0.143632,
+      "event_macro_mean_perm_water_proportion": 0.053341
+    },
+    "validation": {
+      "event_count": 5,
+      "sample_count": 2284,
+      "valid_pixel_count": 112243176,
+      "class0_no_water_pixels": 85612851,
+      "class0_proportion": 0.762744,
+      "class1_perm_water_pixels": 7683355,
+      "class1_proportion": 0.068453,
+      "class2_flood_pixels": 18946970,
+      "class2_flood_proportion": 0.168803,
+      "class3_invalid_pixels": 2358808,
+      "class3_proportion": 0.020583,
+      "samples_with_flood_count": 1861,
+      "samples_with_flood_proportion": 0.814799,
+      "event_macro_mean_flood_proportion": 0.156198,
+      "event_macro_mean_perm_water_proportion": 0.076230
+    }
+  },
+  "validation_event_profiles": {
+    "267": {
+      "sample_count": 218,
+      "flood_proportion": 0.232793,
+      "perm_water_proportion": 0.084510,
+      "role": "Mid-high flood event with balanced permanent water"
+    },
+    "275": {
+      "sample_count": 742,
+      "flood_proportion": 0.123806,
+      "perm_water_proportion": 0.030540,
+      "role": "Medium-sized mid-flood tertile event stabilizing validation sample mass"
+    },
+    "497": {
+      "sample_count": 398,
+      "flood_proportion": 0.068543,
+      "perm_water_proportion": 0.144653,
+      "role": "High permanent water landscape representation"
+    },
+    "518": {
+      "sample_count": 306,
+      "flood_proportion": 0.027186,
+      "perm_water_proportion": 0.053270,
+      "role": "Low-flood dry terrain background representation"
+    },
+    "1111005": {
+      "sample_count": 620,
+      "flood_proportion": 0.328662,
+      "perm_water_proportion": 0.068176,
+      "role": "Major flood inundation footprint representation"
+    }
+  },
+  "assertions": {
+    "train_event_count_is_22": true,
+    "validation_event_count_is_5": true,
+    "train_val_disjoint": true,
+    "train_val_union_equals_27_source_events": true,
+    "tta_val_disjoint_from_source": true,
+    "sealed_test_disjoint_from_all": true
+  }
+}

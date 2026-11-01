@@ -1,0 +1,115 @@
+{
+  "_comment": "E8 v2 retry: scientific settings unchanged; only provenance and physical post-persistence GT I/O are repaired.",
+  "protocol_version": "e8_cross_event_confirmation_v2_label_io_repair",
+  "created_at_utc": "2026-10-22T02:00:00Z",
+  "status": "AUTHORIZED_PENDING_SMOKE_V3",
+  "task": "cross_event_evaluation_label_io_integrity_retry",
+  "governing_document": "docs/protocols/e8_cross_event_confirmation_protocol_v1.md",
+  "execution_ledger_path": "configs/changeguard/e8_execution_ledger_v2.json",
+  "source_v1_config_path": "configs/changeguard/e8_confirmation_matrix_v1.json",
+  "branch": "Branch C — Controlled Empirical Study (no route decision in repair task)",
+  "execution_authorizations": {
+    "real_data_execution_authorized": true,
+    "preparation_only": false,
+    "development_partition_only": true,
+    "sealed_test_strictly_quarantined": true,
+    "batch_size_16_enforced": true,
+    "physical_post_persistence_gt_read_required": true,
+    "authorized_at": "2026-10-22T10:19:13+08:00",
+    "authorized_by": "human_project_owner",
+    "authorization_record": "docs/e8_v2_launch_authorization.md",
+    "formal_launch_is_conditional_on_verified_smoke_v3": true,
+    "no_overwrite": true
+  },
+  "matrix_cell_summary": {
+    "total_physical_streams": 69,
+    "certified_reused_physical_streams": 2,
+    "execute_new_physical_streams": 67,
+    "total_event_rows": 414,
+    "certified_reused_event_rows": 12,
+    "new_event_rows": 402
+  },
+  "retry_paths": {
+    "output_directory": "outputs/e8_confirmation_v2",
+    "log_path": "logs/e8_confirmation/e8_confirmation_v2.log",
+    "tmux_session": "cg_e8_confirmation_v2",
+    "required_prelaunch_smoke_config": "configs/changeguard/e7_cotta_smoke_v3.json"
+  },
+  "authorized_scope": {
+    "certified_reused_physical_streams": 2,
+    "execute_new_physical_streams": 67,
+    "total_physical_streams": 69,
+    "total_event_rows": 414,
+    "development_event_ids": [279, 437, 520, 559, 1111003, 1111008],
+    "source_checkpoint_seeds": [0, 1, 2],
+    "orders": ["order_a", "order_b"],
+    "reset_modes": ["invariant", "NOT_APPLICABLE_STATELESS", "reset_per_event", "continual"],
+    "sealed_test_access": 0,
+    "output_directory_must_be_fresh": true,
+    "log_path_must_be_fresh": true,
+    "overwrite_allowed": false
+  },
+  "required_smoke_v3_evidence": {
+    "initial_manifest_precedes_execution": true,
+    "zero_gt_reads_before_prediction_persistence": true,
+    "gt_or_gt_derived_mask_entered_adaptation": false,
+    "completed_samples": 32,
+    "completed_batches": 2,
+    "terminal_status": "COMPLETED",
+    "sealed_test_access": 0
+  },
+  "model": {
+    "architecture": "SNUNet_ECAM",
+    "in_channels": 2,
+    "num_classes": 3,
+    "base_channel": 32,
+    "input_channels": ["VV", "VH"],
+    "canonical_preevent": "pre_event_2",
+    "precision": "fp32"
+  },
+  "source_checkpoints": {
+    "training_commit": "6c63a5f8aa7ae2c608b145f0badc84b422b62ef1",
+    "seeds": {
+      "0": {"checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt", "expected_sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f", "epoch": 16},
+      "1": {"checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed1_v1_fp32/final_checkpoint.pt", "expected_sha256": "72c4be7856fe4bb06560d61d3ab8e72780e81fdff84660f8dadfe2f8bd385d7a", "epoch": 16},
+      "2": {"checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed2_v1_fp32/final_checkpoint.pt", "expected_sha256": "0d403d4e8885b8b64c99fc76850be6bf324b65f2d5474e2dcb7e72f22c03fedd", "epoch": 16}
+    }
+  },
+  "fisher_artifacts_v2": {
+    "seeds": {
+      "0": {"path": "artifacts/eata_fishers/v2/source_all27_seed0_fisher.pt", "expected_sha256": "4ff03db152beee203bb6118cb987e5d7e5e3888b0d73aecfef6bbee7ef0dd88d"},
+      "1": {"path": "artifacts/eata_fishers/v2/source_all27_seed1_fisher.pt", "expected_sha256": "a6e6ef10901d345cd91ffa21cc69a4d697412419b167d3d7c26be2ad092d3f89"},
+      "2": {"path": "artifacts/eata_fishers/v2/source_all27_seed2_fisher.pt", "expected_sha256": "2f6f5c843d217003458380982cf092d2f9826dcfaad024917a4c3cd3ee4827fc"}
+    }
+  },
+  "evaluated_methods": {
+    "source_only_frozen_running_stats": {"adapter_class": "E1SourceOnlyAdapter", "status": "RERUN_IF_UNCERTIFIED"},
+    "matched_bn_no_update_pre_update_v1": {"adapter_class": "E1MatchedBNNoUpdateAdapter", "status": "RERUN_ALL"},
+    "adabn_matched_pre_update": {"adapter_class": "E1AdaBNAdapter", "status": "RERUN_ALL"},
+    "tent_matched_pre_update": {"adapter_class": "E1TentAdapter", "status": "RERUN_IF_UNCERTIFIED", "learning_rate": 0.0001, "betas": [0.9, 0.999], "weight_decay": 0.0},
+    "eata_v2_fisher_matched_pre_update": {"adapter_class": "E1EATAAdapter", "status": "RERUN_ALL", "learning_rate": 0.000125, "momentum": 0.9, "weight_decay": 0.0, "reliability_threshold_e0": 0.4394449, "redundancy_threshold_d_margin": 0.05, "fisher_alpha": 2000.0},
+    "sar_matched_pre_update": {"adapter_class": "E1SARAdapter", "status": "RERUN_ALL", "learning_rate": 0.000125, "momentum": 0.9, "weight_decay": 0.0, "sam_rho": 0.05, "reliability_threshold_e0": 0.4394449, "recovery_threshold_em": 0.03180808},
+    "cotta_continual": {"adapter_class": "E7CoTTAAdapter", "status": "RERUN_ALL", "learning_rate": 0.0001, "optimizer": "adam", "ema_alpha": 0.999, "restoration_prob": 0.01, "confidence_threshold": 0.90, "num_views": 4, "mode": "continual"},
+    "cotta_reset": {"adapter_class": "E7CoTTAAdapter", "status": "RERUN_ALL", "learning_rate": 0.0001, "optimizer": "adam", "ema_alpha": 0.999, "restoration_prob": 0.01, "confidence_threshold": 0.90, "num_views": 4, "mode": "reset_per_event"}
+  },
+  "stream_orders": {
+    "order_a": {"event_sequence": [279, 437, 520, 559, 1111003, 1111008], "within_event_ordering": "deterministic_sorted_sample_id_ascending"},
+    "order_b": {"event_sequence": [1111008, 1111003, 559, 520, 437, 279], "within_event_ordering": "deterministic_sorted_sample_id_descending"}
+  },
+  "dataset": {
+    "dataset_root": "../datasets/KuroSiwo",
+    "manifest_path": "../third_party/KuroSiwo/pickle/KuroV2_grid_dict_test_0_100.gz",
+    "manifest_expected_sha256": "dfc6e9a752d05aaa0a38c3fd6c18ce12e090f95635e5e4709025cb8512f020ad",
+    "split_path": "configs/kuro_event_split.json",
+    "split_expected_sha256": "fbf30fe0bab7b90c468aaf0fbdab7960a5cf76dd49dfb3ca51f1e01668fba85f",
+    "sar_mean": [0.0953, 0.0264],
+    "sar_std": [0.0427, 0.0215],
+    "sar_clamp_max": 0.15,
+    "canonical_preevent": "pre_event_2",
+    "development_events": [279, 437, 520, 559, 1111003, 1111008],
+    "expected_event_counts": {"279": 2381, "437": 169, "520": 92, "559": 42, "1111003": 19, "1111008": 123},
+    "forbidden_sealed_test_events": [205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013],
+    "batch_size": 16
+  },
+  "output_directory": "outputs/e8_confirmation_v2"
+}

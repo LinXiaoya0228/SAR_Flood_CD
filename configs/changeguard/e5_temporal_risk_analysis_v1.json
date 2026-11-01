@@ -1,0 +1,112 @@
+{
+  "_comment": "ChangeGuard Plan V3 Block E5: Offline Temporal Risk Evidence Analysis Configuration",
+  "protocol_version": "e5_temporal_risk_analysis_v1",
+  "governing_document": "docs/MASTER_EXECUTION_PLAN_V3.md",
+  "work_package": "E5.2C",
+  "created_at_utc": "2026-10-21T04:45:00Z",
+  "status": "LOCKED_FOR_EXECUTION",
+  "source_run": {
+    "run_id": "e5_temporal_risk_s0_oa_v1",
+    "output_dir": "outputs/e5_temporal_evidence/formal_s0_oa_v1/",
+    "expected_commit": "7ae4535361e04a91728b9105f3cb03f9444cb2be",
+    "expected_status": "COMPLETED_RUN",
+    "expected_events": [279, 437, 520, 559, 1111003, 1111008],
+    "expected_total_samples": 2826,
+    "expected_total_batches": 179
+  },
+  "analysis_output": {
+    "output_dir": "outputs/e5_temporal_evidence/analysis_s0_oa_v1/",
+    "summary_json": "e5_risk_analysis_summary.json",
+    "event_table_csv": "event_level_risk_performance.csv",
+    "batch_table_csv": "batch_level_risk_performance.csv",
+    "rejection_budget_curve_csv": "rejection_budget_curve.csv"
+  },
+  "outcome_definitions": {
+    "primary_unit": "event",
+    "secondary_unit": "grouped_batch",
+    "harmful_threshold": -0.01,
+    "beneficial_threshold": 0.01,
+    "formula": "delta_f1 = candidate_f1 - source_f1",
+    "classes": {
+      "harmful": "delta_f1 <= -0.01",
+      "beneficial": "delta_f1 >= +0.01",
+      "neutral": "abs(delta_f1) < 0.01"
+    }
+  },
+  "signal_specifications": {
+    "mean_entropy": {
+      "name": "mean_entropy",
+      "family": "generic",
+      "direction": "higher_is_greater_risk",
+      "display_name": "Predictive Entropy"
+    },
+    "mean_max_confidence": {
+      "name": "mean_max_confidence",
+      "family": "generic",
+      "direction": "lower_is_greater_risk",
+      "display_name": "Maximum Confidence"
+    },
+    "source_to_candidate_kl": {
+      "name": "source_to_candidate_kl",
+      "family": "generic",
+      "direction": "higher_is_greater_risk",
+      "display_name": "Source-to-Candidate KL"
+    },
+    "hard_disagreement_rate": {
+      "name": "hard_disagreement_rate",
+      "family": "generic",
+      "direction": "higher_is_greater_risk",
+      "display_name": "Hard Disagreement Rate"
+    },
+    "abs_delta_flood_pixels": {
+      "name": "abs_delta_flood_pixels",
+      "family": "generic",
+      "direction": "higher_is_greater_risk",
+      "display_name": "Absolute Flood Pixel Shift"
+    },
+    "aug_inconsistency": {
+      "name": "aug_inconsistency",
+      "family": "generic",
+      "direction": "higher_is_greater_risk",
+      "display_name": "Augmentation Inconsistency"
+    },
+    "bn_weight_displacement": {
+      "name": "bn_weight_displacement",
+      "family": "generic",
+      "direction": "higher_is_greater_risk",
+      "display_name": "BN Weight Displacement"
+    },
+    "s_null": {
+      "name": "s_null",
+      "family": "change_specific",
+      "direction": "higher_is_greater_risk",
+      "display_name": "Temporal Null Risk (s_null)"
+    },
+    "s_flood_expansion": {
+      "name": "s_flood_expansion",
+      "family": "change_specific",
+      "direction": "higher_is_greater_risk",
+      "display_name": "Source Flood Expansion (s_flood_expansion)"
+    },
+    "s_flood_disappearance": {
+      "name": "s_flood_disappearance",
+      "family": "change_specific",
+      "direction": "higher_is_greater_risk",
+      "display_name": "Source Flood Disappearance (s_flood_disappearance)"
+    }
+  },
+  "rejection_budgets": [0.05, 0.10, 0.15, 0.20, 0.25, 0.30],
+  "combination_policy": {
+    "single_signal_evaluation": "approved",
+    "generic_only_composite": "descriptive_univariate_ranking",
+    "generic_plus_change_composite": "awaiting_predeclared_multivariate_calibration_rule"
+  },
+  "statistical_discipline": {
+    "event_count": 6,
+    "claim_population_significance": false,
+    "batch_as_event_inference": false,
+    "bootstrap_grouped_by_event": true,
+    "degenerate_class_policy": "mark_unavailable_nan"
+  }
+}
+

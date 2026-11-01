@@ -1,0 +1,70 @@
+{
+  "_comment": "ChangeGuard Plan V3 E7 Bounded GPU Smoke Test Configuration (v2 Retry)",
+  "protocol_version": "e7_cotta_smoke_v2",
+  "status": "APPROVED_FOR_BOUNDED_SMOKE_ONLY",
+  "created_at_utc": "2026-10-21T20:35:00Z",
+  "task": "bounded_gpu_smoke_test_for_e7_cotta_adapter_v2",
+  "governing_document": "docs/protocols/e7_branch_c_empirical_protocol_v1.md",
+  "execution_authorizations": {
+    "smoke_execution_authorized": true,
+    "event_520_only_authorized": true,
+    "max_samples_32_authorized": true,
+    "formal_matrix_prohibited": true,
+    "sealed_test_strictly_quarantined": true
+  },
+  "smoke_specification": {
+    "run_id": "e7_cotta_smoke_v2",
+    "purpose": "Verify GPU memory stability, zero CUDA NaNs, non-aliasing, and PRE_UPDATE timing under batch size 16 (v2 retry)",
+    "checkpoint_seed": 0,
+    "event_id": 520,
+    "max_samples": 32,
+    "expected_batches": 2,
+    "batch_size": 16,
+    "device": "cuda:0",
+    "output_dir": "outputs/e7_cotta_smoke_v2",
+    "vram_limit_gb": 8.0,
+    "timeout_seconds": 60
+  },
+  "model": {
+    "architecture": "SNUNet_ECAM",
+    "in_channels": 2,
+    "num_classes": 3,
+    "base_channel": 32,
+    "input_channels": ["VV", "VH"],
+    "canonical_preevent": "pre_event_2",
+    "precision": "fp32"
+  },
+  "source_checkpoints": {
+    "seeds": {
+      "0": {
+        "checkpoint_path": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed0_v1_fp32/final_checkpoint.pt",
+        "expected_sha256": "247d358431f5c54c3d3d3421b4de6c4738ad457509900f8ddb717f5eef21087f"
+      }
+    }
+  },
+  "cotta_parameters": {
+    "learning_rate": 1e-4,
+    "ema_alpha": 0.999,
+    "restoration_prob": 0.01,
+    "confidence_threshold": 0.90,
+    "num_views": 4,
+    "mode": "reset_per_event"
+  },
+  "dataset": {
+    "dataset_root": "../datasets/KuroSiwo",
+    "manifest_path": "../third_party/KuroSiwo/pickle/KuroV2_grid_dict_test_0_100.gz",
+    "manifest_expected_sha256": "dfc6e9a752d05aaa0a38c3fd6c18ce12e090f95635e5e4709025cb8512f020ad",
+    "split_path": "configs/kuro_event_split.json",
+    "split_expected_sha256": "fbf30fe0bab7b90c468aaf0fbdab7960a5cf76dd49dfb3ca51f1e01668fba85f",
+    "sar_mean": [0.0953, 0.0264],
+    "sar_std": [0.0427, 0.0215],
+    "sar_clamp_max": 0.15,
+    "canonical_preevent": "pre_event_2",
+    "target_events": [520],
+    "development_events": [279, 437, 520, 559, 1111003, 1111008],
+    "forbidden_sealed_test_events": [
+      205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013
+    ]
+  }
+}
+

@@ -1,0 +1,107 @@
+{
+  "$schema_version": "3.0.0",
+  "status": "APPROVED_ALL_SOURCE_FINAL_PROTOCOL",
+  "approval_date": "2026-10-15",
+  "model_name": "snunet_vvvh_all27",
+  "configuration_id": "model_a_radar_only_all27_seed1_v1_fp32",
+  "governing_protocol": "docs/source_training_final_all27_protocol.md",
+  "governing_protocol_sha256": "2c15d3fdd1b3018ab5fe28b88b15a41dfe8b736e5b3193bf1d789049cb1429e2",
+  "lock_manifest_path": "configs/source/source_training_all27_lock.json",
+  "proposed_canonical_run_id": "source_snunet_vvvh_all27_seed1_v1_fp32",
+  "output_directory": "outputs/week5_source_all27/source_snunet_vvvh_all27_seed1_v1_fp32",
+  "description": "Controlled 2-channel SNUNet primary source model retrained from random initialization on all 27 source events for exactly 16 fixed epochs (seed 1).",
+  "task": "change_detection",
+  "run_type": "all_source_training",
+  "training_mode": "all_source_fixed_epoch",
+  "seed": 1,
+  "architecture": {
+    "name": "SNUNet_ECAM",
+    "base_channel": 32,
+    "in_channels_per_branch": 2,
+    "out_channels": 3
+  },
+  "input_specification": {
+    "temporal_branches": ["pre_event_2", "post_event"],
+    "channels_per_branch": ["vv", "vh"],
+    "patch_size": [224, 224],
+    "sar_preprocessing_order": [
+      "1. clamp raw linear amplitude to [sar_clamp_min, sar_clamp_max]",
+      "2. replace non-finite values (NaN, +Inf, -Inf) with nan_replacement_value",
+      "3. z-score normalize using (sar - mean) / std"
+    ],
+    "sar_clamping": {
+      "min": 0.0,
+      "max": 0.15
+    },
+    "nan_treatment": {
+      "nan": 0.15,
+      "posinf": 0.15,
+      "neginf": 0.0
+    },
+    "sar_normalization": {
+      "mean": [0.0953, 0.0264],
+      "std": [0.0427, 0.0215],
+      "documented_source": "configs/train/data_config.json:16-17",
+      "generation_scope_uncertainty_acknowledged": true
+    }
+  },
+  "label_specification": {
+    "num_classes": 3,
+    "label_mapping": {
+      "0": "no_water",
+      "1": "permanent_water",
+      "2": "flood_water",
+      "3": "invalid_no_data"
+    },
+    "ignore_index": 3,
+    "valid_mask_rule": "valid = (valid_mask == 1) & (label != 3)",
+    "evaluation_classes": {
+      "target_class": 2,
+      "background_classes": [0, 1],
+      "excluded_class": 3
+    }
+  },
+  "loss_specification": {
+    "name": "unweighted_ce_plus_soft_dice",
+    "weight_ce": 0.5,
+    "weight_dice": 0.5,
+    "classes_in_dice": [0, 1, 2],
+    "ignore_index": 3,
+    "smooth_epsilon": 1.0,
+    "class_weighting": "unweighted_1_1_1",
+    "formula": "total_loss = 0.5 * cross_entropy(logits, target, ignore_index=3) + 0.5 * mean_soft_dice_loss(softmax(logits), target, classes=[0,1,2], ignore_index=3, eps=1.0)"
+  },
+  "optimization_protocol": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "betas": [0.9, 0.999],
+    "lr_scheduler": null,
+    "mixed_precision": false,
+    "precision": "fp32",
+    "autocast": false,
+    "grad_scaler": false,
+    "max_epochs": 16,
+    "early_stopping_patience": null,
+    "seeds": [1]
+  },
+  "batch_size_policy": {
+    "effective_batch_size": 32,
+    "physical_microbatch_size": 8,
+    "gradient_accumulation_steps": 4,
+    "divisibility_requirement": "effective_batch_size % physical_microbatch_size == 0"
+  },
+  "data_split": {
+    "split_config_path": "configs/splits/kuro_source_all27_split_v1.json",
+    "split_config_sha256": "601b21c81f7f1e26984fe6507a1532dbfa373d72b29346103fb5f0a1ac38d5e1",
+    "total_source_events": 27,
+    "total_training_samples": 21462,
+    "sample_policy": "all_27_source_events_retained_no_filtering_no_oversampling"
+  },
+  "checkpoint_policy": {
+    "save_every_epoch": true,
+    "fixed_final_epoch": 16,
+    "final_checkpoint_name": "final_checkpoint.pt",
+    "validation_selection": false
+  }
+}

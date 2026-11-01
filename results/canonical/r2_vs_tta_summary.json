@@ -1,0 +1,231 @@
+{
+  "$schema_version": "1.0.0",
+  "analysis_title": "ChangeGuard Offline Supplementary R2 vs Tent/CoTTA Comparison",
+  "target_partition": "10_former_test_events",
+  "event_ids": [
+    205,
+    277,
+    321,
+    411,
+    445,
+    561,
+    562,
+    1111002,
+    1111007,
+    1111013
+  ],
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "method_definitions": {
+    "R0": "Matched source baseline (ordinary uniform sampling, unweighted loss)",
+    "R2": "Robust source training (M1 event-balanced sampling + M2 flood-aware class weighting)",
+    "Tent": "Entropy minimization on BN scale/shift parameters (reset-per-event, pre-update predictions)",
+    "CoTTA": "Continual test-time adaptation with student-teacher EMA and stochastic restoration (reset-per-event, pre-update predictions)"
+  },
+  "aggregate_macro_f1": {
+    "R0": 0.7453116,
+    "R2": 0.8086307999999999,
+    "Tent": 0.762843912658375,
+    "CoTTA": 0.7668886426607544
+  },
+  "primary_event_level_contrasts": {
+    "R2_minus_Tent": {
+      "observed_mean_difference": 0.04578688734162497,
+      "bootstrap_ci_95": [
+        0.027385818888707197,
+        0.0648295128185021
+      ],
+      "plain_counts": {
+        "positive": 10,
+        "negative": 0,
+        "zero": 0
+      },
+      "practical_band_010_counts": {
+        "benefit": 8,
+        "harm": 0,
+        "neutral": 2
+      },
+      "largest_gain_event": {
+        "event_id": 1111002,
+        "delta": 0.09361450516947689,
+        "r2_f1": 0.8436293333333333,
+        "tent_f1": 0.7500148281638565
+      },
+      "smallest_gain_event": {
+        "event_id": 1111013,
+        "delta": 0.0033670518221612378,
+        "r2_f1": 0.720879,
+        "tent_f1": 0.7175119481778388
+      },
+      "bootstrap_details": {
+        "n_resamples": 10000,
+        "seed": 42,
+        "resampling_unit": "10_whole_test_events",
+        "observed_mean_delta": 0.04578688734162497,
+        "ci_95": [
+          0.027385818888707197,
+          0.0648295128185021
+        ],
+        "ci_lower": 0.027385818888707197,
+        "ci_upper": 0.0648295128185021,
+        "percentiles": {
+          "p1": 0.024275131359686897,
+          "p2_5": 0.027385818888707197,
+          "p5": 0.030139516161540546,
+          "p10": 0.03330257432130946,
+          "p25": 0.03910724518854723,
+          "p50_median": 0.04560980964995663,
+          "p75": 0.0521684294081934,
+          "p90": 0.05822738078943437,
+          "p95": 0.061881689124839254,
+          "p97_5": 0.0648295128185021,
+          "p99": 0.06806781083911363
+        }
+      }
+    },
+    "R2_minus_CoTTA": {
+      "observed_mean_difference": 0.04174215733924559,
+      "bootstrap_ci_95": [
+        0.025986959356466433,
+        0.05853227118047793
+      ],
+      "plain_counts": {
+        "positive": 10,
+        "negative": 0,
+        "zero": 0
+      },
+      "practical_band_010_counts": {
+        "benefit": 9,
+        "harm": 0,
+        "neutral": 1
+      },
+      "largest_gain_event": {
+        "event_id": 205,
+        "delta": 0.084698298491523,
+        "r2_f1": 0.7234453333333333,
+        "cotta_f1": 0.6387470348418103
+      },
+      "smallest_gain_event": {
+        "event_id": 561,
+        "delta": 0.0013651667947179869,
+        "r2_f1": 0.856502,
+        "cotta_f1": 0.855136833205282
+      },
+      "bootstrap_details": {
+        "n_resamples": 10000,
+        "seed": 42,
+        "resampling_unit": "10_whole_test_events",
+        "observed_mean_delta": 0.04174215733924559,
+        "ci_95": [
+          0.025986959356466433,
+          0.05853227118047793
+        ],
+        "ci_lower": 0.025986959356466433,
+        "ci_upper": 0.05853227118047793,
+        "percentiles": {
+          "p1": 0.023455007986855996,
+          "p2_5": 0.025986959356466433,
+          "p5": 0.028155947845796014,
+          "p10": 0.03099905284086404,
+          "p25": 0.03589635600663702,
+          "p50_median": 0.041564242909126144,
+          "p75": 0.04726191354774809,
+          "p90": 0.05247486727404616,
+          "p95": 0.055827175444603284,
+          "p97_5": 0.05853227118047793,
+          "p99": 0.06131865812088301
+        }
+      }
+    }
+  },
+  "seed_level_summary": {
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "macro_f1": {
+      "R0": {
+        "per_seed": [
+          0.7644698999999999,
+          0.7055402999999999,
+          0.7659246
+        ],
+        "mean": 0.7453116,
+        "sample_sd": 0.034450635201546016
+      },
+      "R2": {
+        "per_seed": [
+          0.8101661,
+          0.8008675999999999,
+          0.8148586999999999
+        ],
+        "mean": 0.8086308,
+        "sample_sd": 0.0071207850248410365
+      },
+      "Tent": {
+        "per_seed": [
+          0.7538654632968053,
+          0.7797683124979115,
+          0.7548979621804084
+        ],
+        "mean": 0.7628439126583751,
+        "sample_sd": 0.014666049090758415
+      },
+      "CoTTA": {
+        "per_seed": [
+          0.7600343864505957,
+          0.7820535035129532,
+          0.7585780380187144
+        ],
+        "mean": 0.7668886426607545,
+        "sample_sd": 0.013153326240486627
+      }
+    },
+    "deltas": {
+      "R2_minus_Tent": {
+        "per_seed": [
+          0.05630063670319474,
+          0.02109928750208845,
+          0.05996073781959155
+        ],
+        "mean": 0.045786887341624914,
+        "sample_sd": 0.021458268206529924
+      },
+      "R2_minus_CoTTA": {
+        "per_seed": [
+          0.050131713549404266,
+          0.018814096487046683,
+          0.05628066198128556
+        ],
+        "mean": 0.0417421573392455,
+        "sample_sd": 0.020092893582958203
+      },
+      "R2_minus_R0": {
+        "per_seed": [
+          0.045696200000000076,
+          0.0953273,
+          0.04893409999999998
+        ],
+        "mean": 0.06331920000000002,
+        "sample_sd": 0.027767064092373884
+      }
+    }
+  },
+  "environment_provenance": {
+    "historical_tta_environment": "vfm_env (Python 3.10.20, PyTorch 2.13.0, NumPy 2.2.6, Rasterio 1.4.4)",
+    "rst9_r2_environment": "sar_cd (Python 3.8.20, PyTorch 2.4.1+cu121, NumPy 1.24.4, Rasterio 1.3.11)",
+    "compatibility_audit": "R0 baseline evaluation between environments matched to within 0.00002 F1 on identical sample rasters, demonstrating full numeric compatibility."
+  },
+  "integrity_provenance": {
+    "input_hashes": {
+      "rst9_target_metrics": "1e13d88c1245d3fb36155b7d454a8046167beae0d5ee8cf4789f837b2fade00c",
+      "e11_summary": "1373107b488f82170a3457083d6853e878eeaa92b2c5802480cdf7032fcea0a7",
+      "e11_matrix": "1848fa1d6f9172abae5457cad2469f0cecc53166627342672d39b006e952df39"
+    },
+    "zero_modifications_to_archive": true
+  }
+}
