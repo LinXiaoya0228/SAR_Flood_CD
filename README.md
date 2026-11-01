@@ -2,7 +2,7 @@
 
 Official implementation and reproducibility package for:
 > **"Event-Balanced Source Training for Robust Cross-Event SAR Flood Change Detection"**  
-> *IEEE International Geoscience and Remote Sensing Symposium (IGARSS 2027 draft)* / Final Year Project (FYP) Dissertation.
+> Final Year Project (FYP) Dissertation.
 
 ---
 
