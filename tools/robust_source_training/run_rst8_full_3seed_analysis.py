@@ -77,6 +77,52 @@ def ingest_data() -> Tuple[List[Dict[str, Any]], Dict[str, Dict[str, Dict[int, D
     nested = {"fold_a": {"r0": {}, "r2": {}}, "fold_b": {"r0": {}, "r2": {}}}
     run_meta = {}
 
+    first_run_dir = REPO_ROOT / ANALYSIS_RUNS["fold_a"]["r0"][0]
+    if not (first_run_dir / "preflight_manifest.json").exists():
+        # Fallback to packaged canonical artifacts if raw runs are absent
+        canonical_csv = REPO_ROOT / "results/canonical/rst8_canonical_event_results_full_3seed_v1.csv"
+        if not canonical_csv.exists():
+            canonical_csv = REPO_ROOT / "outputs/robust_source_training/rst8/canonical_event_results_full_3seed_v1.csv"
+        summary_json = REPO_ROOT / "results/canonical/rst8_full_3seed_summary_v1.json"
+        if not summary_json.exists():
+            summary_json = REPO_ROOT / "outputs/robust_source_training/rst8/rst8_full_3seed_summary_v1.json"
+
+        if canonical_csv.exists():
+            print(f"Notice: Raw runs not present at {first_run_dir}. Loading from canonical artifact: {canonical_csv}")
+            with open(canonical_csv, "r", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                for r in reader:
+                    row = {
+                        "run_id": r["run_id"],
+                        "method": r["method"],
+                        "fold_id": r["fold_id"],
+                        "seed": int(r["seed"]),
+                        "event_id": int(r["event_id"]),
+                        "sample_count": int(r["sample_count"]),
+                        "valid_pixel_count": int(r["valid_pixel_count"]),
+                        "tp": int(r["tp"]),
+                        "fp": int(r["fp"]),
+                        "fn": int(r["fn"]),
+                        "tn": int(r["tn"]),
+                        "precision": float(r["precision"]),
+                        "recall": float(r["recall"]),
+                        "f1": float(r["f1"]),
+                        "iou": float(r["iou"]),
+                    }
+                    canonical_rows.append(row)
+                    fold_name = "fold_a" if "fold_a" in r["fold_id"] else "fold_b"
+                    recipe = r["method"].lower()
+                    eid = int(r["event_id"])
+                    seed = int(r["seed"])
+                    if eid not in nested[fold_name][recipe]:
+                        nested[fold_name][recipe][eid] = {}
+                    nested[fold_name][recipe][eid][seed] = row
+            if summary_json.exists():
+                with open(summary_json, "r", encoding="utf-8") as f:
+                    sdata = json.load(f)
+                    run_meta = sdata.get("run_metadata", {})
+            return canonical_rows, nested, run_meta
+
     for fold_name in ["fold_a", "fold_b"]:
         fold_cfg = ANALYSIS_RUNS[fold_name]
         expected_events = set(fold_cfg["evaluation_events"])
@@ -123,7 +169,7 @@ def ingest_data() -> Tuple[List[Dict[str, Any]], Dict[str, Dict[str, Dict[int, D
                     "optimizer_steps": fman.get("optimizer_steps", 6656 if "folda" in run_id else 7328),
                     "runtime_seconds": runtime_sec,
                     "peak_vram_mib": peak_vram,
-                    "checkpoint_sha256": fman.get("checkpoints", {}).get("final_checkpoint", {}).get("sha256", ""),
+                    "checkpoint_sha256": fman.get("output_artifacts", {}).get("final_checkpoint_sha256", ""),
                 }
 
                 with open(run_dir / "event_metrics.json", "r", encoding="utf-8") as f:
@@ -378,6 +424,8 @@ def main():
     bootstrap = run_paired_bootstrap(stats["paired_rows"])
 
     out_dir = REPO_ROOT / "outputs/robust_source_training/rst8"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    canonical_dir = REPO_ROOT / "results/canonical"
 
     # 1. Save canonical 108-row CSV
     csv_108_path = out_dir / "canonical_event_results_full_3seed_v1.csv"
@@ -410,6 +458,8 @@ def main():
     # 4. Save comprehensive summary JSON
     # Load original seed-0 summary for direct side-by-side comparison
     orig_stage_a_path = out_dir / "stage_a_summary_v1.json"
+    if not orig_stage_a_path.exists() and (canonical_dir / "stage_a_summary_v1.json").exists():
+        orig_stage_a_path = canonical_dir / "stage_a_summary_v1.json"
     orig_summary = {}
     if orig_stage_a_path.exists():
         with open(orig_stage_a_path, "r", encoding="utf-8") as f:
@@ -439,12 +489,14 @@ def main():
             "three_seed_worst_delta": stats["grand_metrics"]["delta"]["worst_event_f1"],
         },
         "snunet_ecam_contrast": {
-            "snunet_r0_grand_f1": 0.6923,
-            "snunet_r2_grand_f1": 0.7135,
-            "snunet_delta_f1": +0.0212,
-            "snunet_bootstrap_95ci": [+0.0075, +0.0357],
-            "snunet_benefited_events": 15,
-            "snunet_harmed_events": 2,
+            "snunet_r0_grand_f1": 0.7202,
+            "snunet_r2_grand_f1": 0.7338,
+            "snunet_delta_f1": +0.0136,
+            "snunet_bootstrap_95ci": [-0.0045, +0.0351],
+            "snunet_bottom3_delta": +0.0511,
+            "snunet_benefited_events": 10,
+            "snunet_neutral_events": 3,
+            "snunet_harmed_events": 5,
         },
     }
 
@@ -452,6 +504,14 @@ def main():
     with open(summary_path, "w", encoding="utf-8") as f:
         json.dump(full_summary, f, indent=2)
     print(f"Saved comprehensive summary JSON: {summary_path}")
+
+    if canonical_dir.exists():
+        import shutil
+        shutil.copy2(csv_108_path, canonical_dir / "rst8_canonical_event_results_full_3seed_v1.csv")
+        shutil.copy2(csv_18_path, canonical_dir / "rst8_paired_event_deltas_full_3seed_v1.csv")
+        shutil.copy2(boot_path, canonical_dir / "rst8_bootstrap_distribution_full_3seed_v1.json")
+        shutil.copy2(summary_path, canonical_dir / "rst8_full_3seed_summary_v1.json")
+        print(f"Synchronized canonical copies to {canonical_dir}")
 
     # Print summary to console
     print("\n" + "=" * 70)

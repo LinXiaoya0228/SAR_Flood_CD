@@ -1,0 +1,13 @@
+{
+  "n_resamples": 10000,
+  "seed": 42,
+  "resampling_unit": "18_unique_held_out_events",
+  "observed_mean_delta": -0.0064172407407407156,
+  "ci_95": [
+    -0.024001886574074045,
+    0.011444743518518556
+  ],
+  "ci_lower": -0.024001886574074045,
+  "ci_upper": 0.011444743518518556,
+  "one_sided_p_value_h0_delta_le_0": 0.7546
+}

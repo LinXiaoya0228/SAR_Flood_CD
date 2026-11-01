@@ -57,18 +57,18 @@ Trained on 18 events, evaluated on 9 held-out events per fold (Fold A and Fold B
 
 | Run ID | Architecture | Recipe | Fold | Seed | Checkpoint SHA-256 Hash | Status |
 |---|---|---|---|---|---|---|
-| `rst8_r0_siamunet_diff_folda_s0_v1` | SiamUnet_diff | R0 | Fold A | 0 | `db900d8b449fe4dbdd66d9c661ef4a8ea17b88ec25f235ad6ee9a2ef74e50849` | Completed |
-| `rst8_r2_siamunet_diff_folda_s0_v2` | SiamUnet_diff | R2 | Fold A | 0 | `01aafe565a0890bfce87cfb274534dcdeaa82a3962dc2bb62a2faeb9c2c77d4c` | Completed |
-| `rst8_r0_siamunet_diff_foldb_s0_v2` | SiamUnet_diff | R0 | Fold B | 0 | `732ae49dc976ff98d5c48b48f95c4e7d4bc8f0c5a2cbe5fc5be01625902bcce5` | Completed |
-| `rst8_r2_siamunet_diff_foldb_s0_v2` | SiamUnet_diff | R2 | Fold B | 0 | `4292150b06ba677fc19056c70eb35a519d0a6428c9462c0199e46927a7c9dcfb` | Completed |
-| `rst8_r0_siamunet_diff_folda_s1_v1` | SiamUnet_diff | R0 | Fold A | 1 | *Pending completion* | **Ongoing** |
-| `rst8_r2_siamunet_diff_folda_s1_v1` | SiamUnet_diff | R2 | Fold A | 1 | *Pending completion* | **Ongoing** |
-| `rst8_r0_siamunet_diff_foldb_s1_v1` | SiamUnet_diff | R0 | Fold B | 1 | *Pending completion* | **Ongoing** |
-| `rst8_r2_siamunet_diff_foldb_s1_v1` | SiamUnet_diff | R2 | Fold B | 1 | *Pending completion* | **Ongoing** |
-| `rst8_r0_siamunet_diff_folda_s2_v1` | SiamUnet_diff | R0 | Fold A | 2 | *Pending completion* | **Ongoing** |
-| `rst8_r2_siamunet_diff_folda_s2_v1` | SiamUnet_diff | R2 | Fold A | 2 | *Pending completion* | **Ongoing** |
-| `rst8_r0_siamunet_diff_foldb_s2_v1` | SiamUnet_diff | R0 | Fold B | 2 | *Pending completion* | **Ongoing** |
-| `rst8_r2_siamunet_diff_foldb_s2_v1` | SiamUnet_diff | R2 | Fold B | 2 | *Pending completion* | **Ongoing** |
+| `rst8_r0_siamunet_diff_folda_s0_v1` | SiamUnet_diff | R0 | Fold A | 0 | `5a3c33f8000cb7b471f9fb260c5f3db5c8f20ad483ef936c8fcd03ea4a0ab15c` | Completed |
+| `rst8_r2_siamunet_diff_folda_s0_v2` | SiamUnet_diff | R2 | Fold A | 0 | `e0f8efb8d3e6968ab0fbecc5ae4458e44c739a609db65a838cac6c83fa726baa` | Completed |
+| `rst8_r0_siamunet_diff_foldb_s0_v2` | SiamUnet_diff | R0 | Fold B | 0 | `61705d0095af63c3a8b53c3dfcf40041cdc278f6c9dbf0df1baa71fe7990e80a` | Completed |
+| `rst8_r2_siamunet_diff_foldb_s0_v2` | SiamUnet_diff | R2 | Fold B | 0 | `70d469617fd5f5b69d2ad6be495d24a93710c164ffcfde10f19a7b6598852b42` | Completed |
+| `rst8_r0_siamunet_diff_folda_s1_v1` | SiamUnet_diff | R0 | Fold A | 1 | `4fc814d25871dd32afdc0144f7775ab4fbdcda5ee2c3580262f22e143ef10f48` | Completed |
+| `rst8_r2_siamunet_diff_folda_s1_v1` | SiamUnet_diff | R2 | Fold A | 1 | `37c1a4174e371e7982fb05ae4d99e6803fa3c2be6fbaf37c6c22be0303c5b5ed` | Completed |
+| `rst8_r0_siamunet_diff_foldb_s1_v1` | SiamUnet_diff | R0 | Fold B | 1 | `a221e7d541282834fb57f6a7a179b0dff05db21b6684842dc8e1d8eed7f46504` | Completed |
+| `rst8_r2_siamunet_diff_foldb_s1_v1` | SiamUnet_diff | R2 | Fold B | 1 | `324bb4b6800c3c6a2789e0a956edbbb053d89d5f3fbcc666fa1ca523175b894a` | Completed |
+| `rst8_r0_siamunet_diff_folda_s2_v1` | SiamUnet_diff | R0 | Fold A | 2 | `649a201d961c276cec1bc1cd159904d4d9d5372fe99ae0a60312c7d88ebe4984` | Completed |
+| `rst8_r2_siamunet_diff_folda_s2_v1` | SiamUnet_diff | R2 | Fold A | 2 | `474c835dfeb1e77b4d66d5dd45be722b80c51489de806982592f69aaadce9a14` | Completed |
+| `rst8_r0_siamunet_diff_foldb_s2_v1` | SiamUnet_diff | R0 | Fold B | 2 | `6da36642650508972beb88beba8056c2c6716a841daab3432f8c0344721fbe28` | Completed |
+| `rst8_r2_siamunet_diff_foldb_s2_v1` | SiamUnet_diff | R2 | Fold B | 2 | `ae9404e8cc59d895c2bbcc454c5e1f3f74a6b8d1d553a7a1d604393fe0094cf9` | Completed |
 
 ---
 

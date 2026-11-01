@@ -11,7 +11,7 @@ This document establishes the canonical mapping between all reported tables, fig
 | **RST4 Discovery** | 4-arm component staircase (R0, R1, R2, R3) | SNUNet-ECAM, Fold C (9 events), Seed 0 | **Completed** | `results/canonical/discovery_recipe_summary.csv` |
 | **RST6 & RST7 Confirmatory** | Pre-registered 18-event confirmation across 2 disjoint folds | SNUNet-ECAM, Folds A & B (18 events), Seeds 0, 1, 2 (12 runs) | **Completed** | `results/canonical/confirmatory_summary_v1.json`, `results/canonical/canonical_event_results_v1.csv` |
 | **RST8 Architecture Transfer** | Cross-backbone evaluation on SiamUnet_diff | SiamUnet_diff, Folds A & B, Seed 0 (4 runs) | **Completed** (Screening) | `results/canonical/stage_a_summary_v1.json` |
-| **RST8 Supplementary Replication** | Supplementary 3-seed replication on SiamUnet_diff | SiamUnet_diff, Folds A & B, Seeds 1 & 2 (8 runs) | **Ongoing** (Actively running on compute cluster) | `configs/robust_source_training/rst8_siamunet_diff/` |
+| **RST8 Supplementary Replication** | Supplementary 3-seed replication on SiamUnet_diff | SiamUnet_diff, Folds A & B, Seeds 0, 1, 2 (12 runs) | **Completed** | `results/canonical/rst8_full_3seed_summary_v1.json`, `results/canonical/rst8_canonical_event_results_full_3seed_v1.csv` |
 | **RST9 All-27 Deployment** | Full-source models trained on all 27 events | SNUNet-ECAM, All 27 events, Seeds 0, 1, 2 (3 runs) | **Completed** | `results/canonical/rst9_ledger_v1.json` |
 | **RST10 Synthesis** | Consolidated tables and figures for reporting | Cross-study canonical outputs | **Completed** | `results/tables/`, `results/figures/` |
 | **M2_ONLY Ablation** | Class weighting without event-balanced sampling | SNUNet-ECAM, Folds A & B, Seeds 0, 1, 2 (6 runs) | **Completed** | `results/canonical/m2_only_ablation_summary.json` |
@@ -114,10 +114,17 @@ This document establishes the canonical mapping between all reported tables, fig
 - **Tracked Source Artifacts:** `results/canonical/geoid_nan_corrected_summary.json`, `results/canonical/geoid_event_breakdown_nan_corrected.csv`, `results/canonical/full_precision_54_runs_confusion_metrics_nan_corrected.csv`, `results/canonical/geoid_seed_metrics_nan_corrected.csv`
 
 ### Supplementary Study S3: SiamUnet_diff 3-Seed Replication
-- **Scope:** Full 3-seed evaluation (Seeds 0, 1, 2) on SiamUnet_diff across Folds A & B (12 runs total).
-- **Status:** **ONGOING** (Seeds 1 and 2 are actively executing on the compute cluster).
-- **Governing Configs:** `configs/robust_source_training/rst8_siamunet_diff/rst8_*_s1_v1.json`, `rst8_*_s2_v1.json`
+- **Scope:** Full 3-seed evaluation (Seeds 0, 1, 2) on SiamUnet_diff across Folds A & B (12 runs total, 108 event records).
+- **Status:** **Completed**
+- **Key Results:**
+  - Grand Macro F1: R0 = $0.7248 \pm 0.0063$, R2 = $0.7184 \pm 0.0042$, Paired Mean $\Delta = \mathbf{-0.0064 \pm 0.0056}$ (-0.64 pp).
+  - 95% Paired Event Bootstrap CI: `[-0.0240, +0.0114]` ($p = 0.7546$).
+  - Tail Reliability: Bottom-3 Mean F1 drops from $0.4637$ to $0.4214$ ($\Delta = -0.0423$).
+  - Event Counts (±0.010 threshold): 5 Benefit, 4 Neutral, 9 Harm.
+  - Scientific Conclusion: Rejects universal transfer; confirms ChangeGuard gains are architecture-specific to dense multi-scale attention backbones (SNUNet-ECAM) and do not benefit lightweight difference decoders.
+- **Governing Configs:** `configs/robust_source_training/rst8_siamunet_diff/*.json`
 - **Analysis Tool:** `tools/robust_source_training/run_rst8_full_3seed_analysis.py`
+- **Tracked Source Artifacts:** `results/canonical/rst8_full_3seed_summary_v1.json`, `results/canonical/rst8_canonical_event_results_full_3seed_v1.csv`, `results/canonical/rst8_paired_event_deltas_full_3seed_v1.csv`, `results/canonical/rst8_bootstrap_distribution_full_3seed_v1.json`
 
 ---
 

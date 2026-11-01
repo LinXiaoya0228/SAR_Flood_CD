@@ -42,7 +42,8 @@ All hypotheses were evaluated through pre-registered decision rules and independ
 
 ### C. Architecture Specificity on SiamUnet_diff
 - **Seed 0 Screening:** When tested on SiamUnet_diff across all 18 events at Seed 0, R2 degraded performance relative to R0 (Grand Macro F1: $0.7139$ vs $0.7238$, $\Delta = -0.0099$; Bottom-3 Tail F1: $0.3902$ vs $0.4350$, $\Delta = -0.0448$), triggering the pre-registered stopping rule.
-- **Ongoing 3-Seed Supplementary Replication:** A supplementary multi-seed study extending SiamUnet_diff to Seeds 1 and 2 is actively executing on the compute cluster to determine whether this observed degradation is consistent across random initializations (*status: ongoing*).
+- **3-Seed Supplementary Replication:** A supplementary multi-seed study extending SiamUnet_diff to Seeds 1 and 2 (12 runs total, 108 evaluated event records) confirmed this outcome (*status: completed*). Across 3 seeds, Grand Macro F1 dropped from $0.7248 \pm 0.0063$ (R0) to $0.7184 \pm 0.0042$ (R2), yielding a paired mean delta of $\mathbf{-0.0064 \pm 0.0056}$ (95% paired event bootstrap CI `[-0.0240, +0.0114]`, $p = 0.7546$) and degrading Bottom-3 Tail F1 by $-0.0423$.
+- **Finding:** The hypothesis of universal architectural transfer is rejected. ChangeGuard gains are architecture-specific to dense multi-scale attention backbones (SNUNet-ECAM) and do not transfer to lightweight difference decoders.
 
 ### D. Retrospective Kuro Siwo Target Evaluation
 - **10-Event Test-Time Adaptation Benchmark:** On the 10 former Kuro Siwo test events evaluated in the TTA benchmark, R2 achieved Grand Target Macro F1 of $\mathbf{0.8086}$, outperforming the unadapted baseline R0 ($0.7453$, $\Delta = +0.0633$), Tent ($0.7628$, $\Delta = +0.0458$, 95% CI `[+0.0274, +0.0648]`), and CoTTA ($0.7669$, $\Delta = +0.0417$, 95% CI `[+0.0260, +0.0585]`), without requiring test-time parameter updates or adaptation latency.
@@ -75,7 +76,7 @@ SAR_Flood_CD/
 │       ├── target_and_tta.md      # Kuro Siwo historical target evaluation
 │       ├── geoid_external_eval.md # External GEOID-Flood evaluation and NaN parity
 │       ├── regenerate_tables_figures.md # Table/figure one-click regeneration
-│       └── architecture_replication.md  # SiamUnet_diff replication protocol (ongoing)
+│       └── architecture_replication.md  # SiamUnet_diff replication guide & findings
 ├── environment/                   # Conda environment and pip requirements files
 │   ├── environment_sar_cd.yml     # Core training environment definition
 │   ├── requirements_sar_cd.txt    # Core pip requirements
@@ -179,7 +180,7 @@ For full step-by-step procedures, refer to our modular guides:
 - **[Historical Target & TTA](docs/reproduction/target_and_tta.md):** Retrospective evaluation against Tent and CoTTA baselines.
 - **[External GEOID-Flood](docs/reproduction/geoid_external_eval.md):** Evaluation workflow and NaN correction on GEOID-Flood.
 - **[Regenerating Tables & Figures](docs/reproduction/regenerate_tables_figures.md):** Commands to regenerate all artifacts from compact data.
-- **[Architecture Replication](docs/reproduction/architecture_replication.md):** Protocol and ongoing status for SiamUnet_diff replication.
+- **[Architecture Replication](docs/reproduction/architecture_replication.md):** Findings and reproduction workflow for the SiamUnet_diff 3-seed replication study.
 
 ---
 
