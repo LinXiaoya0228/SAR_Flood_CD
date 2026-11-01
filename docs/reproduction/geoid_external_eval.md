@@ -47,9 +47,8 @@ python scripts/external_evaluation/analyze_geoid_nan_corrected.py
   - R0: $0.5492 \pm 0.0326$
   - R2: $0.5475 \pm 0.0167$
   - Paired Difference: $\Delta = -0.0017$ (-0.17 pp)
-  - 95% Event Bootstrap CI (9 events): `[-0.0238, +0.0217]` (crosses zero; statistical parity).
+  - 95% Event Bootstrap CI (9 events): `[-0.0238, +0.0217]` (the interval spans zero, indicating that a non-zero effect was not detected in this sample; this does not establish equivalence or statistical parity between recipes).
 - **Precision / Recall Breakdown:**
   - Precision: R0 = $0.4972$, R2 = $0.5439$ ($\mathbf{+4.66\text{ pp}}$ gain in flood precision for R2).
   - Recall: R0 = $0.6519$, R2 = $0.5994$ ($-5.25\text{ pp}$).
 - **Pooled Dataset F1 (873M pixels):** R0 = $0.7154$, R2 = $0.7156$ ($\Delta = +0.0002$).
-

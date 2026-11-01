@@ -1,0 +1,10 @@
+scope,partition,seed,r0_macro_f1,r2_macro_f1,delta
+RST7_Primary_Source,Fold A,Seed 0,0.733,0.7565,0.0235
+RST7_Primary_Source,Fold A,Seed 1,0.7484,0.7636,0.0152
+RST7_Primary_Source,Fold A,Seed 2,0.7566,0.7427,-0.0139
+RST7_Primary_Source,Fold B,Seed 0,0.6937,0.7159,0.0222
+RST7_Primary_Source,Fold B,Seed 1,0.6982,0.7283,0.0302
+RST7_Primary_Source,Fold B,Seed 2,0.6912,0.6956,0.0044
+RST9_Retrospective_Target,Historical_16,Seed 0,0.7009,0.7355,0.0346
+RST9_Retrospective_Target,Historical_16,Seed 1,0.6616,0.7337,0.0721
+RST9_Retrospective_Target,Historical_16,Seed 2,0.6994,0.7447,0.0453

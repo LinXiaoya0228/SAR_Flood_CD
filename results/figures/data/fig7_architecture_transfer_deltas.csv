@@ -1,0 +1,4 @@
+metric,snunet_r0,snunet_r2,snunet_ecam_delta,siamunet_r0,siamunet_r2,siamunet_diff_delta
+Grand Macro F1,0.7202,0.7338,0.0136,0.7238,0.7139,-0.0099
+Bottom-3 Mean F1,0.3987,0.4498,0.0511,0.435,0.3902,-0.0448
+Worst Event F1,0.2991,0.2929,-0.0062,0.3565,0.266,-0.0905

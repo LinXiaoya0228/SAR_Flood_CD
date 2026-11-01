@@ -1,15 +1,15 @@
 # Model weights and large binary artifacts
-checkpoints/
+/checkpoints/
 *.pt
 *.pth
 *.ckpt
 *.onnx
 
 # Generated experiment outputs
-outputs/
-logs/
-wandb/
-runs/
+/outputs/
+/logs/
+/wandb/
+/runs/
 
 # Python
 __pycache__/
@@ -24,15 +24,14 @@ venv/
 .vscode/
 .idea/
 
-# Data
-data/
+# Data root directory
+/data/
 
 # Temporary files
 *.tmp
 *.swp
 .DS_Store
 
-
 # Exports and review drafts
-exports/
+/exports/
 

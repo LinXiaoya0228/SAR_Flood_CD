@@ -40,9 +40,17 @@ from src.robust_source_training.contracts import (
 
 HISTORICAL_TEST_EVENTS = [205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013]
 
+def _resolve_input(canonical_rel: str, output_rel: str) -> Path:
+    out_path = REPO_ROOT / output_rel
+    can_path = REPO_ROOT / canonical_rel
+    if out_path.exists():
+        return out_path
+    return can_path
+
+
 INPUT_FILES = {
-    "rst9_target_metrics": REPO_ROOT / "outputs/robust_source_training/rst9_inference/all_historical_target_metrics.csv",
-    "e11_summary": REPO_ROOT / "outputs/e11_final_test_v1/analysis/e11_consolidated_summary.json",
+    "rst9_target_metrics": _resolve_input("results/canonical/all_historical_target_metrics.csv", "outputs/robust_source_training/rst9_inference/all_historical_target_metrics.csv"),
+    "e11_summary": _resolve_input("results/canonical/e11_consolidated_summary.json", "outputs/e11_final_test_v1/analysis/e11_consolidated_summary.json"),
     "e11_matrix": REPO_ROOT / "configs/changeguard/e11_final_test_matrix_v2_authorized.json",
 }
 

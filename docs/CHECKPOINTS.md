@@ -72,13 +72,21 @@ Trained on 18 events, evaluated on 9 held-out events per fold (Fold A and Fold B
 
 ---
 
-## 5. Checkpoint Availability & Verification
+## 5. Checkpoint Availability & Release Decisions
 
-Because individual PyTorch checkpoint binaries range from ~50 MB to ~140 MB each (totalling $> 3$ GB across the study), raw weights are preserved outside git history per open-science repository limits. Direct download links are not hosted in this git checkout. Model identities, hyperparameter configurations, and cryptographic SHA-256 hashes are documented in the tables above to enable exact verification upon request or subsequent release distribution.
+### Availability Scope
+- **Not Distributed in Git:** Because individual PyTorch checkpoint binaries range from ~50 MB to ~140 MB each (totalling $> 3$ GB across the experimental matrix), model weight files (`.pt`) are not tracked or hosted directly in this Git repository.
+- **No Direct Download Mirror Currently Hosted:** There is currently no active public external download URL for pre-trained weights.
+- **Inference Reproduction Boundary:** The repository is **not** immediately ready for out-of-the-box raw image inference reproduction until model weights are either retrained locally from scratch (using `tools/robust_source_training/run_rst2_infrastructure.py` or `tools/train_source_model.py` and the Kuro Siwo dataset) or made available through subsequent institutional release.
+- **Immediate Auditability & Verification:** All compact canonical outputs, metrics, summary tables, and publication figures are tracked under `results/` and can be regenerated or audited immediately without model weights.
 
-To verify the integrity of any checkpoint file:
+### Governance and Release Decisions
+- **Checkpoint Distribution:** Formal release decisions regarding public weight hosting (e.g. Zenodo, Hugging Face, or institutional repository mirrors) remain under review by the author and institution.
+- **Project Licensing:** Codebase licensing terms and intellectual property permissions remain reserved for determination by the author and institution. Permissions beyond research inspection are not implied.
+
+### Cryptographic Verification
+When checkpoint weights are present locally, verify their integrity using SHA-256:
 ```bash
 sha256sum <path_to_checkpoint.pt>
 ```
-Compare the output 64-character hexadecimal digest directly with the corresponding SHA-256 hash in the tables above.
-
+Compare the resulting 64-character hexadecimal digest directly with the values documented in the tables above.

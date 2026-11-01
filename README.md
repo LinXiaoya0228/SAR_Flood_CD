@@ -8,9 +8,9 @@ Official implementation and reproducibility package for:
 
 ## 1. Executive Summary & Research Question
 
-Synthetic Aperture Radar (SAR) satellite imagery provides essential all-weather, day-and-night observation for flood mapping during humanitarian crises. However, deep neural networks deployed for cross-event SAR change detection exhibit notable performance volatility across unseen disaster events.
+Synthetic Aperture Radar (SAR) satellite imagery provides all-weather, day-and-night observation for flood mapping during humanitarian crises. However, deep neural networks deployed for cross-event SAR change detection exhibit notable performance volatility across unseen disaster events.
 
-While recent research has explored **Test-Time Adaptation (TTA)** (e.g., Tent, CoTTA, EATA) to adapt models during deployment on unlabeled test data, entropy-minimization adaptation strategies frequently suffer from severe degradation under the extreme foreground class imbalance characteristic of SAR flood scenes (where flood pixels often constitute $< 2\%$ of the image area). Under these conditions, unsupervised adaptation can suppress positive flood predictions to minimize entropy over the dominant background class.
+While recent research has explored **Test-Time Adaptation (TTA)** (e.g., Tent, CoTTA, EATA) to adapt models during deployment on unlabeled test data, in our benchmark on multi-temporal SAR flood change detection, standard test-time adaptation strategies exhibited substantial performance instability and frequent degradation in flood predictions under the severe foreground class imbalance characteristic of SAR flood scenes (where flood pixels often constitute $< 2\%$ of the image area). Under these conditions, unsupervised entropy minimization frequently suppressed positive flood predictions.
 
 **The Central Question:**  
 *Can an existing-component, target-free source-training strategy—specifically uniform event sampling ($\mathbf{M1}$) combined with training-only inverse-square-root class weighting ($\mathbf{M2}$)—improve cross-event generalization and tail disaster reliability in SAR flood change detection without requiring test-time parameter updates?*
@@ -19,7 +19,7 @@ While recent research has explored **Test-Time Adaptation (TTA)** (e.g., Tent, C
 ChangeGuard combines established training components into a unified, target-free recipe:
 1. **$\mathbf{M1}$ Event-Balanced Sampling:** Samples training patches uniformly across diverse disaster events rather than uniformly across the pooled patch archive. This prevents physically extensive flood events from disproportionately dominating gradient updates.
 2. **$\mathbf{M2}$ Inverse-Square-Root Class Weighting:** Applies soft inverse-square-root class weights ($w_c = 1/\sqrt{f_c}$) strictly to the training loss (Cross-Entropy + Dice), balancing foreground gradient contribution without destabilizing false alarms.
-3. **Target-Free Deployment:** At test time, the resulting model operates in standard feed-forward evaluation mode with **zero** test-time backpropagation passes, **zero** gradient accumulation delay, and **zero** additional GPU memory allocation.
+3. **Target-Free Deployment:** At test time, the resulting model operates in standard feed-forward evaluation mode without test-time parameter updates, test-time backpropagation passes, or adaptation buffers.
 
 ---
 
@@ -38,20 +38,20 @@ All hypotheses were evaluated through pre-registered decision rules and independ
 ### B. Supplementary Weighting-Only Ablation ($\text{M2\_ONLY}$, 6 Runs)
 - Evaluating class weighting alone without event-balanced sampling yielded Grand Macro F1 of $0.7126$ ($\Delta = -0.0076$ vs R0) and Bottom-3 Tail F1 of $0.4270$ ($\Delta = +0.0283$ vs R0).
 - Adding event-balanced sampling ($\mathbf{M1}$) on top of class weighting ($\mathbf{R2}$ vs $\mathbf{M2\_ONLY}$) produced a statistically significant gain of $\mathbf{+0.0212}$ (+2.12 pp, 95% bootstrap CI: `[+0.0010, +0.0442]`, $p = 0.0181$).
-- **Conclusion:** Class weighting alone does not yield a macro F1 benefit over baseline R0; **event-balanced sampling (M1) is essential for overall generalization and tail disaster recovery** (+5.11 pp tail gain for R2 vs +2.83 pp for M2_ONLY).
+- **Finding:** Class weighting alone does not yield an overall macro F1 benefit over baseline R0; event-balanced sampling ($\mathbf{M1}$) accounts for the measured macro F1 and tail disaster recovery gains observed in R2 (+5.11 pp tail gain for R2 vs +2.83 pp for M2_ONLY, and $+0.0212$ gain for R2 vs M2_ONLY).
 
 ### C. Architecture Specificity on SiamUnet_diff
 - **Seed 0 Screening:** When tested on SiamUnet_diff across all 18 events at Seed 0, R2 degraded performance relative to R0 (Grand Macro F1: $0.7139$ vs $0.7238$, $\Delta = -0.0099$; Bottom-3 Tail F1: $0.3902$ vs $0.4350$, $\Delta = -0.0448$), triggering the pre-registered stopping rule.
 - **Ongoing 3-Seed Supplementary Replication:** A supplementary multi-seed study extending SiamUnet_diff to Seeds 1 and 2 is actively executing on the compute cluster to determine whether this observed degradation is consistent across random initializations (*status: ongoing*).
 
-### D. Retrospective Kuro Siwo Target Evaluation (10 Events)
-- On historical Kuro Siwo target events, R2 achieved Grand Target Macro F1 of $\mathbf{0.8086}$, exceeding baseline R0 ($0.7579$, $\Delta = +0.0507$), Tent ($0.7628$, $\Delta = +0.0458$), and CoTTA ($0.7669$, $\Delta = +0.0417$).
-- Delivered superior accuracy with **0.0s** test-time adaptation latency and **0.0 MB** test-time adaptation memory.
+### D. Retrospective Kuro Siwo Target Evaluation
+- **10-Event Test-Time Adaptation Benchmark:** On the 10 former Kuro Siwo test events evaluated in the TTA benchmark, R2 achieved Grand Target Macro F1 of $\mathbf{0.8086}$, outperforming the unadapted baseline R0 ($0.7453$, $\Delta = +0.0633$), Tent ($0.7628$, $\Delta = +0.0458$, 95% CI `[+0.0274, +0.0648]`), and CoTTA ($0.7669$, $\Delta = +0.0417$, 95% CI `[+0.0260, +0.0585]`), without requiring test-time parameter updates or adaptation latency.
+- **16-Event Full Historical Target Extension:** Across all 16 historical target events, full-source R2 models achieved a Grand Macro F1 of $\mathbf{0.7380 \pm 0.0059}$ compared to $0.6873 \pm 0.0223$ for baseline R0 ($\Delta = +0.0507$, 95% event bootstrap CI `[+0.0234, +0.0845]`), with 14 of 16 events exhibiting positive paired gains.
 
 ### E. External Zero-Shot Generalization on GEOID-Flood (1,301 Tiles, 9 EMS Activations)
 - Evaluated on $873,090,528$ valid pixels across 9 Copernicus Emergency Management Service (EMS) flood activations under verified input transform parity (NaN filled with 0.15).
-- **Macro F1:** R0 = $0.5492 \pm 0.0326$, R2 = $0.5475 \pm 0.0167$ ($\Delta = -0.0017$, 95% event bootstrap CI `[-0.0238, +0.0217]`). The paired difference is not statistically distinguishable from zero at the 95% confidence level.
-- **Precision Gain:** R2 delivered a $\mathbf{+4.66\text{ pp}}$ gain in flood precision ($0.5439$ vs $0.4972$) with a modest recall reduction ($0.5994$ vs $0.6519$), suppressing false alarms in zero-shot external deployment.
+- **Macro F1:** R0 = $0.5492 \pm 0.0326$, R2 = $0.5475 \pm 0.0167$ ($\Delta = -0.0017$, 95% event bootstrap CI `[-0.0238, +0.0217]`). The paired difference is not statistically distinguishable from zero at the 95% confidence level. *(Note: an interval spanning zero indicates that a non-zero effect was not detected in this sample; it does not demonstrate equivalence or statistical parity between recipes).*
+- **Precision Shift:** R2 delivered a $\mathbf{+4.66\text{ pp}}$ gain in flood precision ($0.5439$ vs $0.4972$) with a corresponding reduction in recall ($0.5994$ vs $0.6519$).
 
 ---
 
@@ -84,12 +84,13 @@ SAR_Flood_CD/
 ├── papers/                        # Publication manuscripts, LaTeX tables, and vector assets
 │   └── igarss2027/                # IEEE conference 4-page paper draft, tables, and figures
 ├── results/                       # Tracked compact canonical CSV/JSON results and figures
-│   ├── canonical/                 # 16 compact canonical source data files
+│   ├── canonical/                 # 18 compact canonical source data files
 │   ├── tables/                    # All 7 synthesis tables in CSV and Markdown
 │   └── figures/                   # All 9 publication figures (PDF & PNG) + comparisons
+├── scripts/                       # External evaluation scripts and launch tools
 ├── src/                           # Core implementation source code
+│   ├── data/                      # Dataset loaders (KuroSourceDataset, evaluation)
 │   ├── models/                    # Architecture wrappers (SNUNet-ECAM, SiamUnet_diff)
-│   ├── datasets/                  # SAR dataset loaders, patch samplers, and transforms
 │   ├── losses/                    # Standard and class-weighted CE + Dice loss functions
 │   └── external_evaluation/       # GEOID-Flood dataset adapter
 ├── tests/                         # Automated unit tests and smoke verification
@@ -98,7 +99,15 @@ SAR_Flood_CD/
 
 ---
 
-## 4. Quick-Start Guide
+## 4. Quick-Start Guide & Availability Boundaries
+
+### Available Components vs. Checkpoint Downloads
+- **Immediately Reproducible without Large Downloads:** This public repository includes complete source code, frozen configs, automated tests, and tracked compact canonical data (`results/`). Anyone can clone the repository and immediately execute:
+  - Unit tests and synthetic forward passes (`tools/smoke_reproducibility.py`),
+  - Table regeneration from compact data (`tools/robust_source_training/build_rst10_tables.py`),
+  - Publication figure rendering (`tools/robust_source_training/build_rst10_figures.py`),
+  - Offline TTA and historical comparison tools (`tools/robust_source_training/run_r2_vs_tta_offline_comparison.py`).
+- **Checkpoint Availability:** Pre-trained checkpoint binary weights (`.pt` files, totaling $> 3$ GB) are not hosted in this Git repository due to file-size constraints. Public distribution and download hosting for trained weights remain under institutional and author review. Full end-to-end retraining from scratch is supported using the provided configurations and public Kuro Siwo data.
 
 ### Step 1: Environment Installation
 ```bash
@@ -184,7 +193,7 @@ If you use this codebase, models, or evaluation protocols in your research, plea
   title     = {Event-Balanced Source Training for Robust Cross-Event {SAR} Flood Change Detection},
   booktitle = {IEEE International Geoscience and Remote Sensing Symposium (IGARSS)},
   year      = {2027},
-  note      = {Under review}
+  note      = {Manuscript in preparation}
 }
 
 @thesis{lin2026changeguard,
@@ -200,6 +209,6 @@ If you use this codebase, models, or evaluation protocols in your research, plea
 
 ## 8. License and Attribution
 
-- **Project Code & Artifacts:** Project licensing terms are reserved for determination by the author and institution.
+- **Project Code & Checkpoints:** Project licensing terms and public checkpoint release decisions are reserved for determination by the author and institution.
 - **Third-Party Code:** The official `SNUNet_ECAM` architecture implementation is authored by the Orion-AI-Lab / KuroSiwo contributors ([https://github.com/Orion-AI-Lab/KuroSiwo](https://github.com/Orion-AI-Lab/KuroSiwo)).
 - **Datasets:** The Kuro Siwo dataset is provided under CC-BY 4.0; the GEOID-Flood dataset is provided under Copernicus Emergency Management Service data policies.

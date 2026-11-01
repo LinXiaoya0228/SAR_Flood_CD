@@ -52,14 +52,15 @@ This document establishes the canonical mapping between all reported tables, fig
 
 ### Table 3 (FYP Table 1): Component Staircase (Discovery Screening)
 - **Scope:** 4-arm ablation on Discovery Split Group C (9 events), Seed 0; SNUNet-ECAM.
-- **Key Results:**
-  - R0 (Baseline): Macro F1 $0.6974$, Bottom-3 F1 $0.3804$.
-  - R1 (M1 Event-Balanced Sampling): Macro F1 $0.7153$ ($\Delta = +0.0179$), Bottom-3 F1 $0.4286$ ($\Delta = +0.0482$).
-  - R2 (M1 + M2 Inverse-Square-Root Class Weights): Macro F1 $0.7289$ ($\Delta = +0.0315$), Bottom-3 F1 $0.4578$ ($\Delta = +0.0774$).
-  - R3 (R2 + M3 SAR Augmentation): Macro F1 $0.7241$ ($\Delta = +0.0267$), Bottom-3 F1 $0.4419$ (did not outperform R2; rejected).
+- **Key Results (from `results/canonical/discovery_recipe_summary.csv`):**
+  - R0 (Matched Baseline): Event-Macro F1 $0.7631$, Bottom-3 F1 $0.5630$.
+  - R1 (M1 Event-Balanced Sampling): Event-Macro F1 $0.7561$ ($\Delta = -0.0070$), Bottom-3 F1 $0.5426$ ($\Delta = -0.0204$).
+  - R2 (M1 + M2 Inverse-Square-Root Class Weights): Event-Macro F1 $0.7651$ ($\Delta = +0.0020$), Bottom-3 F1 $0.5869$ ($\Delta = +0.0239$, $+2.39\text{ pp}$ on tail).
+  - R3 (M1 + M2 + M3 SAR Augmentation): Event-Macro F1 $0.7697$ ($\Delta = +0.0065$), Bottom-3 F1 $0.5824$ ($\Delta = +0.0194$).
+- **Archived Selection Rationale:** Under the pre-registered promotion rule (`configs/robust_source_training/rst4_promotion_rule_v1.json`), both R2 and R3 qualified for promotion (R2 qualified via Route D2 for tail recovery, $\Delta_{\text{bottom-3}} \ge +0.020$; R3 qualified via Route D1 for overall F1 gain). Top candidate event-macro F1 was R3 ($0.7697$). The pre-registered parsimony rule specified a $0.005$ tolerance window: $[0.7697 - 0.005, 0.7697] = [0.7647, 0.7697]$. Because R2 ($0.7651$) fell within $0.005$ of R3 ($0.7697$), the simpler recipe (parsimony preference R1 $\to$ R2 $\to$ R3) was promoted, eliminating the training augmentation jitter of M3 while achieving the highest tail disaster recovery ($+2.39\text{ pp}$ on bottom-3 events).
 - **Generating Script:** `tools/robust_source_training/build_rst10_tables.py`
 - **Tracked Source Artifacts:** `results/tables/table1_component_staircase.csv`, `results/canonical/discovery_recipe_summary.csv`
-- **Governing Configs:** `configs/robust_source_training/rst4_discovery/rst4_*.json`
+- **Governing Configs:** `configs/robust_source_training/rst4_*.json`
 
 ### Table 4 (FYP Table 4): Deployable Checkpoint Ledger (All-27 Source Models)
 - **Scope:** Full-source SNUNet-ECAM models trained on all 27 events across Seeds 0, 1, 2 (16 epochs, 10,736 optimizer steps each).
@@ -68,10 +69,12 @@ This document establishes the canonical mapping between all reported tables, fig
 - **Tracked Source Artifacts:** `results/tables/table4_deployable_checkpoint_ledger.csv`, `results/canonical/rst9_ledger_v1.json`
 
 ### Table 5 (FYP Table 5): Historical Kuro Siwo Target Extension
-- **Scope:** All-27 R0 vs R2 models evaluated on 10 historical target events (16 epochs, 3 seeds).
+- **Scope:** All-27 R0 vs R2 models evaluated on historical Kuro Siwo target events (16 epochs, 3 seeds).
 - **Key Results:**
-  - Grand Target Macro F1: R0 = $0.7579 \pm 0.0163$, R2 = $0.8086 \pm 0.0104$ ($\Delta = +0.0507$, +5.07 pp).
-  - Target Tail (Bottom-3) F1: R0 = $0.4611$, R2 = $0.5604$ ($\Delta = +0.0993$, +9.93 pp).
+  - All 16 Historical Events (Grand Macro F1): R0 = $0.6873 \pm 0.0223$, R2 = $0.7380 \pm 0.0059$ ($\Delta = +0.0507$, +5.07 pp, 95% bootstrap CI `[+0.0234, +0.0845]`).
+  - 10 Former Test Events (TTA Benchmark Subset): R0 = $0.7453$, R2 = $0.8086$ ($\Delta = +0.0633$, +6.33 pp).
+  - 6 Historical Dev Events: R0 = $0.5906$, R2 = $0.6202$ ($\Delta = +0.0296$).
+  - Historical Tail (Bottom-3 Events): R0 = $0.3889$, R2 = $0.4607$ ($\Delta = +0.0719$, +7.19 pp).
 - **Generating Script:** `tools/robust_source_training/build_rst10_tables.py`
 - **Tracked Source Artifacts:** `results/tables/table5_historical_target_extension.csv`, `results/canonical/rst9_comparative_analysis_v1.json`
 
@@ -83,10 +86,10 @@ This document establishes the canonical mapping between all reported tables, fig
 ### Table 7 (FYP Table 7): Contextual Test-Time Adaptation (TTA) Comparison
 - **Scope:** Offline comparison of frozen source-training models against test-time adaptation methods (Tent, CoTTA, Source Anchor) across 10 Kuro Siwo target events.
 - **Key Results:**
-  - Macro F1: Source Anchor = $0.7453$, Tent = $0.7628$, CoTTA = $0.7669$, R2 (Source-Trained) = $0.8086$.
+  - Macro F1 on 10 Target Events: Source Anchor (R0) = $0.7453$, Tent = $0.7628$, CoTTA = $0.7669$, R2 (Source-Trained) = $0.8086$.
   - R2 vs Tent Delta: $+0.0458$ (95% CI `[+0.0274, +0.0648]`).
   - R2 vs CoTTA Delta: $+0.0417$ (95% CI `[+0.0260, +0.0585]`).
-  - Test-time compute: R2 requires 0 gradient steps, 0 backprop passes, 0 MB adaptation state, and 0 adaptation delay.
+  - Operational characteristics: R2 operates in standard feed-forward mode without test-time parameter updates, backpropagation passes, or adaptation buffers.
 - **Generating Script:** `tools/robust_source_training/run_r2_vs_tta_offline_comparison.py`
 - **Tracked Source Artifacts:** `results/tables/table7_contextual_tta_comparison.csv`, `results/canonical/r2_vs_tta_summary.json`, `results/canonical/r2_vs_tta_event_averaged_paired.csv`
 
@@ -96,16 +99,15 @@ This document establishes the canonical mapping between all reported tables, fig
   - Grand Macro F1: R0 = $0.7202$, M2_ONLY = $0.7126$ ($\Delta = -0.0076$ vs R0, 95% CI `[-0.0312, +0.0172]`).
   - Adding Event Balancing (R2 vs M2_ONLY): R2 = $0.7338$, $\Delta = \mathbf{+0.0212}$ (95% CI `[+0.0010, +0.0442]`, $p = 0.0181$).
   - Bottom-3 Tail F1: R0 = $0.3987$, M2_ONLY = $0.4270$ ($\Delta = +0.0283$ vs R0), R2 = $0.4498$ ($\Delta = +0.0511$ vs R0, $+0.0228$ vs M2_ONLY).
-  - Conclusion: Class weighting alone without event balancing slightly reduces macro F1; combining event-balanced sampling with class weighting (R2) is necessary for overall generalization and substantial tail recovery.
+  - Finding: Class weighting alone without event balancing slightly reduces overall macro F1; combining event-balanced sampling with class weighting (R2) produces statistically significant overall gains and substantial tail recovery.
 - **Generating Script:** `tools/robust_source_training/analyze_m2_only_ablation.py`
 - **Tracked Source Artifacts:** `results/canonical/m2_only_ablation_summary.json`, `results/canonical/m2_only_ablation_canonical_records.csv`, `results/canonical/m2_only_ablation_per_event_paired.csv`
 
-### Supplementary Table S2: Corrected External Zero-Shot Evaluation on GEOID-Flood
+### Supplementary Table S2: External Zero-Shot Evaluation on GEOID-Flood
 - **Scope:** 6 frozen SNUNet-ECAM all-27 checkpoints (R0 seeds 0/1/2, R2 seeds 0/1/2) evaluated on 1,301 paired S1-GRD tiles ($873,090,528$ valid pixels) across 9 Copernicus Emergency Management Service (EMS) activations under verified input transform parity (NaN filled with 0.15).
 - **Key Results:**
-  - 9-Event Macro F1: R0 = $0.5492 \pm 0.0326$, R2 = $0.5475 \pm 0.0167$ ($\Delta = -0.0017$, 95% event bootstrap CI `[-0.0238, +0.0217]`). The paired difference is not statistically distinguishable from zero at the 95% confidence level.
-  - Precision Gain: R0 = $0.4972$, R2 = $0.5439$ ($\Delta = \mathbf{+0.0466}$, +4.66 pp precision gain).
-  - Recall: R0 = $0.6519$, R2 = $0.5994$ ($\Delta = -0.0525$).
+  - 9-Event Macro F1: R0 = $0.5492 \pm 0.0326$, R2 = $0.5475 \pm 0.0167$ ($\Delta = -0.0017$, 95% event bootstrap CI `[-0.0238, +0.0217]`). The paired difference is not statistically distinguishable from zero at the 95% confidence level. *(An interval spanning zero indicates that a non-zero effect was not detected in this sample; it does not demonstrate equivalence or statistical parity between recipes).*
+  - Precision / Recall Shift: Precision R0 = $0.4972$, R2 = $0.5439$ ($\Delta = \mathbf{+0.0466}$, +4.66 pp precision gain); Recall R0 = $0.6519$, R2 = $0.5994$ ($\Delta = -0.0525$).
   - Grouped 8-Event Sensitivity (merging EMSR861 & EMSR864 Iberia floods): $\Delta = -0.0003$ (95% CI `[-0.0250, +0.0247]`).
   - Pooled Dataset F1 (873M pixels): R0 = $0.7154$, R2 = $0.7156$ ($\Delta = +0.0002$).
 - **Generating Script:** `scripts/external_evaluation/analyze_geoid_nan_corrected.py`
@@ -129,9 +131,6 @@ This document establishes the canonical mapping between all reported tables, fig
 | **Fig 4** | Precision vs. Recall trade-off across 18 confirmation events | `tools/robust_source_training/build_rst10_figures.py` | `results/canonical/confirmatory_summary_v1.json` | `results/figures/fig4_precision_recall_tradeoff.{pdf,png}` |
 | **Fig 5** | Seed stability & variance comparison across Folds A and B | `tools/robust_source_training/build_rst10_figures.py` | `results/canonical/confirmatory_summary_v1.json` | `results/figures/fig5_seed_stability.{pdf,png}` |
 | **Fig 6** | Event sampling probability distribution (M0 uniform patch vs M1 uniform event) | `tools/robust_source_training/build_rst10_figures.py` | `results/canonical/rst1_source_event_inventory_v1.csv` | `results/figures/fig6_event_sampling_distribution.{pdf,png}` |
-| **Fig 7** | Architecture transfer deltas: SiamUnet_diff vs SNUNet-ECAM (Seed 0) | `tools/robust_source_training/build_rst10_figures.py` | `results/canonical/stage_a_summary_v1.json` | `results/figures/fig7_architecture_transfer_deltas.{pdf,png}` |
-| **Fig 8** | Retrospective Kuro Siwo target extension paired deltas | `tools/robust_source_training/build_rst10_figures.py` | `results/canonical/rst9_comparative_analysis_v1.json` | `results/figures/fig8_historical_target_extension_deltas.{pdf,png}` |
-| **Fig 9** | Runtime throughput vs. peak VRAM allocation trade-off | `tools/robust_source_training/build_rst10_figures.py` | `results/tables/table6_runtime_and_resource_cost.csv` | `results/figures/fig9_runtime_vram_tradeoff.{pdf,png}` |
-| **Fig S1** | Offline R2 vs. Tent / CoTTA comparison across 10 target events | `tools/robust_source_training/run_r2_vs_tta_offline_comparison.py` | `results/canonical/r2_vs_tta_event_averaged_paired.csv` | `results/figures/r2_vs_tta_comparison_figure.png` |
-| **Fig S2** | GEOID-Flood NaN-corrected external evaluation comparison | `scripts/external_evaluation/analyze_geoid_nan_corrected.py` | `results/canonical/geoid_event_breakdown_nan_corrected.csv` | `results/figures/geoid_r2_vs_r0_comparison_figure_nan_corrected.png` |
-| **Fig S3** | M2_ONLY supplementary ablation per-event comparison | `tools/robust_source_training/analyze_m2_only_ablation.py` | `results/canonical/m2_only_ablation_per_event_paired.csv` | `results/figures/m2_only_ablation_figure.png` |
+| **Fig 7** | Architecture transfer deltas on SiamUnet_diff (Seed 0) | `tools/robust_source_training/build_rst10_figures.py` | `results/canonical/stage_a_summary_v1.json` | `results/figures/fig7_architecture_transfer_deltas.{pdf,png}` |
+| **Fig 8** | Historical target extension per-event deltas | `tools/robust_source_training/build_rst10_figures.py` | `results/canonical/rst9_comparative_analysis_v1.json` | `results/figures/fig8_historical_target_extension_deltas.{pdf,png}` |
+| **Fig 9** | Runtime throughput vs. peak VRAM tradeoff | `tools/robust_source_training/build_rst10_figures.py` | `results/canonical/rst9_ledger_v1.json` | `results/figures/fig9_runtime_vram_tradeoff.{pdf,png}` |

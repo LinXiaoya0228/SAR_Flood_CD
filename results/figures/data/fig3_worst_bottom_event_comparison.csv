@@ -1,0 +1,4 @@
+metric_group,r0_score,r2_score,delta
+Grand Macro F1,0.7202,0.7338,0.0136
+Bottom-3 Mean F1,0.3987,0.4498,0.0511
+Worst Event F1,0.2991,0.2929,-0.0062

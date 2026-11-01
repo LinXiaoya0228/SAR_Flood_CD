@@ -1,0 +1,5 @@
+recipe_id,label,macro_f1,bottom3_f1
+R0,R0 (Baseline),0.763134,0.562984
+R1,R1 (+M1 Event-Bal),0.756085,0.542608
+R2,R2 (+M2 Class-Wts),0.765146,0.586891
+R3,R3 (+M3 SAR-Aug),0.769657,0.58243

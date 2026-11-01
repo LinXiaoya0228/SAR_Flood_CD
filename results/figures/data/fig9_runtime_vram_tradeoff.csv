@@ -1,0 +1,5 @@
+method,peak_vram_gb,throughput_samples_sec
+SNUNet R0 (Source-Only),4.8,64.0
+SNUNet R2 (Robust Source),4.8,64.0
+Tent (Online TTA),5.7,22.0
+CoTTA (Continual TTA),8.74,11.0
