@@ -31,6 +31,8 @@ Pointwise paired event-bootstrap intervals (10,000 resamples, seed 42) across th
 | **Contextual** | R0 + Tent vs. Fixed R0 | **+0.0175** | **[-0.0147, +0.0597]** | 3 | 4 | 3 | 4 / 6 / 0 |
 | **Contextual** | R0 + CoTTA vs. Fixed R0 | **+0.0216** | **[-0.0121, +0.0667]** | 2 | 6 | 2 | 4 / 6 / 0 |
 
+*Statistical Note: Pointwise 95% confidence intervals are computed using 10,000 paired event-bootstrap resamples conditional on the trained checkpoints. An interval crossing zero indicates that a non-zero effect was not detected in this sample at the 95% level; it does not demonstrate equivalence or statistical parity.*
+
 ---
 
 ## 3. Ten-Event Detail Breakdown (Seed-Averaged F1 Scores)
@@ -61,3 +63,5 @@ Pointwise paired event-bootstrap intervals (10,000 resamples, seed 42) across th
 | `r2_cotta_s1` | 998 | 0 | 0 | 3022.9s | 9899.0MB |
 | `r2_tent_s2` | 998 | 0 | 0 | 2561.3s | 9681.2MB |
 | `r2_cotta_s2` | 998 | 0 | 0 | 3023.0s | 9899.0MB |
+
+*Note: Runtime reflects total job elapsed wall-clock duration under the evaluation harness (including dataset raster reads, patch extraction, prediction shard persistence, and metric evaluation), not isolated incremental adaptation latency.*

@@ -76,16 +76,23 @@ python tools/supplementary_r2_tta/analyze_r2_tta_evaluation.py \
 | **Fixed R0** | 0.7453 | 0.6035 | 0.8063 | 0.7249 | 0.7453 ± 0.0345 | 0.6299 | 0.6546 | 0.7461 |
 | **R0 + Tent** | 0.7628 | 0.6221 | 0.8158 | 0.7390 | 0.7628 ± 0.0147 | 0.6335 | 0.6911 | 0.7543 |
 | **R0 + CoTTA** | 0.7669 | 0.6276 | 0.8162 | 0.7462 | 0.7669 ± 0.0132 | 0.6387 | 0.6891 | 0.7464 |
-| **Fixed R2** | **0.8086** | **0.6824** | 0.8430 | **0.7908** | **0.8086 ± 0.0071** | **0.7209** | 0.7312 | 0.7757 |
-| **R2 + Tent** | 0.8012 | 0.6715 | **0.8526** | 0.7710 | 0.8012 ± 0.0019 | 0.7170 | 0.7346 | **0.7790** |
+| **Fixed R2** | **0.8086** | **0.6824** | 0.8430 | **0.7908** | 0.8086 ± 0.0071 | **0.7209** | 0.7312 | 0.7757 |
+| **R2 + Tent** | 0.8012 | 0.6715 | **0.8526** | 0.7710 | **0.8012 ± 0.0019** | 0.7170 | 0.7346 | **0.7790** |
 | **R2 + CoTTA** | 0.8049 | 0.6768 | 0.8524 | 0.7779 | 0.8049 ± 0.0022 | 0.7197 | **0.7366** | 0.7764 |
+
+*Note on Seed Variance: R2 + Tent exhibits the lowest seed standard deviation (0.0019), followed by R2 + CoTTA (0.0022) and Fixed R2 (0.0071), all substantially lower than Fixed R0 (0.0345).*
 
 ### Primary Paired Contrasts (10,000 Paired Event-Bootstrap Resamples):
 - **R2 + Tent vs. Fixed R2:** Observed $\Delta = \mathbf{-0.0074}$ (95% CI: `[-0.0165, +0.0005]`), Benefit: 0, Neutral: 7, Harm: 3.
 - **R2 + CoTTA vs. Fixed R2:** Observed $\Delta = \mathbf{-0.0038}$ (95% CI: `[-0.0136, +0.0044]`), Benefit: 1, Neutral: 7, Harm: 2.
 
+*Statistical Note: Pointwise bootstrap intervals are conditional on the trained checkpoints. An interval crossing zero indicates that a non-zero effect was not detected in this sample at the 95% level; it does not establish statistical equivalence or parity.*
+
+### Execution Trace & Label-I/O Note:
+In the executed runner, `KuroEvaluationDataset` was constructed with `load_labels=True`. As a result, raster files for ground truth were accessed from disk during batch indexing (`_build_event_batches`) prior to prediction persistence. However, an audited trace confirms that ground truth was strictly excluded from `R2TTABatch` sensory tensors and adapter keyword arguments; neither labels nor GT-derived masks influenced adaptation losses, gradients, updates, or sample ordering. Labels were accessed exclusively for post-persistence confusion matrix computation.
+
 ### Definitive Conclusion:
-Neither Tent nor CoTTA provides additional performance benefit over deploying the unadapted frozen R2 checkpoint. Deploying the frozen R2 model without test-time adaptation delivers higher macro accuracy, superior recall, zero risk of test-time divergence, and avoids the substantial computational cost of test-time backward passes and EMA teacher maintenance.
+Neither Tent nor CoTTA provides additional performance benefit over deploying the unadapted frozen R2 checkpoint. Deploying the frozen R2 model without test-time adaptation delivers higher macro accuracy, superior recall, zero risk of test-time divergence, and avoids the computational cost of test-time backward passes and EMA teacher maintenance. (Note: Because an unadapted batch-statistics control on R2 was not evaluated in this supplementary study, the results establish the empirical net degradation of the deployed TTA methods, but do not isolate a specific BatchNorm-collapse mechanism).
 
 Canonical artifacts:
 - Report: `results/canonical/r2_tta_analysis_report.md`
