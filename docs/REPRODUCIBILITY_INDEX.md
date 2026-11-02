@@ -16,6 +16,7 @@ This document establishes the canonical mapping between all reported tables, fig
 | **RST10 Synthesis** | Consolidated tables and figures for reporting | Cross-study canonical outputs | **Completed** | `results/tables/`, `results/figures/` |
 | **M2_ONLY Ablation** | Class weighting without event-balanced sampling | SNUNet-ECAM, Folds A & B, Seeds 0, 1, 2 (6 runs) | **Completed** | `results/canonical/m2_only_ablation_summary.json` |
 | **Historical Target & TTA** | Retrospective evaluation on 10 Kuro Siwo target events | SNUNet-ECAM All-27 (R0, R2) vs Tent, CoTTA | **Completed** | `results/canonical/r2_vs_tta_summary.json` |
+| **R2 + TTA Supplementary Evaluation** | Bounded supplementary evaluation of Tent & CoTTA on frozen R2 source models | SNUNet-ECAM All-27 R2 (Seeds 0, 1, 2) + Tent / CoTTA (6 streams, 60 event rows) | **Completed** | `results/canonical/r2_tta_analysis_summary_v1.json`, `results/canonical/r2_tta_canonical_event_results_v1.csv` |
 | **External GEOID-Flood** | Zero-shot generalization on 1,301 tiles across 9 EMS events | SNUNet-ECAM All-27 (R0, R2), Seeds 0, 1, 2 (6 runs) | **Completed** (NaN-Corrected) | `results/canonical/geoid_nan_corrected_summary.json` |
 
 ---
@@ -125,6 +126,21 @@ This document establishes the canonical mapping between all reported tables, fig
 - **Governing Configs:** `configs/robust_source_training/rst8_siamunet_diff/*.json`
 - **Analysis Tool:** `tools/robust_source_training/run_rst8_full_3seed_analysis.py`
 - **Tracked Source Artifacts:** `results/canonical/rst8_full_3seed_summary_v1.json`, `results/canonical/rst8_canonical_event_results_full_3seed_v1.csv`, `results/canonical/rst8_paired_event_deltas_full_3seed_v1.csv`, `results/canonical/rst8_bootstrap_distribution_full_3seed_v1.json`
+
+### Supplementary Study S4: TTA on Robust Source Models (R2 + Tent / CoTTA)
+- **Scope:** Bounded supplementary evaluation applying Tent and CoTTA directly to frozen Recipe R2 source checkpoints across 10 Kuro Siwo target events and 3 seeds (6 physical streams, 60 newly evaluated event-result rows).
+- **Status:** **Completed**
+- **Six-Condition Macro F1:**
+  - Fixed R0: $0.7453 \pm 0.0345$
+  - R0 + Tent: $0.7628 \pm 0.0147$
+  - R0 + CoTTA: $0.7669 \pm 0.0132$
+  - Fixed R2: $\mathbf{0.8086 \pm 0.0071}$
+  - R2 + Tent: $0.8012 \pm 0.0019$ ($\Delta = \mathbf{-0.0074}$, 95% CI `[-0.0165, +0.0005]`, 0 benefit / 7 neutral / 3 harm)
+  - R2 + CoTTA: $0.8049 \pm 0.0022$ ($\Delta = \mathbf{-0.0038}$, 95% CI `[-0.0136, +0.0044]`, 1 benefit / 7 neutral / 2 harm)
+- **Scientific Conclusion:** Neither Tent nor CoTTA provides additional performance benefit over deploying the unadapted frozen R2 checkpoint. Test-time adaptation slightly degrades performance or remains statistically indistinguishable, while incurring substantial runtime and VRAM overhead.
+- **Governing Configs:** `configs/supplementary_r2_tta/r2_tta_evaluation_matrix_v1.json`, `configs/supplementary_r2_tta/r2_tta_evaluation_ledger_v1.json`
+- **Runner & Analysis Tools:** `scripts/run_r2_tta_parallel_evaluation.sh`, `tools/supplementary_r2_tta/run_r2_tta_evaluation.py`, `tools/supplementary_r2_tta/analyze_r2_tta_evaluation.py`
+- **Tracked Source Artifacts:** `results/canonical/r2_tta_analysis_summary_v1.json`, `results/canonical/r2_tta_analysis_report.md`, `results/canonical/r2_tta_canonical_event_results_v1.csv`, `results/canonical/r2_tta_paired_event_deltas_v1.csv`, `docs/supplementary_r2_tta/r2_tta_evaluation_closeout_v1.md`
 
 ---
 

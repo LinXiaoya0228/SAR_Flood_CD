@@ -1,0 +1,73 @@
+{
+  "$schema_version": "1.0.0",
+  "matrix_id": "r2_tta_evaluation_matrix_v1",
+  "status": "FROZEN_AUTHORIZED",
+  "protocol_reference": "docs/supplementary_r2_tta/r2_tta_evaluation_protocol_v1.md",
+  "description": "ChangeGuard supplementary evaluation of Tent and CoTTA applied to existing R2 source models across the 10 historical Kuro Siwo target events.",
+  "research_question": "Does Tent or CoTTA provide additional benefit when initialized from R2, compared with deploying the same R2 checkpoint without adaptation?",
+  "deployment_mode": "reset_per_event",
+  "prediction_timing": "PRE_UPDATE",
+  "event_order": "order_a_ascending",
+  "target_partition": "kuro_siwo_historical_target_events",
+  "target_events": [205, 277, 321, 411, 445, 561, 562, 1111002, 1111007, 1111013],
+  "num_target_events": 10,
+  "source_checkpoints": {
+    "SNUNet_ECAM": {
+      "seed_0": {
+        "recipe": "R2",
+        "path": "outputs/robust_source_training/rst9/rst9_r2_snunet_all27_s0_v1/final_checkpoint.pt",
+        "sha256": "9611df27a18cd1cb16e60cb74e10a06df7afe4947d948bb3c0e94ef39a10dfb7",
+        "epoch": 16
+      },
+      "seed_1": {
+        "recipe": "R2",
+        "path": "outputs/robust_source_training/rst9/rst9_r2_snunet_all27_s1_v1/final_checkpoint.pt",
+        "sha256": "279dc73c8f6d0274031a33f3bd58a7af632dc2248c709db4c6a66404b21efbd2",
+        "epoch": 16
+      },
+      "seed_2": {
+        "recipe": "R2",
+        "path": "outputs/robust_source_training/rst9/rst9_r2_snunet_all27_s2_v1/final_checkpoint.pt",
+        "sha256": "b057a01820fdeaa596d8340eb550a174a2b8ca8459db0ca66dc08a4aaf929893",
+        "epoch": 16
+      }
+    }
+  },
+  "evaluated_methods": {
+    "SNUNet_ECAM": ["tent", "cotta"]
+  },
+  "hyperparameters": {
+    "tent": {
+      "learning_rate": 0.0001,
+      "optimizer": "adam",
+      "betas": [0.9, 0.999],
+      "weight_decay": 0.0,
+      "trainable_parameters": "bn_affine_only"
+    },
+    "cotta": {
+      "learning_rate": 0.0001,
+      "optimizer": "adam",
+      "betas": [0.9, 0.999],
+      "weight_decay": 0.0,
+      "ema_alpha": 0.999,
+      "restoration_prob": 0.01,
+      "confidence_threshold": 0.90,
+      "augmentations": ["rot0", "hflip", "vflip", "rot180"],
+      "restoration_anchor": "source_r2_checkpoint"
+    }
+  },
+  "matrix_accounting": {
+    "total_physical_streams": 6,
+    "events_per_stream": 10,
+    "total_expected_event_rows": 60
+  },
+  "runtime_and_hardware": {
+    "target_gpus": ["cuda:0", "cuda:1", "cuda:2"],
+    "batch_size": 16,
+    "precision": "fp32"
+  },
+  "output_destinations": {
+    "output_directory": "outputs/supplementary_r2_tta",
+    "log_directory": "logs/supplementary_r2_tta"
+  }
+}
